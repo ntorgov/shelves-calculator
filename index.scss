@@ -1,0 +1,17 @@
+#drawings {
+	padding: 2%;
+	display: inline-block;
+	width: 100%;
+	position: relative;
+}
+
+#stoyka-01, #stoyka-02, .shelve, boxes {
+	position: absolute;
+	display: block;
+	background-color: violet;
+}
+
+svg {
+	position: absolute;
+	display: inline-block;
+}

@@ -1,7 +1,7 @@
 /**
  * Created by nick on 02.01.17.
  */
-caclulatorApplication.controller('calculatorController', function ($scope, $filter) {
+caclulatorApplication.controller("calculatorController", function ($scope, $filter) {
 	$scope.drawHeight = 400;
 
 	$scope.heights = [
@@ -325,6 +325,14 @@ caclulatorApplication.controller('calculatorController', function ($scope, $filt
 	];
 
 	$scope.Calculation = function () {
+		var shelveArray;
+		var n;
+		var shelve;
+		var shelve;
+		var box;
+		var placementWidth;
+		var offset;
+		var newBox;
 		/** Высота стеллажа **/
 		var currentHeight = $scope.cupboard.height;
 		var currentWidth = $scope.cupboard.width;
@@ -334,9 +342,9 @@ caclulatorApplication.controller('calculatorController', function ($scope, $filt
 		var scale = drawingAreaHeight / currentHeight.value;
 
 		//scale = 1;
-		console.log('Текущий масштаб: ' + scale);
+		console.log("Текущий масштаб: " + scale);
 		if (angular.isObject($scope.selectedBox)) {
-			console.log('Выбран ящик:');
+			console.log("Выбран ящик:");
 			console.log($scope.selectedBox);
 			var shelveCount = Math.floor(currentHeight.value / ($scope.selectedBox.height + 30 + 35));
 			if (shelveCount == 1) {
@@ -354,21 +362,21 @@ caclulatorApplication.controller('calculatorController', function ($scope, $filt
 				shelveHeight = 145;
 			}
 			var boxCount = Math.floor((currentWidth.value - 60) / $scope.selectedBox.width) + 1;
-			console.info('Предполагаемое количество полок: ' + shelveCount);
-			console.info('Предполагаемое высота полок: ' + shelveHeight);
-			console.info('Предполагаемое количество ящиков: ' + boxCount);
+			console.info("Предполагаемое количество полок: " + shelveCount);
+			console.info("Предполагаемое высота полок: " + shelveHeight);
+			console.info("Предполагаемое количество ящиков: " + boxCount);
 
 			currentQuantity = shelveCount
 
-			var shelveArray = []
+			shelveArray = []
 
-			for (var n = 0; n < currentQuantity; n++) {
-				var shelve = {
-					height: 30 * scale + 'px',
-					width: (currentWidth.value * scale) + (30 * scale) + 'px',
+			for (n = 0; n < currentQuantity; n++) {
+				shelve = {
+					height: 30 * scale + "px",
+					width: (currentWidth.value * scale) + (30 * scale) + "px",
 					left: 0,
-					top: ($scope.drawHeight * 0.025) + (n * shelveHeight * scale) + 'px'
-				}
+					top: ($scope.drawHeight * 0.025) + (n * shelveHeight * scale) + "px"
+				};
 				shelveArray.push(shelve);
 			}
 
@@ -376,18 +384,18 @@ caclulatorApplication.controller('calculatorController', function ($scope, $filt
 
 			//  Тут мы рисуем ящики на полках
 			//  И у нас реальная проблема с визуализацией
-			for (var shelve = 1; shelve < currentQuantity; shelve++) {
-				for (var box = 0; box < boxCount; box++) {
-					var placementWidth = (currentWidth.value - 60) / boxCount * scale;
-					var offset = Math.abs((placementWidth - (($scope.selectedBox.width * 100 / 117) * scale )) / 1);
-					console.log(placementWidth + ' ' + ' ' + (($scope.selectedBox.width * 100 / 117) * scale ) + ' ' + offset);
-					var newBox = {
+			for (shelve = 1; shelve < currentQuantity; shelve++) {
+				for (box = 0; box < boxCount; box++) {
+					placementWidth = (currentWidth.value - 60) / boxCount * scale;
+					offset = Math.abs((placementWidth - (($scope.selectedBox.width * 100 / 117) * scale )) / 1);
+					console.log(placementWidth + " " + " " + (($scope.selectedBox.width * 100 / 117) * scale ) + " " + offset);
+					newBox = {
 						style: {
-							top: (((shelve * shelveHeight) - ($scope.selectedBox.height - 15)) * scale) + 'px',
-							left: (30 * scale) + offset + (placementWidth * box) + 'px',
-							width: (($scope.selectedBox.width * 100 / 117) * scale ) + 'px',
-							height: (($scope.selectedBox.height * 100 / 90) * scale ) + 'px'//,
-							//border: '1px solid'
+							top: (((shelve * shelveHeight) - ($scope.selectedBox.height - 15)) * scale) + "px",
+							left: (30 * scale) + offset + (placementWidth * box) + "px",
+							width: (($scope.selectedBox.width * 100 / 117) * scale ) + "px",
+							height: (($scope.selectedBox.height * 100 / 90) * scale ) + "px"//,
+							//border: "1px solid"
 						},
 						path: {
 							xscale: (($scope.selectedBox.width * 100 / 117) / 117 ) * scale,
@@ -411,18 +419,18 @@ caclulatorApplication.controller('calculatorController', function ($scope, $filt
 
 			$scope.drawing = {
 				stoyka1: {
-					height: currentHeight.value * scale + 'px',
-					width: 30 * scale + 'px',
-					left: 0 + 'px',
-					'background-color': 'blue',
-					top: $scope.drawHeight * 0.025 + 'px'
+					height: currentHeight.value * scale + "px",
+					width: 30 * scale + "px",
+					left: 0 + "px",
+					"background-color": "blue",
+					top: $scope.drawHeight * 0.025 + "px"
 				},
 				stoyka2: {
-					height: currentHeight.value * scale + 'px',
-					width: 30 * scale + 'px',
-					left: currentWidth.value * scale + 'px',
-					'background-color': 'blue',
-					top: $scope.drawHeight * 0.025 + 'px'
+					height: currentHeight.value * scale + "px",
+					width: 30 * scale + "px",
+					left: currentWidth.value * scale + "px",
+					"background-color": "blue",
+					top: $scope.drawHeight * 0.025 + "px"
 				},
 				shelves: shelveArray,
 				boxes: boxArray
@@ -433,14 +441,14 @@ caclulatorApplication.controller('calculatorController', function ($scope, $filt
 
 			//  Берем только контейнеры, которые подходят по высоте
 			/*
-			 var filterResult = $filter('filter')($scope.boxes, {
+			 var filterResult = $filter("filter")($scope.boxes, {
 			 height: boxHeightLimit
 			 }, function (actual, expected) {
 			 return actual <= expected;
 			 });
 			 */
 			//  Берем контейнеры, которые подходят по глубине
-			let filterResult = $filter('filter')($scope.boxes, {
+			let filterResult = $filter("filter")($scope.boxes, {
 				deep: currentDeep.value
 			}, function (actual, expected) {
 				if ((actual == expected - 50) || (actual == expected)) {
@@ -448,7 +456,7 @@ caclulatorApplication.controller('calculatorController', function ($scope, $filt
 				}
 				return false;
 			});
-			$scope.boxResult = $filter('orderBy')(filterResult, ['-deep', '+sort'])
+			$scope.boxResult = $filter("orderBy")(filterResult, ["-deep", "+sort"])
 			console.log($scope.boxResult);
 
 		}
