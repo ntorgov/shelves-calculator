@@ -1,0 +1,40 @@
+{
+	"env": {
+		"browser": true,
+		"es6": true,
+		"meteor": true,
+		"mongo": true,
+		"mocha": true,
+		"jquery": true
+	},
+	"extends": "eslint:recommended",
+	"parserOptions": {
+		"ecmaVersion": 6,
+		"ecmaFeatures": {
+			"jsx": false
+		},
+		"sourceType": "module"
+	},
+	"rules": {
+		"indent": [
+			2,
+			"tab",
+			{
+				"SwitchCase": 1
+			}
+		],
+		"no-undef": [
+			0
+		],
+		"no-console": [
+			1
+		],
+		"quotes": [
+			2,
+			"double"
+		],
+		"no-case-declarations": [
+			1
+		]
+	}
+}
