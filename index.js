@@ -1,7 +1,6 @@
 /**
  * Created by nick on 02.01.17.
  */
-
 let camera, scene, renderer;
 let geometry, material, mesh;
 
@@ -89,7 +88,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 300,
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/3109l3.jpg",
-			url: "http://www.agropak.net/hgfhgf/kontejner-sk-3109/"
+			url: "http://www.agropak.net/hgfhgf/kontejner-sk-3109/",
+			color: "blue"
 		},
 		{
 			id: "12.331.65",
@@ -100,7 +100,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 300,
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/31509dh.jpg",
-			url: "http://www.agropak.net/hgfhgf/kontejner-sk-31509/"
+			url: "http://www.agropak.net/hgfhgf/kontejner-sk-31509/",
+			color: "blue"
 		},
 		{
 			id: "12.332.65",
@@ -111,7 +112,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 300,
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/3209hj.jpg",
-			url: "http://www.agropak.net/hgfhgf/kontejner-sk-3209/"
+			url: "http://www.agropak.net/hgfhgf/kontejner-sk-3209/",
+			color: "blue"
 		},
 		{
 			id: "12.333.65",
@@ -122,7 +124,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 300,
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/32145i.jpg",
-			url: "http://www.agropak.net/hgfhgf/kontejner-sk-3214/"
+			url: "http://www.agropak.net/hgfhgf/kontejner-sk-3214/",
+			color: "blue"
 		},
 		//  Глубина 400
 		{
@@ -134,7 +137,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 400,
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/4109kh.jpg",
-			url: "http://www.agropak.net/hgfhgf/kontejner-sk-4109/"
+			url: "http://www.agropak.net/hgfhgf/kontejner-sk-4109/",
+			color: "blue"
 		},
 		{
 			id: "12.335.65",
@@ -145,7 +149,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 400,
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/41509yk.jpg",
-			url: "http://www.agropak.net/hgfhgf/kontejner-sk-41509/"
+			url: "http://www.agropak.net/hgfhgf/kontejner-sk-41509/",
+			color: "blue"
 		},
 		{
 			id: "12.336.65",
@@ -156,7 +161,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 400,
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/42095y.jpg",
-			url: "http://www.agropak.net/hgfhgf/kontejner-sk-4209/"
+			url: "http://www.agropak.net/hgfhgf/kontejner-sk-4209/",
+			color: "blue"
 		},
 		{
 			id: "12.337.65",
@@ -167,7 +173,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 400,
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/4214vd.jpg",
-			url: "http://www.agropak.net/hgfhgf/kontejner-sk-4214/"
+			url: "http://www.agropak.net/hgfhgf/kontejner-sk-4214/",
+			color: "blue"
 		},
 		//  Глубина 500
 		{
@@ -179,7 +186,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 500,
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/51092v.jpg",
-			url: "http://www.agropak.net/hgfhgf/kontejner-sk-5109/"
+			url: "http://www.agropak.net/hgfhgf/kontejner-sk-5109/",
+			color: "blue"
 		},
 		{
 			id: "12.339.65",
@@ -190,7 +198,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 500,
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/51509mi.jpg",
-			url: "http://www.agropak.net/hgfhgf/kontejner-sk-51509/"
+			url: "http://www.agropak.net/hgfhgf/kontejner-sk-51509/",
+			color: "blue"
 		},
 		{
 			id: "12.340.65",
@@ -201,7 +210,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 500,
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/5209gf.jpg",
-			url: "http://www.agropak.net/hgfhgf/kontejner-sk-5209/"
+			url: "http://www.agropak.net/hgfhgf/kontejner-sk-5209/",
+			color: "blue"
 		},
 		{
 			id: "12.341.65",
@@ -212,7 +222,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 500,
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/52144y.jpg",
-			url: "http://www.agropak.net/hgfhgf/kontejner-sk-5214/"
+			url: "http://www.agropak.net/hgfhgf/kontejner-sk-5214/",
+			color: "blue"
 		},
 		//  Глубина 600
 		{
@@ -224,7 +235,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 600,
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/6109bi.jpg",
-			url: "http://www.agropak.net/hgfhgf/kontejner-sk-6109/"
+			url: "http://www.agropak.net/hgfhgf/kontejner-sk-6109/",
+			color: "blue"
 		},
 		{
 			id: "12.343.65",
@@ -235,7 +247,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 600,
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/61509ht.jpg",
-			url: "http://www.agropak.net/hgfhgf/kontejner-sk-61509/"
+			url: "http://www.agropak.net/hgfhgf/kontejner-sk-61509/",
+			color: "blue"
 		},
 		{
 			id: "12.344.65",
@@ -246,7 +259,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 600,
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/6209k3.jpg",
-			url: "http://www.agropak.net/hgfhgf/kontejner-sk-6209/"
+			url: "http://www.agropak.net/hgfhgf/kontejner-sk-6209/",
+			color: "blue"
 		},
 		{
 			id: "12.345.65",
@@ -257,7 +271,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 600,
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/6214at.jpg",
-			url: "http://www.agropak.net/hgfhgf/kontejner-sk-6214/"
+			url: "http://www.agropak.net/hgfhgf/kontejner-sk-6214/",
+			color: "blue"
 		},
 		//  Коробки Logic Store
 		//  Глубина 300
@@ -270,7 +285,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 300,
 			sort: 2,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/12_412dq.jpg",
-			url: "http://www.agropak.net/kontejnery-logic-store/12412/"
+			url: "http://www.agropak.net/kontejnery-logic-store/12412/",
+			color: "blue"
 		},
 		{
 			id: "12.403.1",
@@ -281,7 +297,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 350,
 			sort: 2,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-403mn.jpg",
-			url: "http://www.agropak.net/kontejnery-logic-store/12_403/"
+			url: "http://www.agropak.net/kontejnery-logic-store/12_403/",
+			color: "blue"
 		},
 		{
 			id: "12.404.1",
@@ -292,7 +309,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 350,
 			sort: 2,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-404wb.jpg",
-			url: "http://www.agropak.net/kontejnery-logic-store/12_404/"
+			url: "http://www.agropak.net/kontejnery-logic-store/12_404/",
+			color: "blue"
 		},
 		{
 			id: "12.414",
@@ -303,7 +321,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 400,
 			sort: 2,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/12_414.jpg",
-			url: "http://www.agropak.net/kontejnery-logic-store/12414/"
+			url: "http://www.agropak.net/kontejnery-logic-store/12414/",
+			color: "blue"
 		},
 		{
 			id: "12.405.1",
@@ -314,7 +333,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 500,
 			sort: 2,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-4050c.jpg",
-			url: "http://www.agropak.net/kontejnery-logic-store/12_405/"
+			url: "http://www.agropak.net/kontejnery-logic-store/12_405/",
+			color: "blue"
 		},
 		{
 			id: "12.406.1",
@@ -325,7 +345,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 500,
 			sort: 2,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-406b.jpg",
-			url: "http://www.agropak.net/kontejnery-logic-store/12_406/"
+			url: "http://www.agropak.net/kontejnery-logic-store/12_406/",
+			color: "blue"
 		},
 		{
 			id: "12.407.1",
@@ -336,7 +357,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			deep: 500,
 			sort: 2,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-407b.jpg",
-			url: "http://www.agropak.net/kontejnery-logic-store/12_407/"
+			url: "http://www.agropak.net/kontejnery-logic-store/12_407/",
+			color: "blue"
 		}
 	];
 
@@ -344,6 +366,10 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 	$scope.shelvesCountOld = 0;
 
 	$scope.shelveHeight = 0;
+	$scope.boxCount = 0;
+	$scope.boxCounter = 0;
+	$scope.cameraRadius = 0;
+	$scope.angle = 0;
 
 	function visualizationInit() {
 
@@ -356,16 +382,21 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 		//  Глубина выбранного стеллажа
 		const currentDeep = $scope.cupboard.deep;
 
+		let shelvesCounter, holdersCounter, boxCounter;
+		let selectedObject;
+		let shelveYPosition;
+		let shelveMaterial, shelveGeometry, shelveObject;
+
+//  Фигура для стойки
+		let holderShape;
+		//  Параметры вытягивания фигуры
+		let extrudeSettings;
+		//  Готовая фигура стойки
+		let holderGeometry;
+		let holder1, holder2, holder3, holder4;
+
 		if ($scope.cupboard.width && $scope.cupboard.width.value) {
 			console.warn(currentHeight.value);
-
-			//  Фигура для стойки
-			let holderShape;
-			//  Параметры вытягивания фигуры
-			let extrudeSettings;
-			//  Готовая фигура стойки
-			let holderGeometry;
-			let holder1, holder2, holder3, holder4;
 
 
 			//holderGeometry = new THREE.BoxGeometry(200, 200, 200);
@@ -392,14 +423,20 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			holderGeometry = new THREE.ExtrudeGeometry(holderShape, extrudeSettings);
 
 			//  Очистка сцены
-			for (n = 1; n <= 4; n++) {
-				const selectedObject = scene.getObjectByName("shelveHolder" + n);
+			for (holdersCounter = 1; holdersCounter <= 4; holdersCounter++) {
+				selectedObject = scene.getObjectByName("shelveHolder" + holdersCounter);
 				if (selectedObject) {
 					scene.remove(selectedObject);
 				}
 			}
-			for (n = 0; n <= $scope.shelvesCountOld - 1; n++) {
-				const selectedObject = scene.getObjectByName("shelve" + n);
+			for (shelvesCounter = 0; shelvesCounter <= $scope.shelvesCountOld; shelvesCounter++) {
+				selectedObject = scene.getObjectByName("shelve" + shelvesCounter);
+				if (selectedObject) {
+					scene.remove(selectedObject);
+				}
+			}
+			for (boxCounter = 0; boxCounter <= $scope.boxCounter; boxCounter++) {
+				selectedObject = scene.getObjectByName("box" + boxCounter);
 				if (selectedObject) {
 					scene.remove(selectedObject);
 				}
@@ -439,30 +476,76 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			console.log("Vis. Shelves count " + $scope.shelvesCount);
 
 			$scope.shelvesCountOld = $scope.shelvesCount;
-			for (n = 0; n <= $scope.shelvesCount - 1; n++) {
 
-				let shelveYPosition = $scope.cupboard.height.value - (n * $scope.shelveHeight) - 6.25;
-				var shelveGeometry = new THREE.BoxGeometry($scope.cupboard.width.value, 12.5, $scope.cupboard.deep.value);
-				var shelveMaterial = new THREE.MeshBasicMaterial({color: 0x666666});
-				var cube = new THREE.Mesh(shelveGeometry, shelveMaterial);
-				cube.name = "shelve" + n;
-				cube.position.set($scope.cupboard.width.value * 0.5 + 1, shelveYPosition, $scope.cupboard.deep.value * -0.5 - 1);
-				scene.add(cube);
+			if ($scope.shelvesCount) {
+				$scope.boxCounter = 0;
+				for (shelvesCounter = 0; shelvesCounter <= $scope.shelvesCount; shelvesCounter++) {
+
+					shelveYPosition = $scope.cupboard.height.value - (shelvesCounter * $scope.shelveHeight) - 6.25;
+					shelveGeometry = new THREE.BoxGeometry($scope.cupboard.width.value, 12.5, $scope.cupboard.deep.value);
+					shelveMaterial = new THREE.MeshBasicMaterial({color: 0x666666});
+					shelveObject = new THREE.Mesh(shelveGeometry, shelveMaterial);
+					shelveObject.name = "shelve" + shelvesCounter;
+					shelveObject.position.set($scope.cupboard.width.value * 0.5 + 1, shelveYPosition, $scope.cupboard.deep.value * -0.5 - 1);
+					scene.add(shelveObject);
+
+					console.log($scope.selectedBox);
+
+					if (shelvesCounter > 0) {
+
+						boxPlaceWidth = ($scope.cupboard.width.value - 29 * 2) / ($scope.boxCount);
+
+						//  Это значение - отступ от края посадочного места
+						boxPlacementPadding = (boxPlaceWidth - $scope.selectedBox.width) / 2;
+						boxPlacementMarguin = ($scope.selectedBox.width / 2) + 30;
+
+						console.log("Ширина посадочного места: " + boxPlaceWidth);
+
+						for (boxCounter = 0; boxCounter < $scope.boxCount; boxCounter++) {
+
+							$scope.boxCounter++;
+							boxYPosition = shelveYPosition + 6.25 + ($scope.selectedBox.height / 2);
+							boxGeometry = new THREE.BoxGeometry($scope.selectedBox.width, $scope.selectedBox.height, $scope.selectedBox.deep);
+							boxMaterial = new THREE.MeshBasicMaterial({
+								color: 0x8888ff,
+								wireframe: true,
+								transparent: 0.8
+							});
+							boxObject = new THREE.Mesh(boxGeometry, boxMaterial);
+							boxObject.name = "box" + $scope.boxCounter;
+							boxObject.position.set(boxCounter * boxPlaceWidth + boxPlacementPadding + boxPlacementMarguin, boxYPosition, ($scope.selectedBox.deep / -2) - 1);
+							scene.add(boxObject);
+						}
+					}
+				}
 			}
+
+
 			//renderer = new THREE.WebGLRenderer({antialias: true});
 			//renderer.setSize(window.innerWidth, window.innerHeight);
 
 			//  Инициализация рендера внутри блока
 			//document.getElementById("visualization").appendChild(renderer.domElement);
 			camera.position.y = $scope.cupboard.height.value;
-			camera.position.x = $scope.cupboard.height.value + $scope.cupboard.width.value;
-			camera.position.z = $scope.cupboard.height.value + $scope.cupboard.width.value;
+
+			//camera.position.x = $scope.cupboard.height.value + $scope.cupboard.width.value;
+			//camera.position.z = $scope.cupboard.height.value + $scope.cupboard.width.value;
+			$scope.cameraRadius = Math.sqrt(Math.pow($scope.cupboard.height.value, 2) + Math.pow($scope.cupboard.width.value, 2));
+			camera.position.x = $scope.cameraRadius * Math.cos($scope.angle) * 2;
+			camera.position.z = $scope.cameraRadius * Math.sin($scope.angle) * 2;
+			camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5), ($scope.cupboard.height.value * 0.5), ($scope.cupboard.deep.value * -0.5)));
+
+			shelveObject = new THREE.Mesh(new THREE.BoxGeometry(15, 15, 15), new THREE.MeshBasicMaterial({color: 0xff3333}));
+			shelveObject.position.set(($scope.cupboard.width.value * 0.5), ($scope.cupboard.height.value * 0.5), ($scope.cupboard.deep.value * -0.5));
+			scene.add(shelveObject);
+
 		}
 	}
 
 	function render() {
 
 		let x, z;
+		let radius;
 
 		// console.info(renderer);
 
@@ -470,19 +553,44 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			renderer.render(scene, camera);
 			x = camera.position.x;
 			z = camera.position.z;
-			camera.position.x = x * Math.cos(0.002) + z * Math.sin(0.002);
-			camera.position.z = z * Math.cos(0.002) - x * Math.sin(0.002);
+			radius = $scope.cameraRadius * 2;
+			//camera.position.x = x * Math.cos(0.001) + z * Math.sin(0.001);
+			//camera.position.z = z * Math.cos(0.001) - x * Math.sin(0.001);
+
+			camera.position.x = radius * Math.cos($scope.angle);
+			camera.position.z = radius * Math.sin($scope.angle);
+			// camera.position.y = $scope.cupboard.height.value;
+			$scope.angle += 0.002;
+
+			calcRad = Math.sqrt(Math.pow(camera.position.x, 2) + Math.pow(camera.position.z, 2));
+
+			//console.log("R: " + radius + ", x: " + camera.position.x + ", z: " + camera.position.z + ", a: " + $scope.angle + ", cr: " + calcRad);
+			//console.log(camera);
+
+			//camera.position.x = radious * Math.sin( theta * Math.PI / 360 )
+			//	* Math.cos( phi * Math.PI / 360 );
+			//camera.position.y = radious * Math.sin( phi * Math.PI / 360 );
+
 			camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5), ($scope.cupboard.height.value * 0.5), ($scope.cupboard.deep.value * -0.5)));
+			//camera.updateProjectionMatrix();
+			//camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5), 0, 0));
 			requestAnimationFrame(render);
 		}
 	}
 
 	function init() {
 
-		camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000);
-		camera.position.z = 1400;
-		camera.position.y = 550;
-		camera.position.x = 1400;
+		const proportion = 4 / 3;
+		let width = document.getElementById("visualization").offsetWidth;
+		let height = (width / proportion);
+
+		//camera = new THREE.Camera(35, proportion, 1, 10000);
+		camera = new THREE.PerspectiveCamera(30, proportion, 1, 10000);
+		camera.isPerspectiveCamera = false;
+		//camera = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, - 100, 10000 );
+		//camera.position.z = 1400;
+		//camera.position.y = 550;
+		//camera.position.x = 1400;
 
 		scene = new THREE.Scene();
 
@@ -493,8 +601,6 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 		light.position.copy(camera.position);
 		scene.add(light);
 
-		const proportion = 4 / 3;
-		let width = document.getElementById("visualization").offsetWidth;
 		renderer = new THREE.WebGLRenderer({antialias: true});
 
 		renderer.setSize(width, (width / proportion));
@@ -561,25 +667,27 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			//  Вычисляем растояние между полками
 			shelveHeight = 0;
 			if (shelveCount > 2) {
-				shelveHeight = Math.ceil((currentHeight.value / shelveCount) / 25) * 25;
+				shelveHeight = Math.floor((currentHeight.value / shelveCount) / 25) * 25;
 			} else {
 				// shelveHeight = Math.ceil((currentHeight.value / (shelveCount - 1)) / 25) * 25;
-				shelveHeight = Math.ceil(($scope.selectedBox.height + 30 + 35) / 25) * 25;
+				shelveHeight = Math.floor(($scope.selectedBox.height + 30 + 35) / 25) * 25;
 			}
 			if (shelveHeight < 145) {
 				shelveHeight = 145;
 			}
 
-			boxCount = Math.floor((currentWidth.value - 60) / $scope.selectedBox.width) + 1;
+			boxCount = Math.floor((currentWidth.value - 60) / $scope.selectedBox.width);
 
 			$scope.shelvesCount = shelveCount;
 			$scope.shelveHeight = shelveHeight;
+			$scope.boxCount = boxCount;
 
 			console.log("Предполагаемое количество полок: " + shelveCount);
 			// console.info("Предполагаемое высота полок: " + shelveHeight);
 			console.log("Предполагаемое количество ящиков: " + boxCount);
 
 			currentQuantity = shelveCount;
+
 
 			shelveArray = [];
 
@@ -630,7 +738,7 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			 */
 		}
 
-		console.log(shelveArray);
+		//console.log(shelveArray);
 
 		visualizationInit();
 		render();
@@ -667,7 +775,7 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 
 			//  Берем только контейнеры, которые подходят по высоте
 			/*
-			 var filterResult = $filter("filter")($scope.boxes, {
+			 filterResult = $filter("filter")($scope.boxes, {
 			 height: boxHeightLimit
 			 }, function (actual, expected) {
 			 return actual <= expected;
@@ -686,6 +794,7 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			console.log($scope.boxResult);
 
 		}
+
 //  ************************************************************************************************************
 
 	};
@@ -738,7 +847,7 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 
 		//console.log(box);
 		$scope.selectedBox = item;
-		$scope.boxLineCount = Math.ceil($scope.cupboard.width.value / item.width);
+		$scope.boxLineCount = Math.floor($scope.cupboard.width.value / item.width);
 		$scope.boxPrice = $scope.boxLineCount * $scope.cupboard.shelve.value * item.price;
 		$scope.totalPrice = $scope.totalPrice = $scope.boxPrice;
 		this.Calculation();
