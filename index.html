@@ -15,7 +15,7 @@
 	var caclulatorApplication = angular.module('caclulatorApplication', []);
 </script>
 <div class="container" ng-controller="calculatorController">
-	<div class="col-xs-5">
+	<div class="col-xs-4">
 		<div>
 			<div class="form-group">
 				<label for="cupboardHeight">Мне нужен шкаф высотой:</label>
@@ -61,33 +61,42 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-xs-7">
+	<div class="col-xs-8">
+		<table class="table hover">
+			<thead>
+			<tr>
+				<th>Наименование</th>
+				<th>Количество</th>
+				<th>Цена, руб</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td>Стойки</td>
+				<td>4</td>
+				<td>{{cupboard.height.price*4}}</td>
+			</tr>
+			<tr>
+				<td>Полки</td>
+				<td>{{shelvesCount+1}}</td>
+				<td>{{(shelvesCount+1) * cupboard.deep.price}}</td>
+			</tr>
+			<tr>
+				<td>Ящики</td>
+				<td>{{boxCount * shelvesCount}}</td>
+				<td>{{boxCount * shelvesCount * selectedBox.price}}</td>
+			</tr>
+			</tbody>
+			<tfoot>
+			<tr>
+				<td colspan="2">Итого</td>
+				<td>{{(cupboard.height.price*4) + ((shelvesCount+1) * cupboard.deep.price) + (boxCount * shelvesCount *
+					selectedBox.price)}}
+				</td>
+			</tr>
+			</tfoot>
+		</table>
 
-		<p class="text-muted">Стойки * 4: {{cupboard.height.price}}rur * 4</p>
-		<p class="text-muted">Растояние между полками: {{cupboard.height.value / cupboard.shelve.value}}</p>
-		<p class="text-muted">Полки ({{cupboard.width.value}}x{{cupboard.deep.value}}) * {{cupboard.shelve.value}}:
-			{{cupboard.deep.price}}rur * {{cupboard.shelve.value}}</p>
-		<p class="text-muted">В ряд влезает {{boxLineCount}} полок</p>
-		<p class="text-info"><strong>Итого:</strong> {{totalPrice}} rur</p>
-		<!-- div style="height: {{drawHeight + 'px'}}; background-color: #808080;" id="drawings">
-			<div id="stoyka-01" ng-style="drawing.stoyka1"></div>
-			<div id="stoyka-02" ng-style="drawing.stoyka2"></div>
-			<div class="shelve" ng-repeat="shelve in drawing.shelves" ng-style="shelve"></div>
-			<svg ng-repeat="box in drawing.boxes" ng-style="box.style" preserveAspectRatio="none">
-				<path id="lineAB" style="transform: scale({{box.path.xscale}}, {{box.path.yscale}})" d="M 1 0
-				l 117 0
-				l 0 5
-				q 0 5 -5 5
-				l 0 75
-				q 5 0 5 5
-				l -117 0
-				q 0 -5 5 -5
-				l 0 -75
-				q -5 0 -5 -5
-				l 0 -5" stroke="darkgrey" stroke-width="1" fill="lightblue"/>
-			</svg>
-			< ! -- div class="boxes" ng-repeat="box in drawing.boxes" ng-style="box"></div -- >
-		</div -->
 		<div id="visualization"></div>
 	</div>
 </div>

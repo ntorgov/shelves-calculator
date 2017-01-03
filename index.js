@@ -489,7 +489,7 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 					shelveObject.position.set($scope.cupboard.width.value * 0.5 + 1, shelveYPosition, $scope.cupboard.deep.value * -0.5 - 1);
 					scene.add(shelveObject);
 
-					console.log($scope.selectedBox);
+					//console.log($scope.selectedBox);
 
 					if (shelvesCounter > 0) {
 
@@ -660,9 +660,13 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			// console.log("Выбран ящик:");
 			// console.log($scope.selectedBox);
 			shelveCount = Math.floor(currentHeight.value / ($scope.selectedBox.height + 30 + 35));
-			if (shelveCount === 1) {
-				shelveCount++;
+			if(shelveCount < currentHeight.shelves.min) {
+				shelveCount = currentHeight.shelves.min;
 			}
+			if(shelveCount > currentHeight.shelves.max) {
+				shelveCount = currentHeight.shelves.max;
+			}
+
 
 			//  Вычисляем растояние между полками
 			shelveHeight = 0;
@@ -675,6 +679,9 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			if (shelveHeight < 145) {
 				shelveHeight = 145;
 			}
+			if((shelveCount * shelveHeight) >= currentHeight.value) {
+				shelveCount--;
+			}
 
 			boxCount = Math.floor((currentWidth.value - 60) / $scope.selectedBox.width);
 
@@ -683,7 +690,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			$scope.boxCount = boxCount;
 
 			console.log("Предполагаемое количество полок: " + shelveCount);
-			// console.info("Предполагаемое высота полок: " + shelveHeight);
+			console.log("Предполагаемая высота конструкции: " + shelveCount * shelveHeight);
+			console.info("Предполагаемое высота полок: " + shelveHeight);
 			console.log("Предполагаемое количество ящиков: " + boxCount);
 
 			currentQuantity = shelveCount;
@@ -847,8 +855,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 
 		//console.log(box);
 		$scope.selectedBox = item;
-		$scope.boxLineCount = Math.floor($scope.cupboard.width.value / item.width);
-		$scope.boxPrice = $scope.boxLineCount * $scope.cupboard.shelve.value * item.price;
+		//$scope.boxLineCount = Math.floor($scope.cupboard.width.value / item.width);
+		$scope.boxPrice = $scope.boxCount * $scope.shelvesCount * item.price;
 		$scope.totalPrice = $scope.totalPrice = $scope.boxPrice;
 		this.Calculation();
 		//console.log(item);
