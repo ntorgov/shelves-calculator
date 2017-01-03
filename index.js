@@ -660,10 +660,10 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			// console.log("Выбран ящик:");
 			// console.log($scope.selectedBox);
 			shelveCount = Math.floor(currentHeight.value / ($scope.selectedBox.height + 30 + 35));
-			if (shelveCount < currentHeight.shelves.min) {
+			if ((shelveCount + 1) < currentHeight.shelves.min) {
 				shelveCount = currentHeight.shelves.min;
 			}
-			if (shelveCount > currentHeight.shelves.max) {
+			if ((shelveCount + 1) > currentHeight.shelves.max) {
 				shelveCount = currentHeight.shelves.max;
 			}
 
