@@ -6,9 +6,6 @@ let camera, scene, renderer;
 let geometry, material, mesh;
 
 
-
-
-
 ////
 caclulatorApplication.controller("calculatorController", function ($scope, $filter) {
 
@@ -343,76 +340,124 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 		}
 	];
 
+	$scope.shelvesCount = 0;
+	$scope.shelvesCountOld = 0;
+
+	$scope.shelveHeight = 0;
+
 	function visualizationInit() {
 
-		//  Фигура для стойки
-		let holderShape;
-		//  Параметры вытягивания фигуры
-		let extrudeSettings;
-		//  Готовая фигура стойки
-		let holderGeometry;
-		let holder1, holder2, holder3, holder4;
+		//  Высота выбранного стеллажа
+		const currentHeight = $scope.cupboard.height;
+
+		//  Ширина выбранного стеллажа
+		const currentWidth = $scope.cupboard.width;
+
+		//  Глубина выбранного стеллажа
+		const currentDeep = $scope.cupboard.deep;
+
+		if ($scope.cupboard.width && $scope.cupboard.width.value) {
+			console.warn(currentHeight.value);
+
+			//  Фигура для стойки
+			let holderShape;
+			//  Параметры вытягивания фигуры
+			let extrudeSettings;
+			//  Готовая фигура стойки
+			let holderGeometry;
+			let holder1, holder2, holder3, holder4;
 
 
+			//holderGeometry = new THREE.BoxGeometry(200, 200, 200);
+			let material = new THREE.MeshLambertMaterial({
+				color: 0x777777,
+				wireframe: false
+			});
 
-		//holderGeometry = new THREE.BoxGeometry(200, 200, 200);
-		let material = new THREE.MeshLambertMaterial({
-			color: 0x666666,
-			wireframe: false
-		});
+			holderShape = new THREE.Shape();
+			holderShape.moveTo(0, 0);
+			holderShape.lineTo(0, 30);
+			holderShape.lineTo(1, 30);
+			holderShape.lineTo(1, 1);
+			holderShape.lineTo(30, 1);
+			holderShape.lineTo(30, 0);
+			holderShape.lineTo(0, 0);
 
-		holderShape = new THREE.Shape();
-		holderShape.moveTo(0, 0);
-		holderShape.lineTo(0, 30);
-		holderShape.lineTo(1, 30);
-		holderShape.lineTo(1, 1);
-		holderShape.lineTo(30, 1);
-		holderShape.lineTo(30, 0);
-		holderShape.lineTo(0, 0);
+			extrudeSettings = {
+				steps: 2,
+				amount: $scope.cupboard.height.value, //500,
+				bevelEnabled: false,
+			};
 
-		extrudeSettings = {
-			steps: 2,
-			amount: 500,
-			bevelEnabled: false,
-		};
+			holderGeometry = new THREE.ExtrudeGeometry(holderShape, extrudeSettings);
 
-		holderGeometry = new THREE.ExtrudeGeometry(holderShape, extrudeSettings);
+			//  Очистка сцены
+			for (n = 1; n <= 4; n++) {
+				const selectedObject = scene.getObjectByName("shelveHolder" + n);
+				if (selectedObject) {
+					scene.remove(selectedObject);
+				}
+			}
+			for (n = 0; n <= $scope.shelvesCountOld - 1; n++) {
+				const selectedObject = scene.getObjectByName("shelve" + n);
+				if (selectedObject) {
+					scene.remove(selectedObject);
+				}
+			}
 
+			//  Первая стойка. Стоит по координатам 0, 0
+			holder1 = new THREE.Mesh(holderGeometry, material);
+			holder1.name = "shelveHolder1";
+			holder1.rotation.x = THREE.Math.degToRad(-90);
 
-		//  Первая стойка. Стоит по координатам 0, 0
-		holder1 = new THREE.Mesh(holderGeometry, material);
-		holder1.rotation.x = THREE.Math.degToRad(-90);
+			//  Вторая стойка. Повернута на 90 и стоит на расстоянии ширины полки
+			holder2 = new THREE.Mesh(holderGeometry, material);
+			holder2.name = "shelveHolder2";
+			holder2.position.set($scope.cupboard.width.value + 2, 0, 0);
+			holder2.rotation.x = THREE.Math.degToRad(-90);
+			holder2.rotation.z = THREE.Math.degToRad(90);
 
-		//  Вторая стойка. Повернута на 90 и стоит на расстоянии ширины полки
-		holder2 = new THREE.Mesh(holderGeometry, material);
-		holder2.position.set(500, 0, 0);
-		holder2.rotation.x = THREE.Math.degToRad(-90);
-		holder2.rotation.z = THREE.Math.degToRad(90);
+			//  Третья стойка. Повернута на 180 и стоит на расстоянии ширины полки и на ее глубине
+			holder3 = new THREE.Mesh(holderGeometry, material);
+			holder3.name = "shelveHolder3";
+			holder3.position.set($scope.cupboard.width.value + 2, 0, ($scope.cupboard.deep.value * -1 - 2));
+			holder3.rotation.x = THREE.Math.degToRad(-90);
+			holder3.rotation.z = THREE.Math.degToRad(180);
 
-		//  Третья стойка. Повернута на 180 и стоит на расстоянии ширины полки и на ее глубине
-		holder3 = new THREE.Mesh(holderGeometry, material);
-		holder3.position.set(500, 0, -100);
-		holder3.rotation.x = THREE.Math.degToRad(-90);
-		holder3.rotation.z = THREE.Math.degToRad(180);
+			//  Четвертая стойка. Повернута на 270 и стоит на расстоянии глубины полки
+			holder4 = new THREE.Mesh(holderGeometry, material);
+			holder4.name = "shelveHolder4";
+			holder4.position.set(0, 0, ($scope.cupboard.deep.value * -1 - 2));
+			holder4.rotation.x = THREE.Math.degToRad(-90);
+			holder4.rotation.z = THREE.Math.degToRad(270);
 
-		//  Четвертая стойка. Повернута на 270 и стоит на расстоянии глубины полки
-		holder4 = new THREE.Mesh(holderGeometry, material);
-		holder4.position.set(0, 0, -100);
-		holder4.rotation.x = THREE.Math.degToRad(-90);
-		holder4.rotation.z = THREE.Math.degToRad(270);
+			scene.add(holder1);
+			scene.add(holder2);
+			scene.add(holder3);
+			scene.add(holder4);
 
-		scene.add(holder1);
-		scene.add(holder2);
-		scene.add(holder3);
-		scene.add(holder4);
+			console.log("Vis. Shelves count " + $scope.shelvesCount);
 
+			$scope.shelvesCountOld = $scope.shelvesCount;
+			for (n = 0; n <= $scope.shelvesCount - 1; n++) {
 
-		//renderer = new THREE.WebGLRenderer({antialias: true});
-		//renderer.setSize(window.innerWidth, window.innerHeight);
+				let shelveYPosition = $scope.cupboard.height.value - (n * $scope.shelveHeight) - 6.25;
+				var shelveGeometry = new THREE.BoxGeometry($scope.cupboard.width.value, 12.5, $scope.cupboard.deep.value);
+				var shelveMaterial = new THREE.MeshBasicMaterial({color: 0x666666});
+				var cube = new THREE.Mesh(shelveGeometry, shelveMaterial);
+				cube.name = "shelve" + n;
+				cube.position.set($scope.cupboard.width.value * 0.5 + 1, shelveYPosition, $scope.cupboard.deep.value * -0.5 - 1);
+				scene.add(cube);
+			}
+			//renderer = new THREE.WebGLRenderer({antialias: true});
+			//renderer.setSize(window.innerWidth, window.innerHeight);
 
-		//  Инициализация рендера внутри блока
-		//document.getElementById("visualization").appendChild(renderer.domElement);
-
+			//  Инициализация рендера внутри блока
+			//document.getElementById("visualization").appendChild(renderer.domElement);
+			camera.position.y = $scope.cupboard.height.value;
+			camera.position.x = $scope.cupboard.height.value + $scope.cupboard.width.value;
+			camera.position.z = $scope.cupboard.height.value + $scope.cupboard.width.value;
+		}
 	}
 
 	function render() {
@@ -421,13 +466,15 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 
 		// console.info(renderer);
 
-		renderer.render(scene, camera);
-		x = camera.position.x;
-		z = camera.position.z;
-		camera.position.x = x * Math.cos(0.005) + z * Math.sin(0.005);
-		camera.position.z = z * Math.cos(0.005) - x * Math.sin(0.005);
-		camera.lookAt(new THREE.Vector3(250, 250, -50));
-		requestAnimationFrame(render);
+		if ($scope.cupboard.width && $scope.cupboard.width.value) {
+			renderer.render(scene, camera);
+			x = camera.position.x;
+			z = camera.position.z;
+			camera.position.x = x * Math.cos(0.002) + z * Math.sin(0.002);
+			camera.position.z = z * Math.cos(0.002) - x * Math.sin(0.002);
+			camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5), ($scope.cupboard.height.value * 0.5), ($scope.cupboard.deep.value * -0.5)));
+			requestAnimationFrame(render);
+		}
 	}
 
 	function init() {
@@ -442,11 +489,11 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 		scene.add(new THREE.AmbientLight(0xffffff));
 
 		var light = new THREE.PointLight(0xffffff);
+		light.castShadow = true;
 		light.position.copy(camera.position);
 		scene.add(light);
 
-
-		let proportion = window.innerWidth / window.innerHeight;
+		const proportion = 4 / 3;
 		let width = document.getElementById("visualization").offsetWidth;
 		renderer = new THREE.WebGLRenderer({antialias: true});
 
@@ -516,7 +563,8 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			if (shelveCount > 2) {
 				shelveHeight = Math.ceil((currentHeight.value / shelveCount) / 25) * 25;
 			} else {
-				shelveHeight = Math.ceil((currentHeight.value / (shelveCount - 1)) / 25) * 25;
+				// shelveHeight = Math.ceil((currentHeight.value / (shelveCount - 1)) / 25) * 25;
+				shelveHeight = Math.ceil(($scope.selectedBox.height + 30 + 35) / 25) * 25;
 			}
 			if (shelveHeight < 145) {
 				shelveHeight = 145;
@@ -524,9 +572,12 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 
 			boxCount = Math.floor((currentWidth.value - 60) / $scope.selectedBox.width) + 1;
 
-			console.info("Предполагаемое количество полок: " + shelveCount);
+			$scope.shelvesCount = shelveCount;
+			$scope.shelveHeight = shelveHeight;
+
+			console.log("Предполагаемое количество полок: " + shelveCount);
 			// console.info("Предполагаемое высота полок: " + shelveHeight);
-			console.info("Предполагаемое количество ящиков: " + boxCount);
+			console.log("Предполагаемое количество ящиков: " + boxCount);
 
 			currentQuantity = shelveCount;
 
