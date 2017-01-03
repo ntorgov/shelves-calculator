@@ -1,7 +1,17 @@
 /**
  * Created by nick on 02.01.17.
  */
+
+let camera, scene, renderer;
+let geometry, material, mesh;
+
+
+
+
+
+////
 caclulatorApplication.controller("calculatorController", function ($scope, $filter) {
+
 
 	$scope.drawHeight = 400;
 
@@ -333,6 +343,125 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 		}
 	];
 
+	function visualizationInit() {
+
+		//  Фигура для стойки
+		let holderShape;
+		//  Параметры вытягивания фигуры
+		let extrudeSettings;
+		//  Готовая фигура стойки
+		let holderGeometry;
+		let holder1, holder2, holder3, holder4;
+
+
+
+		//holderGeometry = new THREE.BoxGeometry(200, 200, 200);
+		let material = new THREE.MeshLambertMaterial({
+			color: 0x666666,
+			wireframe: false
+		});
+
+		holderShape = new THREE.Shape();
+		holderShape.moveTo(0, 0);
+		holderShape.lineTo(0, 30);
+		holderShape.lineTo(1, 30);
+		holderShape.lineTo(1, 1);
+		holderShape.lineTo(30, 1);
+		holderShape.lineTo(30, 0);
+		holderShape.lineTo(0, 0);
+
+		extrudeSettings = {
+			steps: 2,
+			amount: 500,
+			bevelEnabled: false,
+		};
+
+		holderGeometry = new THREE.ExtrudeGeometry(holderShape, extrudeSettings);
+
+
+		//  Первая стойка. Стоит по координатам 0, 0
+		holder1 = new THREE.Mesh(holderGeometry, material);
+		holder1.rotation.x = THREE.Math.degToRad(-90);
+
+		//  Вторая стойка. Повернута на 90 и стоит на расстоянии ширины полки
+		holder2 = new THREE.Mesh(holderGeometry, material);
+		holder2.position.set(500, 0, 0);
+		holder2.rotation.x = THREE.Math.degToRad(-90);
+		holder2.rotation.z = THREE.Math.degToRad(90);
+
+		//  Третья стойка. Повернута на 180 и стоит на расстоянии ширины полки и на ее глубине
+		holder3 = new THREE.Mesh(holderGeometry, material);
+		holder3.position.set(500, 0, -100);
+		holder3.rotation.x = THREE.Math.degToRad(-90);
+		holder3.rotation.z = THREE.Math.degToRad(180);
+
+		//  Четвертая стойка. Повернута на 270 и стоит на расстоянии глубины полки
+		holder4 = new THREE.Mesh(holderGeometry, material);
+		holder4.position.set(0, 0, -100);
+		holder4.rotation.x = THREE.Math.degToRad(-90);
+		holder4.rotation.z = THREE.Math.degToRad(270);
+
+		scene.add(holder1);
+		scene.add(holder2);
+		scene.add(holder3);
+		scene.add(holder4);
+
+
+		//renderer = new THREE.WebGLRenderer({antialias: true});
+		//renderer.setSize(window.innerWidth, window.innerHeight);
+
+		//  Инициализация рендера внутри блока
+		//document.getElementById("visualization").appendChild(renderer.domElement);
+
+	}
+
+	function render() {
+
+		let x, z;
+
+		// console.info(renderer);
+
+		renderer.render(scene, camera);
+		x = camera.position.x;
+		z = camera.position.z;
+		camera.position.x = x * Math.cos(0.005) + z * Math.sin(0.005);
+		camera.position.z = z * Math.cos(0.005) - x * Math.sin(0.005);
+		camera.lookAt(new THREE.Vector3(250, 250, -50));
+		requestAnimationFrame(render);
+	}
+
+	function init() {
+
+		camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000);
+		camera.position.z = 1400;
+		camera.position.y = 550;
+		camera.position.x = 1400;
+
+		scene = new THREE.Scene();
+
+		scene.add(new THREE.AmbientLight(0xffffff));
+
+		var light = new THREE.PointLight(0xffffff);
+		light.position.copy(camera.position);
+		scene.add(light);
+
+
+		let proportion = window.innerWidth / window.innerHeight;
+		let width = document.getElementById("visualization").offsetWidth;
+		renderer = new THREE.WebGLRenderer({antialias: true});
+
+		renderer.setSize(width, (width / proportion));
+
+		//  Инициализация рендера внутри блока
+		document.getElementById("visualization").appendChild(renderer.domElement);
+	}
+
+	$scope.init = function () {
+		init();
+	};
+
+	$scope.init();
+
 	$scope.Calculation = function () {
 
 		/**
@@ -452,7 +581,10 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 
 		console.log(shelveArray);
 
-		this.Visualization();
+		visualizationInit();
+		render();
+
+		//this.Visualization();
 
 		// ***********************************************************************************************
 		if (angular.isObject(currentDeep)) {
@@ -507,45 +639,49 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 
 	};
 
-	$scope.Visualization = function () {
-		let gl; // глобальная переменная для контекста WebGL
 
-		//function start() {
-		const canvas = document.getElementById("visualization");
+	/*
+	 $scope.Visualization = function () {
+	 let gl; // глобальная переменная для контекста WebGL
 
-		gl = this.initWebGL(canvas);      // инициализация контекста GL
+	 //function start() {
+	 const canvas = document.getElementById("visualization");
 
-		// продолжать только если WebGL доступен и работает
+	 gl = this.initWebGL(canvas);      // инициализация контекста GL
 
-		if (gl) {
-			gl.clearColor(0.7, 0.7, 0.7, 1.0);                      // установить в качестве цвета очистки буфера цвета черный, полная непрозрачность
-			gl.enable(gl.DEPTH_TEST);                               // включает использование буфера глубины
-			gl.depthFunc(gl.LEQUAL);                                // определяет работу буфера глубины: более ближние объекты перекрывают дальние
-			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);      // очистить буфер цвета и буфер глубины.
-		}
-		//}
-	};
+	 // продолжать только если WebGL доступен и работает
 
-	$scope.initWebGL = function (canvas) {
+	 if (gl) {
+	 gl.clearColor(0.7, 0.7, 0.7, 1.0);                      // установить в качестве цвета очистки буфера цвета черный, полная непрозрачность
+	 gl.enable(gl.DEPTH_TEST);                               // включает использование буфера глубины
+	 gl.depthFunc(gl.LEQUAL);                                // определяет работу буфера глубины: более ближние объекты перекрывают дальние
+	 gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);      // очистить буфер цвета и буфер глубины.
+	 }
+	 //}
+	 };
 
-		// @todo перенести в скоп
-		gl = null;
+	 $scope.initWebGL = function (canvas) {
 
-		try {
-			// Попытаться получить стандартный контекст. Если не получится, попробовать получить экспериментальный.
-			gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-		}
-		catch (e) {
-		}
+	 // @todo перенести в скоп
+	 gl = null;
 
-		// Если мы не получили контекст GL, завершить работу
-		if (!gl) {
-			alert("Unable to initialize WebGL. Your browser may not support it.");
-			gl = null;
-		}
+	 try {
+	 // Попытаться получить стандартный контекст. Если не получится, попробовать получить экспериментальный.
+	 gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+	 }
+	 catch (e) {
+	 }
 
-		return gl;
-	};
+	 // Если мы не получили контекст GL, завершить работу
+	 if (!gl) {
+	 alert("Unable to initialize WebGL. Your browser may not support it.");
+	 gl = null;
+	 }
+
+	 return gl;
+	 };
+	 */
+
 
 	$scope.BoxClick = function (item) {
 

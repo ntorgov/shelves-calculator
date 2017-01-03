@@ -7,8 +7,8 @@
 </head>
 <body>
 <script>
-	var camera, scene, renderer;
-	var geometry, material, mesh;
+	let camera, scene, renderer;
+	let geometry, material, mesh;
 
 	init();
 	render();
@@ -81,7 +81,8 @@
 
 		document.body.appendChild(renderer.domElement);
 
-	}
+	};
+
 	control = new function () {
 		this.rotSpeed = 0.005;
 		this.scale = 1;
