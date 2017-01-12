@@ -443,9 +443,12 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 
 			// @todo исправить эту поебень на человеческую
 			//  Первая стойка. Стоит по координатам 0, 0
+			/*
 			var holderBSP1 = new ThreeBSP(holderGeometry);
+			*/
 			holder1 = new THREE.Mesh(holderGeometry, material);
 			//var CSG = new CSG();
+			/*
 			var cylinderGeometry = new THREE.CylinderGeometry(50, 50, 70, 32);
 			var cylinderMesh = new THREE.Mesh( cylinderGeometry, material );
 			cylinderMesh.rotation.z = THREE.Math.degToRad(90);
@@ -455,7 +458,7 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			result.position.x = 6;
 			result.geometry.computeVertexNormals();
 			scene.add( result );
-
+*/
 			//cylinderMesh.rotation.x = THREE.Math.degToRad(90);
 			//a.setColor(1, 0, 0);
 			//scene.add(cylinderMesh);
@@ -486,7 +489,7 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 
 
 
-			//scene.add(holder1);
+			scene.add(holder1);
 			scene.add(holder2);
 			scene.add(holder3);
 			scene.add(holder4);
@@ -553,9 +556,9 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			camera.position.z = $scope.cameraRadius * Math.sin($scope.angle) * 2;
 			camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5), ($scope.cupboard.height.value * 0.5), ($scope.cupboard.deep.value * -0.5)));
 
-			shelveObject = new THREE.Mesh(new THREE.BoxGeometry(15, 15, 15), new THREE.MeshBasicMaterial({color: 0xff3333}));
-			shelveObject.position.set(($scope.cupboard.width.value * 0.5), ($scope.cupboard.height.value * 0.5), ($scope.cupboard.deep.value * -0.5));
-			scene.add(shelveObject);
+			//shelveObject = new THREE.Mesh(new THREE.BoxGeometry(15, 15, 15), new THREE.MeshBasicMaterial({color: 0xff3333}));
+			//shelveObject.position.set(($scope.cupboard.width.value * 0.5), ($scope.cupboard.height.value * 0.5), ($scope.cupboard.deep.value * -0.5));
+			//scene.add(shelveObject);
 
 		}
 	}
