@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru" ng-app="caclulatorApplication">
+<head>
+	<meta charset="UTF-8">
+	<title>Табличные данные</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+</head>
+<body>
+<script>
+	var caclulatorApplication = angular.module('caclulatorApplication', []);
+</script>
+<div class="container" ng-controller="calculatorController">
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Ящики и цены</h3>
+			</div>
+			<div class="panel-body">
+
+				<table class="table table-hover table-condensed">
+					<thead>
+					<tr>
+						<th>Название и артикул</th>
+						<th>Цена, руб</th>
+						<th>Длина, мм</th>
+						<th>Ширина, мм</th>
+						<th>Высота, мм</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr ng-repeat="box in boxes">
+						<td>{{box.title}} <a href="{{box.url}}" target="_blank">
+							<small>{{box.id}}</small>
+						</a></td>
+						<td>{{box.price}}</td>
+						<td>{{box.deep}}</td>
+						<td>{{box.width}}</td>
+						<td>{{box.height}}</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Стойки</h3>
+			</div>
+			<div class="panel-body">
+
+				<table class="table table-hover table-condensed">
+					<thead>
+					<tr>
+						<th>Высота, мм</th>
+						<th>Цена, руб</th>
+						<th>Минимум полок, шт</th>
+						<th>Максимум полок, шт</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr ng-repeat="hgs in heights">
+						<td>{{hgs.value}}</td>
+						<td>{{hgs.price}}</td>
+						<td>{{hgs.shelves.min}}</td>
+						<td>{{hgs.shelves.max}}</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Полки</h3>
+			</div>
+			<div class="panel-body">
+
+				<table class="table table-hover table-condensed table-bordered" ng-repeat="wds in widths">
+					<thead>
+					<tr>
+						<th rowspan="2" width="20%" class="text-center">Ширина, мм</th>
+						<th colspan="{{wds.deeps.length}}" class="text-center">Глубина, мм</th>
+					</tr>
+					<tr>
+						<th ng-repeat="dps in wds.deeps">{{dps.value}}</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr >
+						<th>{{wds.value}}</th>
+						<td ng-repeat="dps in wds.deeps">{{dps.price}}</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="index.js"></script>
+</body>
+</html>

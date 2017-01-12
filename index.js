@@ -609,7 +609,12 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 	}
 
 	$scope.init = function () {
-		init();
+
+		let visualizationObject = document.getElementById("visualization");
+
+		if(visualizationObject) {
+			init();
+		}
 	};
 
 	$scope.init();
