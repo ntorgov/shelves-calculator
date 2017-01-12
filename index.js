@@ -395,7 +395,7 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 		let holder1, holder2, holder3, holder4;
 
 		if ($scope.cupboard.width && $scope.cupboard.width.value) {
-			console.warn(currentHeight.value);
+			//console.warn(currentHeight.value);
 
 
 			//holderGeometry = new THREE.BoxGeometry(200, 200, 200);
@@ -441,8 +441,25 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 				}
 			}
 
+			// @todo исправить эту поебень на человеческую
 			//  Первая стойка. Стоит по координатам 0, 0
+			var holderBSP1 = new ThreeBSP(holderGeometry);
 			holder1 = new THREE.Mesh(holderGeometry, material);
+			//var CSG = new CSG();
+			var cylinderGeometry = new THREE.CylinderGeometry(50, 50, 70, 32);
+			var cylinderMesh = new THREE.Mesh( cylinderGeometry, material );
+			cylinderMesh.rotation.z = THREE.Math.degToRad(90);
+			var cylinderBSP = new ThreeBSP(cylinderGeometry);
+			var substractBSP = holderBSP1.subtract(cylinderBSP);
+			var result = substractBSP.toMesh(material);
+			result.position.x = 6;
+			result.geometry.computeVertexNormals();
+			scene.add( result );
+
+			//cylinderMesh.rotation.x = THREE.Math.degToRad(90);
+			//a.setColor(1, 0, 0);
+			//scene.add(cylinderMesh);
+
 			holder1.name = "shelveHolder1";
 			holder1.rotation.x = THREE.Math.degToRad(-90);
 
@@ -467,7 +484,9 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 			holder4.rotation.x = THREE.Math.degToRad(-90);
 			holder4.rotation.z = THREE.Math.degToRad(270);
 
-			scene.add(holder1);
+
+
+			//scene.add(holder1);
 			scene.add(holder2);
 			scene.add(holder3);
 			scene.add(holder4);
