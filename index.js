@@ -3,16 +3,25 @@
  */
 let camera, scene, renderer;
 let geometry, material, mesh;
-
 ////
 caclulatorApplication.controller("calculatorController", function ($scope, $filter) {
-
-
+	
+	/**
+	 * Высота изображения
+	 * @type {number}
+	 */
 	$scope.drawHeight = 400;
 
 	/**
 	 * Высоты шкафов
-	 * @type {[*]}
+	 * @type {Object[]}
+	 * @property {number} value Значение
+	 * @property {number} title Название
+	 * @property {Boolean} selected Автоматический выбор
+	 * @property {number} price Стоимость
+	 * @property {Object} shelves Полки
+	 * @property {number} shelves.min Минимальное количество полок
+	 * @property {number} shelves.max Максимальное количество полок
 	 */
 	$scope.heights = [
 		{value: 500, title: 500, selected: true, price: 115.0, shelves: {min: 3, max: 5}},
@@ -28,7 +37,13 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 
 	/**
 	 * Ширины шкафов
-	 * @type {[*]}
+	 * @type {Object[]}
+	 * @property {number} value - Значение
+	 * @property {string} title - Название
+	 * @property {Object[]} deeps - Глубины
+	 * @property {number} deeps[].value - Значение
+	 * @property {string} deeps[].title - Название
+	 * @property {number} deeps[].price - Цена
 	 */
 	$scope.widths = [
 		{
@@ -77,6 +92,21 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 		}
 	];
 
+	/**
+	 * Массив ящиков
+	 * @name boxArray
+	 * @type {Object[]}
+	 * @property {string} id - Артикул
+	 * @property {string} title Название
+	 * @property {number} price Цена
+	 * @property {number} width Ширина
+	 * @property {number} height Высота
+	 * @property {number} deep Глубина
+	 * @property {number} sort Сортировка
+	 * @property {string} image Изображение
+	 * @property {string} url Ссылка на страницу товара
+	 * @property {string} color Цвет
+	 */
 	$scope.boxes = [
 		{
 			id: "12.330.65",
@@ -370,21 +400,32 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 	$scope.cameraRadius = 0;
 	$scope.angle = 0;
 
+	/**
+	 * Инициализация визуализации
+	 */
 	function visualizationInit() {
 
 		//  Высота выбранного стеллажа
-		const currentHeight = $scope.cupboard.height;
+		// const currentHeight = $scope.cupboard.height;
 
 		//  Ширина выбранного стеллажа
-		const currentWidth = $scope.cupboard.width;
+		// const currentWidth = $scope.cupboard.width;
 
 		//  Глубина выбранного стеллажа
-		const currentDeep = $scope.cupboard.deep;
+		// const currentDeep = $scope.cupboard.deep;
 
 		let shelvesCounter, holdersCounter, boxCounter;
 		let selectedObject;
 		let shelveYPosition;
 		let shelveMaterial, shelveGeometry, shelveObject;
+
+		/**
+		 * Материал объекта (серый)
+		 * @type {Object}
+		 * @property {number} color - Цвет
+		 * @property {boolean} wireframe - Сетка
+		 */
+		let material;
 
 //  Фигура для стойки
 		let holderShape;
@@ -399,7 +440,7 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 
 
 			//holderGeometry = new THREE.BoxGeometry(200, 200, 200);
-			let material = new THREE.MeshLambertMaterial({
+			material = new THREE.MeshLambertMaterial({
 				color: 0x777777,
 				wireframe: false
 			});
@@ -645,6 +686,7 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 
 		/**
 		 * Количество полок у стеллажа
+		 * @type {number}
 		 */
 		let shelveCount;
 		let priceShelve;
@@ -877,15 +919,16 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 	 */
 
 
+	/**
+	 * Обработчик клика по ящику
+	 * @param {Object<boxArray>} item Объект коробки
+	 */
 	$scope.BoxClick = function (item) {
 
-		//console.log(box);
 		$scope.selectedBox = item;
-		//$scope.boxLineCount = Math.floor($scope.cupboard.width.value / item.width);
 		$scope.boxPrice = $scope.boxCount * $scope.shelvesCount * item.price;
-		$scope.totalPrice = $scope.totalPrice = $scope.boxPrice;
+		$scope.totalPrice += $scope.boxPrice;
 		this.Calculation();
-		//console.log(item);
 	};
 
 	/*
@@ -903,14 +946,9 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 
 	/**
 	 * Процедура обработки изменения ширины стелажа
-	 * @param data
-	 * @constructor
 	 */
 	$scope.ChangeWidth = function () {
 
-		let deeps = [];
-
-		//console.log($scope.cupboard.width.deeps);
 		$scope.deeps = $scope.cupboard.width.deeps;
 		$scope.cupboard.deep = $scope.deeps[0];
 
@@ -919,8 +957,6 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 
 	/**
 	 * Процедура обработки изменения высоты стелажа
-	 * @param data
-	 * @constructor
 	 */
 	$scope.ChangeHeight = function () {
 
@@ -929,20 +965,23 @@ caclulatorApplication.controller("calculatorController", function ($scope, $filt
 		let shelves = [];
 
 		angular.forEach($scope.heights, function (value, key) {
+			
 			if (value.value == $scope.cupboard.height) {
+				
 				this.push(value.shelves);
 			}
+			
 		}, shelves);
 
 		shelvesArray = [];
 
 		for (n = $scope.cupboard.height.shelves.min; n <= $scope.cupboard.height.shelves.max; n++) {
+			
 			shelvesArray.push({value: n, title: n});
 		}
 
 		$scope.shelves = shelvesArray;
 		$scope.cupboard.shelve = $scope.shelves[0];
-		//console.log(shelvesArray);
 
 		this.Calculation();
 	};
