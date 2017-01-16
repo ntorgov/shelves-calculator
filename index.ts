@@ -743,38 +743,28 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		}
 	}
 
+	/**
+	 * Функция рендеринга сцены
+	 */
 	function render() {
 
-		let x, z;
-		let radius;
-
-		// console.info(renderer);
+		/**
+		 * Радиус вращения камеры
+		 * @type {number}
+		 */
+		const radius: number = $scope.cameraRadius * 2;
 
 		if ($scope.cupboard.width && $scope.cupboard.width.value) {
+
 			renderer.render(scene, camera);
-			x = camera.position.x;
-			z = camera.position.z;
-			radius = $scope.cameraRadius * 2;
-			//camera.position.x = x * Math.cos(0.001) + z * Math.sin(0.001);
-			//camera.position.z = z * Math.cos(0.001) - x * Math.sin(0.001);
 
 			camera.position.x = radius * Math.cos($scope.angle);
 			camera.position.z = radius * Math.sin($scope.angle);
-			// camera.position.y = $scope.cupboard.height.value;
+
 			$scope.angle += 0.002;
 
-			calcRad = Math.sqrt(Math.pow(camera.position.x, 2) + Math.pow(camera.position.z, 2));
-
-			//console.log("R: " + radius + ", x: " + camera.position.x + ", z: " + camera.position.z + ", a: " + $scope.angle + ", cr: " + calcRad);
-			//console.log(camera);
-
-			//camera.position.x = radious * Math.sin( theta * Math.PI / 360 )
-			//	* Math.cos( phi * Math.PI / 360 );
-			//camera.position.y = radious * Math.sin( phi * Math.PI / 360 );
-
 			camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5) * unitFixation, ($scope.cupboard.height.value * 0.5) * unitFixation, ($scope.cupboard.deep.value * -0.5) * unitFixation));
-			//camera.updateProjectionMatrix();
-			//camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5), 0, 0));
+
 			requestAnimationFrame(render);
 		}
 	}
