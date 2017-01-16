@@ -80,7 +80,7 @@ interface BoxObjectInterface {
 	 * Серия ящика
 	 * @type {string}
 	 */
-	series: BoxSeries; //string
+	series: BoxSeries;
 }
 
 /**
@@ -109,7 +109,7 @@ interface DeepObjectInterface {
 	 * Цена
 	 * @type {number}
 	 */
-	price: number
+	price: number;
 }
 
 /**
@@ -138,7 +138,7 @@ interface ShelveWidthInterface {
 	 * Массив объектов
 	 * @type {DeepObjectInterface}
 	 */
-	deeps: DeepObjectInterface[]
+	deeps: DeepObjectInterface[];
 }
 
 /**
@@ -155,13 +155,13 @@ interface ShelvesQuantityInterface {
 	 * Минимальное количество полок
 	 * @type {number}
 	 */
-	min: number,
+	min: number;
 
 	/**
 	 * Максимальное количество полок
 	 * @type {number}
 	 */
-	max: number
+	max: number;
 }
 
 /**
@@ -179,29 +179,29 @@ interface ShelveHeightInterface {
 	 * Значение
 	 * @type {number}
 	 */
-	value: number,
+	value: number;
 
 	/**
 	 * Название
 	 * @type {number}
 	 */
-	title: number,
+	title: number;
 
 	/**
 	 * Индикатор выбора
 	 * @type {boolean}
 	 */
-	selected: boolean,
+	selected: boolean;
 
 	/**
 	 * Цена
 	 * @type {number}
 	 */
-	price: number,
+	price: number;
 
 	/**
 	 * Количество полок
 	 * @type {ShelvesQuantityInterface}
 	 */
-	shelves: ShelvesQuantityInterface
+	shelves: ShelvesQuantityInterface;
 }

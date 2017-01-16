@@ -1,4 +1,7 @@
 {
-	"name": "Shelves Calculator",
-	"version": "0.0.4"
+  "name": "Shelves Calculator",
+  "version": "0.0.4",
+  "devDependencies": {
+    "@types/node": "^7.0.0"
+  }
 }
