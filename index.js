@@ -412,20 +412,22 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                 }
             }
             perforatedHolder = new ThreeBSP(holderGeometry);
-            cylinderGeometry = new THREE.CylinderGeometry(holderPerforationRadius * unitFixation, holderPerforationRadius * unitFixation, 70 * unitFixation, 5);
-            subtractCylinderGeometry = new THREE.Mesh(cylinderGeometry, material);
-            subtractCylinderGeometry.position.x = 16 * unitFixation;
-            for (perforationCounter = 0; perforationCounter < ($scope.cupboard.height.value / distanceBetweenHoles); perforationCounter++) {
-                subtractCylinderGeometry.position.z = ((perforationCounter * distanceBetweenHoles) + (shelveHeight / 2)) * unitFixation;
-                let cylinderBSP1 = new ThreeBSP(subtractCylinderGeometry);
-                subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(90);
-                subtractCylinderGeometry.position.y = 16 * unitFixation;
-                let cylinderBSP2 = new ThreeBSP(subtractCylinderGeometry);
-                perforatedHolder = perforatedHolder.subtract(cylinderBSP1.union(cylinderBSP2));
-                subtractCylinderGeometry.position.y = 0;
-                subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(0);
-                delete cylinderBSP1;
-                delete cylinderBSP2;
+            if ($scope.cupboard.height.value <= 500) {
+                cylinderGeometry = new THREE.CylinderGeometry(holderPerforationRadius * unitFixation, holderPerforationRadius * unitFixation, 70 * unitFixation, 5);
+                subtractCylinderGeometry = new THREE.Mesh(cylinderGeometry, material);
+                subtractCylinderGeometry.position.x = 16 * unitFixation;
+                for (perforationCounter = 0; perforationCounter < ($scope.cupboard.height.value / distanceBetweenHoles); perforationCounter++) {
+                    subtractCylinderGeometry.position.z = ((perforationCounter * distanceBetweenHoles) + (shelveHeight / 2)) * unitFixation;
+                    let cylinderBSP1 = new ThreeBSP(subtractCylinderGeometry);
+                    subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(90);
+                    subtractCylinderGeometry.position.y = 16 * unitFixation;
+                    let cylinderBSP2 = new ThreeBSP(subtractCylinderGeometry);
+                    perforatedHolder = perforatedHolder.subtract(cylinderBSP1.union(cylinderBSP2));
+                    subtractCylinderGeometry.position.y = 0;
+                    subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(0);
+                    delete cylinderBSP1;
+                    delete cylinderBSP2;
+                }
             }
             for (holdersCounter = 1; holdersCounter <= 4; holdersCounter++) {
                 holder[holdersCounter] = perforatedHolder.toMesh(material);
@@ -442,19 +444,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             holder[3].rotation.z = THREE.Math.degToRad(180);
             holder[4].position.set(0, 0, ($scope.cupboard.deep.value * -1 - 2) * unitFixation);
             holder[4].rotation.z = THREE.Math.degToRad(270);
-            let floorGeometry = new THREE.CylinderGeometry(($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation, ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation, 1 * unitFixation, 32);
-            let floorMaterial = new THREE.MeshStandardMaterial({
-                color: 0x333333,
-                wireframe: false,
-                metalness: 0.25,
-                reflectivity: 1,
-            });
-            let floorMech = new THREE.Mesh(floorGeometry, floorMaterial);
-            floorMech.position.x = ($scope.cupboard.width.value / 2) * unitFixation;
-            floorMech.position.z = ($scope.cupboard.deep.value / 2) * unitFixation;
-            floorMech.position.y = -1 * unitFixation;
-            floorMech.receiveShadow = true;
-            scene.add(floorMech);
             light.position.y = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 3;
             light.position.x = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 3;
             light.position.z = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 3;
@@ -514,34 +503,30 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         }
     }
     function render() {
-        let x, z;
-        let radius;
+        const radius = $scope.cameraRadius * 2;
         if ($scope.cupboard.width && $scope.cupboard.width.value) {
             renderer.render(scene, camera);
-            x = camera.position.x;
-            z = camera.position.z;
-            radius = $scope.cameraRadius * 2;
             camera.position.x = radius * Math.cos($scope.angle);
             camera.position.z = radius * Math.sin($scope.angle);
             $scope.angle += 0.002;
-            calcRad = Math.sqrt(Math.pow(camera.position.x, 2) + Math.pow(camera.position.z, 2));
             camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5) * unitFixation, ($scope.cupboard.height.value * 0.5) * unitFixation, ($scope.cupboard.deep.value * -0.5) * unitFixation));
             requestAnimationFrame(render);
         }
     }
     function init() {
         const proportion = 4 / 3;
-        let width = document.getElementById("visualization").offsetWidth;
-        let height = (width / proportion);
+        const width = document.getElementById("visualization").offsetWidth;
+        const height = (width / proportion);
+        let hemiLight;
         camera = new THREE.PerspectiveCamera(40, proportion, 1, 5000);
         camera.isPerspectiveCamera = false;
         scene = new THREE.Scene();
         scene.add(new THREE.AmbientLight(0xffffff));
-        let hemiLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.02);
+        hemiLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.02);
         hemiLight.intensity = 00;
         scene.add(hemiLight);
         light = new THREE.PointLight(0xffffff, 1, 100);
-        light.castShadow = true;
+        light.castShadow = false;
         light.shadowMapWidth = 2048;
         light.shadowMapHeight = 2048;
         light.power = 180;

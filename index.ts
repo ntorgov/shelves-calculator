@@ -341,6 +341,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 	/**
 	 * Высоты шкафов
+	 * @name shelvesHeights
 	 * @type {Object[]}
 	 */
 	const shelvesHeights: {value: number, title: number, selected: boolean, price: number, shelves: {min: number, max: number}}[] = [
@@ -559,33 +560,35 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 			perforatedHolder = new ThreeBSP(holderGeometry);
 
-			//  Перфорация стойки
-			//  Создание цилиндра для перфорации
-			cylinderGeometry = new THREE.CylinderGeometry(holderPerforationRadius * unitFixation, holderPerforationRadius * unitFixation, 70 * unitFixation, 5);
+			if($scope.cupboard.height.value <=500) {
+				//  Перфорация стойки
+				//  Создание цилиндра для перфорации
+				cylinderGeometry = new THREE.CylinderGeometry(holderPerforationRadius * unitFixation, holderPerforationRadius * unitFixation, 70 * unitFixation, 5);
 
-			subtractCylinderGeometry = new THREE.Mesh(cylinderGeometry, material);
-			subtractCylinderGeometry.position.x = 16 * unitFixation;
+				subtractCylinderGeometry = new THREE.Mesh(cylinderGeometry, material);
+				subtractCylinderGeometry.position.x = 16 * unitFixation;
 
-			for (perforationCounter = 0; perforationCounter < ($scope.cupboard.height.value / distanceBetweenHoles); perforationCounter++) {
+				for (perforationCounter = 0; perforationCounter < ($scope.cupboard.height.value / distanceBetweenHoles); perforationCounter++) {
 
-				subtractCylinderGeometry.position.z = ((perforationCounter * distanceBetweenHoles) + (shelveHeight / 2)) * unitFixation;
+					subtractCylinderGeometry.position.z = ((perforationCounter * distanceBetweenHoles) + (shelveHeight / 2)) * unitFixation;
 
-				let cylinderBSP1 = new ThreeBSP(subtractCylinderGeometry);
+					let cylinderBSP1 = new ThreeBSP(subtractCylinderGeometry);
 
-				subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(90);
-				subtractCylinderGeometry.position.y = 16 * unitFixation;
+					subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(90);
+					subtractCylinderGeometry.position.y = 16 * unitFixation;
 
-				let cylinderBSP2 = new ThreeBSP(subtractCylinderGeometry);
+					let cylinderBSP2 = new ThreeBSP(subtractCylinderGeometry);
 
-				perforatedHolder = perforatedHolder.subtract(cylinderBSP1.union(cylinderBSP2));
+					perforatedHolder = perforatedHolder.subtract(cylinderBSP1.union(cylinderBSP2));
 
-				subtractCylinderGeometry.position.y = 0;
-				subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(0);
+					subtractCylinderGeometry.position.y = 0;
+					subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(0);
 
-				delete cylinderBSP1;
-				delete cylinderBSP2;
+					delete cylinderBSP1;
+					delete cylinderBSP2;
+				}
+				//  Конец перфорации стойки
 			}
-			//  Конец перфорации стойки
 
 			for (holdersCounter = 1; holdersCounter <= 4; holdersCounter++) {
 
@@ -620,7 +623,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			//holder[4].rotation.x = THREE.Math.degToRad(-90);
 			holder[4].rotation.z = THREE.Math.degToRad(270);
 
-
+/*
 			let floorGeometry = new THREE.CylinderGeometry(($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation, ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation, 1 * unitFixation, 32);
 			let floorMaterial = new THREE.MeshStandardMaterial({
 				color: 0x333333,
@@ -635,7 +638,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			floorMech.position.y = -1 * unitFixation;
 			floorMech.receiveShadow = true;
 			scene.add(floorMech);
-
+*/
 			light.position.y = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 3;
 			light.position.x = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 3;
 			light.position.z = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 3;
@@ -811,7 +814,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		scene.add(hemiLight);
 
 		light = new THREE.PointLight(0xffffff, 1, 100/*, 2*/);
-		light.castShadow = true;
+		light.castShadow = false;
 		light.shadowMapWidth = 2048;
 		light.shadowMapHeight = 2048;
 		light.power = 180;
@@ -831,33 +834,45 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		document.getElementById("visualization").appendChild(renderer.domElement);
 	}
 
+	/**
+	 * Инициализация для angular
+	 */
 	$scope.init = function () {
 
 		let visualizationObject = document.getElementById("visualization");
 
 		if (visualizationObject) {
+
 			init();
 		}
 	};
 
+	/**
+	 * Запуск инициализации
+	 */
 	$scope.init();
 
+	/**
+	 * Функция вычисления всякой фигни
+	 * @constructor
+	 */
 	$scope.Calculation = function () {
 
 		/**
 		 * Количество полок у стеллажа
 		 * @type {number}
 		 */
-		let shelveCount;
-		let priceShelve;
-		let priceHeight;
-		let filterResult;
-		let shelveHeight;
+		let shelveCount: number;
+		let priceShelve: number;
+		let priceHeight: number;
+		let filterResult: number;
+		let shelveHeight: number;
 
 		/**
 		 * Количество коробок на полке
+		 * @type {number}
 		 */
-		let boxCount;
+		let boxCount: number;
 		let shelveArray;
 		let n;
 		let shelve;
@@ -866,13 +881,22 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		let offset;
 		let newBox;
 
-		//  Высота выбранного стеллажа
-		const currentHeight = $scope.cupboard.height;
+		/**
+		 * Высота выбранного стеллажа
+		 * @type {number}
+		 */
+		const currentHeight: number = $scope.cupboard.height;
 
-		//  Ширина выбранного стеллажа
+		/**
+		 * Ширина выбранного стеллажа
+		 * @type {number}
+		 */
 		const currentWidth = $scope.cupboard.width;
 
-		//  Глубина выбранного стеллажа
+		/**
+		 * Глубина выбранного стеллажа
+		 * @type {number}
+		 */
 		const currentDeep = $scope.cupboard.deep;
 		let currentQuantity = 0;
 
