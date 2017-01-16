@@ -372,11 +372,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         let holderGeometry;
         let holder = [];
         if ($scope.cupboard.width && $scope.cupboard.width.value) {
-            material = new THREE.MeshLambertMaterial({
+            material = new THREE.MeshStandardMaterial({
                 color: 0x777777,
                 wireframe: false,
                 reflectivity: 1,
                 transparent: 0,
+                metalness: 0.25,
             });
             holderShape = new THREE.Shape();
             holderShape.moveTo(0, 0);
@@ -442,11 +443,11 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             holder[4].position.set(0, 0, ($scope.cupboard.deep.value * -1 - 2) * unitFixation);
             holder[4].rotation.z = THREE.Math.degToRad(270);
             let floorGeometry = new THREE.CylinderGeometry(($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation, ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation, 1 * unitFixation, 32);
-            let floorMaterial = new THREE.MeshLambertMaterial({
-                color: 0x444444,
+            let floorMaterial = new THREE.MeshStandardMaterial({
+                color: 0x333333,
                 wireframe: false,
+                metalness: 0.25,
                 reflectivity: 1,
-                transparent: 0
             });
             let floorMech = new THREE.Mesh(floorGeometry, floorMaterial);
             floorMech.position.x = ($scope.cupboard.width.value / 2) * unitFixation;
@@ -454,9 +455,9 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             floorMech.position.y = -1 * unitFixation;
             floorMech.receiveShadow = true;
             scene.add(floorMech);
-            light.position.y = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 2;
-            light.position.x = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 2;
-            light.position.z = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 2;
+            light.position.y = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 3;
+            light.position.x = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 3;
+            light.position.z = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 3;
             for (holdersCounter = 1; holdersCounter <= 4; holdersCounter++) {
                 scene.add(holder[holdersCounter]);
             }
@@ -478,9 +479,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                         boxPlacementPadding = ((boxPlaceWidth - $scope.selectedBox.width) / 2);
                         boxPlacementMarguin = (($scope.selectedBox.width / 2) + 30);
                         console.log("Ширина посадочного места: " + boxPlaceWidth);
-                        boxMaterial = new THREE.MeshLambertMaterial({
-                            color: 0x8888ff,
-                            roughness: 1,
+                        boxMaterial = new THREE.MeshStandardMaterial({
+                            color: 0x2222ff,
                             wireframe: false,
                             metalness: 0.1,
                         });
@@ -533,31 +533,27 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         const proportion = 4 / 3;
         let width = document.getElementById("visualization").offsetWidth;
         let height = (width / proportion);
-        camera = new THREE.PerspectiveCamera(35, proportion, 1, 10000);
+        camera = new THREE.PerspectiveCamera(40, proportion, 1, 5000);
         camera.isPerspectiveCamera = false;
         scene = new THREE.Scene();
         scene.add(new THREE.AmbientLight(0xffffff));
         let hemiLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.02);
-        hemiLight.intensity = 3.4;
+        hemiLight.intensity = 00;
         scene.add(hemiLight);
-        light = new THREE.PointLight(0xffffff, 1, 100, 2);
-        light.castShadow = false;
+        light = new THREE.PointLight(0xffffff, 1, 100);
+        light.castShadow = true;
         light.shadowMapWidth = 2048;
         light.shadowMapHeight = 2048;
-        light.power = 150;
-        light.shadowDarkness = 0.5;
+        light.power = 180;
         scene.add(light);
-        geometry = new THREE.SphereGeometry(100, 8, 4);
-        material = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
-        mesh = new THREE.Mesh(geometry, material);
-        mesh.scale.set(0.05, 0.05, 0.05);
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(width, (width / proportion));
         renderer.shadowMap.enabled = true;
-        renderer.shadowMapSoft = true;
+        renderer.toneMappingExposure = Math.pow(1.15, 5.0);
+        renderer.toneMapping = THREE.ReinhardToneMapping;
         renderer.physicallyCorrectLights = true;
-        renderer.toneMappingExposure = Math.pow(0.71, 5.0);
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.gammaInput = true;
+        renderer.gammaOutput = true;
         document.getElementById("visualization").appendChild(renderer.domElement);
     }
     $scope.init = function () {
