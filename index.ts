@@ -4,72 +4,6 @@
 import Color = THREE.Color;
 import BufferGeometry = THREE.BufferGeometry;
 
-/**
- * Интерфейс для массива ящиков
- */
-interface BoxObject {
-
-	/**
-	 * Идентификатор
-	 * @type {string}
-	 */
-	id: string;
-
-	/**
-	 * Название
-	 * @type {string}
-	 */
-	title: string;
-
-	/**
-	 * Цена
-	 * @type {number}
-	 */
-	price: number;
-
-	/**
-	 * Ширина
-	 * @type {number}
-	 */
-	width: number;
-
-	/**
-	 * Высота
-	 * @type {number}
-	 */
-	height: number;
-
-	/**
-	 * Глубина
-	 * @type {number}
-	 */
-	deep: number;
-
-	/**
-	 * Сортировка
-	 * @type {number}
-	 */
-	sort: number;
-
-	/**
-	 * Путь к картинке
-	 * @type {string}
-	 */
-	image: string;
-
-	/**
-	 * Ссылка на страницу в магазине
-	 * @type {string}
-	 */
-	url: string;
-
-	/**
-	 * Цвет
-	 * @type {string}
-	 */
-	color: string
-}
-
 let camera, scene, renderer;
 let geometry, material, mesh;
 
@@ -120,9 +54,9 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 	/**
 	 * Массив ящиков
-	 * @type {BoxObject[]}
+	 * @type {BoxObjectInterface[]}
 	 */
-	const boxesArray: BoxObject[] = [
+	const boxesArray: BoxObjectInterface[] = [
 		{
 			id: "12.330.65",
 			title: "Контейнер SK 3109",
@@ -436,7 +370,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 	 * @property {number} deeps.title Название глубины
 	 * @property {number} deeps.price Стоимость
 	 */
-	const selvesWidths: {value: number; title: number; deeps: {value: number; title: number; price: number}[]}[] = [
+	const selvesWidths: ShelveWidthInterface[] = [
 		{
 			value: 700,
 			title: 700,
