@@ -429,6 +429,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		let shelveYPosition: number;
 		let shelveMaterial, shelveGeometry, shelveObject;
 
+		let perforatedHolder;
+
 		/**
 		 * Фременный объект для нанесения перфорации
 		 */
@@ -476,14 +478,14 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		let holderGeometry;
 		/**
 		 * Объекты для стоек
-		 * @type {Object}
+		 * @type {Object[]}
 		 * @property {String} name - Имя объекта
 		 * @property {Object} rotation - Вращение объекта
 		 * @property {Number} rotation.x - Вращение по X
 		 * @property {Number} rotation.y - Вращение по Y
 		 * @property {Number} rotation.z - Вращение по Z
 		 */
-		let holder1, holder2, holder3, holder4;
+		let holder = [];
 
 		if ($scope.cupboard.width && $scope.cupboard.width.value) {
 			//console.warn(currentHeight.value);
@@ -535,82 +537,113 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			// @todo исправить эту поебень на человеческую
 			//  Первая стойка. Стоит по координатам 0, 0
 
-			var holderBSP1 = new ThreeBSP(holderGeometry);
-			let substractBSP;
-			holder1 = new THREE.Mesh(holderGeometry, material);
+			// let substractBSP;
+
+			perforatedHolder = new ThreeBSP(holderGeometry);
+
 			//var CSG = new CSG();
 
-			substractBSP = holderBSP1;
+			//substractBSP = holderBSP1;
 
 			//  Перфорация стойки
 			//  Создание цилиндра для перфорации
-			cylinderGeometry = new THREE.CylinderGeometry(holderPerforationRadius, holderPerforationRadius, 70, 32);
+			cylinderGeometry = new THREE.CylinderGeometry(holderPerforationRadius, holderPerforationRadius, 70, 8);
+
+			subtractCylinderGeometry = new THREE.Mesh(cylinderGeometry, material);
+			subtractCylinderGeometry.position.x = 16;
 
 			for (perforationCounter = 0; perforationCounter < ($scope.cupboard.height.value / distanceBetweenHoles); perforationCounter++) {
 
-				//let cylinderBSP;
-
-				subtractCylinderGeometry = new THREE.Mesh(cylinderGeometry, material);
-
-				subtractCylinderGeometry.position.z = perforationCounter * distanceBetweenHoles;
-				subtractCylinderGeometry.position.x = 16;
+				subtractCylinderGeometry.position.z = (perforationCounter * distanceBetweenHoles) + 12.5;
 
 				//cylinderMesh.rotation.z = THREE.Math.degToRad(90);
 
-				cylinderBSP = new ThreeBSP(subtractCylinderGeometry);
+				let cylinderBSP1 = new ThreeBSP(subtractCylinderGeometry);
 
 				//var substractBSP = holderBSP1.subtract(cylinderBSP);
-				substractBSP = substractBSP.subtract(cylinderBSP);
+				//substractBSP = substractBSP.subtract(cylinderBSP);
 
 				subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(90);
 				subtractCylinderGeometry.position.y = 16;
 
-				cylinderBSP = new ThreeBSP(subtractCylinderGeometry);
+				let cylinderBSP2 = new ThreeBSP(subtractCylinderGeometry);
 
-				substractBSP = substractBSP.subtract(cylinderBSP);
+				perforatedHolder = perforatedHolder.subtract(cylinderBSP1.union(cylinderBSP2));
+
+				// subtractCylinderGeometry.position.x = 0;
+				subtractCylinderGeometry.position.y = 0;
+				subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(0);
+
+				delete cylinderBSP1;
+				delete cylinderBSP2;
 			}
 			//  Конец перфорации стойки
 
-			var result = substractBSP.toMesh(material);
+			//perforatedHolder = substractBSP; // .toMesh(material);
 
-			result.position.x = 6;
-			result.geometry.computeVertexNormals();
-			scene.add(result);
+			//delete substractBSP;
+			// result.position.x = 6;
+			// result.geometry.computeVertexNormals();
+			// scene.add(result);
 			/*
 			 */
 			//cylinderMesh.rotation.x = THREE.Math.degToRad(90);
 			//a.setColor(1, 0, 0);
 			//scene.add(cylinderMesh);
 
-			holder1.name = "shelveHolder1";
-			holder1.rotation.x = THREE.Math.degToRad(-90);
+			//let perforatedObject = perforatedHolder.toMesh(material);
+			//perforatedObject.geometry.computeVertexNormals();
+
+			holder[1] = perforatedHolder.toMesh(material); //perforatedObject;
+			//holder[1].geometry.computeVertexNormals();
+			holder[1].name = "shelveHolder1";
+			holder[2] = perforatedHolder.toMesh(material); //perforatedObject;
+			//holder[2].geometry.computeVertexNormals();
+			holder[2].name = "shelveHolder2";
+			holder[3] = perforatedHolder.toMesh(material); //perforatedObject;
+			//holder[3].geometry.computeVertexNormals();
+			holder[3].name = "shelveHolder3";
+			holder[4] = perforatedHolder.toMesh(material); //perforatedObject;
+			//holder[4].geometry.computeVertexNormals();
+			holder[4].name = "shelveHolder4";
+
+			// delete perforatedObject;
+			delete perforatedHolder;
+
+			// holder[1].name = "shelveHolder1";
+			holder[1].rotation.x = THREE.Math.degToRad(-90);
 
 			//  Вторая стойка. Повернута на 90 и стоит на расстоянии ширины полки
-			holder2 = new THREE.Mesh(holderGeometry, material);
-			holder2.name = "shelveHolder2";
-			holder2.position.set($scope.cupboard.width.value + 2, 0, 0);
-			holder2.rotation.x = THREE.Math.degToRad(-90);
-			holder2.rotation.z = THREE.Math.degToRad(90);
+			// holder[2] = new THREE.Mesh(holderGeometry, material);
+			//  holder[2].name = "shelveHolder2";
+			holder[2].position.set($scope.cupboard.width.value + 2, 0, 0);
+			holder[2].rotation.x = THREE.Math.degToRad(-90);
+			holder[2].rotation.z = THREE.Math.degToRad(90);
 
 			//  Третья стойка. Повернута на 180 и стоит на расстоянии ширины полки и на ее глубине
-			holder3 = new THREE.Mesh(holderGeometry, material);
-			holder3.name = "shelveHolder3";
-			holder3.position.set($scope.cupboard.width.value + 2, 0, ($scope.cupboard.deep.value * -1 - 2));
-			holder3.rotation.x = THREE.Math.degToRad(-90);
-			holder3.rotation.z = THREE.Math.degToRad(180);
+			//holder3 = new THREE.Mesh(holderGeometry, material);
+			// holder[3].name = "shelveHolder3";
+			holder[3].position.set($scope.cupboard.width.value + 2, 0, ($scope.cupboard.deep.value * -1 - 2));
+			holder[3].rotation.x = THREE.Math.degToRad(-90);
+			holder[3].rotation.z = THREE.Math.degToRad(180);
 
 			//  Четвертая стойка. Повернута на 270 и стоит на расстоянии глубины полки
-			holder4 = new THREE.Mesh(holderGeometry, material);
-			holder4.name = "shelveHolder4";
-			holder4.position.set(0, 0, ($scope.cupboard.deep.value * -1 - 2));
-			holder4.rotation.x = THREE.Math.degToRad(-90);
-			holder4.rotation.z = THREE.Math.degToRad(270);
+			//holder4 = new THREE.Mesh(holderGeometry, material);
+			// holder[4].name = "shelveHolder4";
+			holder[4].position.set(0, 0, ($scope.cupboard.deep.value * -1 - 2));
+			holder[4].rotation.x = THREE.Math.degToRad(-90);
+			holder[4].rotation.z = THREE.Math.degToRad(270);
 
 
-			scene.add(holder1);
-			scene.add(holder2);
-			scene.add(holder3);
-			scene.add(holder4);
+			for (holdersCounter = 1; holdersCounter <= 4; holdersCounter++) {
+
+				scene.add(holder[holdersCounter]);
+				// scene.add(holder[2]);
+				// scene.add(holder[3]);
+				// scene.add(holder[4]);
+			}
+
+
 
 			console.log("Vis. Shelves count " + $scope.shelvesCount);
 
