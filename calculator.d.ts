@@ -12,6 +12,7 @@
  * @property {string} image Путь к картинке
  * @property {string} url Ссылка на страницу в магазине
  * @property {string} color Цвет
+ * @property {string} series Серия ящика
  */
 interface BoxObjectInterface {
 
@@ -73,7 +74,13 @@ interface BoxObjectInterface {
 	 * Цвет
 	 * @type {string}
 	 */
-	color: string
+	color: string;
+
+	/**
+	 * Серия ящика
+	 * @type {string}
+	 */
+	series: string
 }
 
 /**
@@ -106,7 +113,7 @@ interface DeepObjectInterface {
 }
 
 /**
- * Интерфейс для массива высот стеллажей
+ * Интерфейс для массива ширин стеллажей
  * @name ShelveWidthInterface
  * @type {Object}
  * @property {number} value Значение
@@ -132,4 +139,69 @@ interface ShelveWidthInterface {
 	 * @type {DeepObjectInterface}
 	 */
 	deeps: DeepObjectInterface[]
+}
+
+/**
+ * Интерфейс количества полок.
+ * Исключительно для проверки типов
+ * @name ShelvesQuantityInterface
+ * @type Object
+ * @property {number} min Минимальное количество полок
+ * @property {number} max Максимальное количество полок
+ */
+interface ShelvesQuantityInterface {
+
+	/**
+	 * Минимальное количество полок
+	 * @type {number}
+	 */
+	min: number,
+
+	/**
+	 * Максимальное количество полок
+	 * @type {number}
+	 */
+	max: number
+}
+
+/**
+ * Интерфейс для массива высот стеллажей
+ * @name ShelveHeightInterface
+ * @type {Object}
+ * @property {number} value Значение
+ * @property {number} title Значение
+ * @property {boolean} selected Значение
+ * @property {number} price Значение
+ */
+interface ShelveHeightInterface {
+
+	/**
+	 * Значение
+	 * @type {number}
+	 */
+	value: number,
+
+	/**
+	 * Название
+	 * @type {number}
+	 */
+	title: number,
+
+	/**
+	 * Индикатор выбора
+	 * @type {boolean}
+	 */
+	selected: boolean,
+
+	/**
+	 * Цена
+	 * @type {number}
+	 */
+	price: number,
+
+	/**
+	 * Количество полок
+	 * @type {ShelvesQuantityInterface}
+	 */
+	shelves: ShelvesQuantityInterface
 }
