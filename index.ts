@@ -769,13 +769,36 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		}
 	}
 
+	/**
+	 * Инициализация
+	 * Всего и вся
+	 */
 	function init() {
 
-		const proportion = 4 / 3;
-		let width = document.getElementById("visualization").offsetWidth;
-		let height = (width / proportion);
+		/**
+		 * Пропорция блока с рендером
+		 * @type {number}
+		 */
+		const proportion: number = 4 / 3;
 
-		//camera = new THREE.Camera(30, proportion, 1, 10000);
+		/**
+		 * Ширина блока
+		 * @type {number}
+		 */
+		const width: number = document.getElementById("visualization").offsetWidth;
+
+		/**
+		 * Высота блока
+		 * @type {number}
+		 */
+		const height: number = (width / proportion);
+
+		/**
+		 * Общий свет
+		 * @type {THREE.HemisphereLight}
+		 */
+		let hemiLight: THREE.HemisphereLight;
+
 		camera = new THREE.PerspectiveCamera(40, proportion, 1, 5000);
 		camera.isPerspectiveCamera = false;
 
@@ -783,46 +806,26 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 		scene.add(new THREE.AmbientLight(0xffffff));
 
-		let hemiLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.02);
+		hemiLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.02);
 		hemiLight.intensity = 00;
 		scene.add(hemiLight);
 
 		light = new THREE.PointLight(0xffffff, 1, 100/*, 2*/);
 		light.castShadow = true;
-		light.shadowMapWidth = 2048; // default is 512
+		light.shadowMapWidth = 2048;
 		light.shadowMapHeight = 2048;
-		//light.position.x = 500 * unitFixation;
-		//light.position.y = 500 * unitFixation;
-		//light.position.z = 400 * unitFixation;
-		//light.distance = 12000;
 		light.power = 180;
-		//light.intensity = 0.8;
-		// light.boundRadius = 700;
-		//light.shadowDarkness = 0.5;
-		//light.shadowCameraVisible = true;
 		scene.add(light);
-
-		//geometry = new THREE.SphereGeometry(100, 8, 4);
-		//material = new THREE.MeshBasicMaterial({color: 0xffaa00});
-		//mesh = new THREE.Mesh(geometry, material);
-		//mesh.scale.set(0.05, 0.05, 0.05);
-		//light.add(mesh);
 
 		renderer = new THREE.WebGLRenderer({antialias: true});
 
 		renderer.setSize(width, (width / proportion));
 		renderer.shadowMap.enabled = true;
-		//renderer.shadowMapSoft = true;
-		//renderer.physicallyCorrectLights = true;
 		renderer.toneMappingExposure = Math.pow(1.15, 5.0);
-		//renderer.shadowMapWidth = 4096; //8192;
-		//renderer.shadowMapHeight = 4096; //8192;
 		renderer.toneMapping = THREE.ReinhardToneMapping;
-		//renderer.shadowMapBias = 0.5;
 		renderer.physicallyCorrectLights = true;
 		renderer.gammaInput = true;
 		renderer.gammaOutput = true;
-		//renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 		//  Инициализация рендера внутри блока
 		document.getElementById("visualization").appendChild(renderer.domElement);
