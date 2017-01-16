@@ -193,7 +193,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		{
 			id: "12.341.65",
 			title: "Контейнер SK 5214",
-			price: 316.0,
+			price: 315.0,
 			width: 234,
 			height: 140,
 			deep: 500,
