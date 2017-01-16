@@ -1,4 +1,5 @@
 import Color = THREE.Color;
+import BufferGeometry = THREE.BufferGeometry;
 /**
  * Created by Bagdad on 13.01.2017.
  */
@@ -8,6 +9,18 @@ let geometry, material, mesh;
 declare let calculatorApplication: any;
 
 calculatorApplication.controller("calculatorController", function ($scope, $filter) {
+
+	/**
+	 * Растояние между отверстиями в стойках, мм
+	 * @type {number}
+	 */
+	const distanceBetweenHoles: number = 25;
+
+	/**
+	 * Радиус перфорационных отверстий у стоек
+	 * @type {number}
+	 */
+	const holderPerforationRadius: number = 4;
 
 	/**
 	 * Высота изображения
@@ -417,6 +430,37 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		let shelveMaterial, shelveGeometry, shelveObject;
 
 		/**
+		 * Фременный объект для нанесения перфорации
+		 */
+		let cylinderBSP: Object;
+
+		/**
+		 * Объект геометрии цилиндра.
+		 * Нужен для нанесения перфорации на стойки
+		 */
+		let cylinderGeometry: Object;
+
+		/**
+		 * Счетчик для порфорации стоек
+		 * @type {number}
+		 */
+		let perforationCounter: number;
+
+		/**
+		 * Объект цилиндра для вертикальной перфорации
+		 * @type {Object}
+		 * @property {Object} position Положение объекта
+		 * @property {number} position.x Положение по X
+		 * @property {number} position.y Положение по Y
+		 * @property {number} position.z Положение по Z
+		 * @property {Object} rotation - Вращение объекта
+		 * @property {Number} rotation.x - Вращение по X
+		 * @property {Number} rotation.y - Вращение по Y
+		 * @property {Number} rotation.z - Вращение по Z
+		 */
+		let subtractCylinderGeometry: Object;
+
+		/**
 		 * Материал объекта (серый)
 		 * @type {Object}
 		 * @property {number} color - Цвет
@@ -490,21 +534,49 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 			// @todo исправить эту поебень на человеческую
 			//  Первая стойка. Стоит по координатам 0, 0
-			/*
-			 var holderBSP1 = new ThreeBSP(holderGeometry);
-			 */
+
+			var holderBSP1 = new ThreeBSP(holderGeometry);
+			let substractBSP;
 			holder1 = new THREE.Mesh(holderGeometry, material);
 			//var CSG = new CSG();
+
+			substractBSP = holderBSP1;
+
+			//  Перфорация стойки
+			//  Создание цилиндра для перфорации
+			cylinderGeometry = new THREE.CylinderGeometry(holderPerforationRadius, holderPerforationRadius, 70, 32);
+
+			for (perforationCounter = 0; perforationCounter < ($scope.cupboard.height.value / distanceBetweenHoles); perforationCounter++) {
+
+				//let cylinderBSP;
+
+				subtractCylinderGeometry = new THREE.Mesh(cylinderGeometry, material);
+
+				subtractCylinderGeometry.position.z = perforationCounter * distanceBetweenHoles;
+				subtractCylinderGeometry.position.x = 16;
+
+				//cylinderMesh.rotation.z = THREE.Math.degToRad(90);
+
+				cylinderBSP = new ThreeBSP(subtractCylinderGeometry);
+
+				//var substractBSP = holderBSP1.subtract(cylinderBSP);
+				substractBSP = substractBSP.subtract(cylinderBSP);
+
+				subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(90);
+				subtractCylinderGeometry.position.y = 16;
+
+				cylinderBSP = new ThreeBSP(subtractCylinderGeometry);
+
+				substractBSP = substractBSP.subtract(cylinderBSP);
+			}
+			//  Конец перфорации стойки
+
+			var result = substractBSP.toMesh(material);
+
+			result.position.x = 6;
+			result.geometry.computeVertexNormals();
+			scene.add(result);
 			/*
-			 var cylinderGeometry = new THREE.CylinderGeometry(50, 50, 70, 32);
-			 var cylinderMesh = new THREE.Mesh( cylinderGeometry, material );
-			 cylinderMesh.rotation.z = THREE.Math.degToRad(90);
-			 var cylinderBSP = new ThreeBSP(cylinderGeometry);
-			 var substractBSP = holderBSP1.subtract(cylinderBSP);
-			 var result = substractBSP.toMesh(material);
-			 result.position.x = 6;
-			 result.geometry.computeVertexNormals();
-			 scene.add( result );
 			 */
 			//cylinderMesh.rotation.x = THREE.Math.degToRad(90);
 			//a.setColor(1, 0, 0);
@@ -744,10 +816,10 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			//  Вычисляем растояние между полками
 			shelveHeight = 0;
 			if (shelveCount > 2) {
-				shelveHeight = Math.floor((currentHeight.value / shelveCount) / 25) * 25;
+				shelveHeight = Math.floor((currentHeight.value / shelveCount) / distanceBetweenHoles) * distanceBetweenHoles;
 			} else {
 				// shelveHeight = Math.ceil((currentHeight.value / (shelveCount - 1)) / 25) * 25;
-				shelveHeight = Math.floor(($scope.selectedBox.height + 30 + 35) / 25) * 25;
+				shelveHeight = Math.floor(($scope.selectedBox.height + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
 			}
 			if (shelveHeight < 145) {
 				shelveHeight = 145;
