@@ -110,7 +110,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 	$scope.boxes = [
 		{
 			id: "12.330.65",
-			title: "Контейнер SK 3109",
+			title: "Контейнер sk 3109",
 			price: 91.0,
 			width: 117,
 			height: 90,
@@ -122,7 +122,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		},
 		{
 			id: "12.331.65",
-			title: "Контейнер SK 31509",
+			title: "Контейнер sk 31509",
 			price: 106.0,
 			width: 155,
 			height: 90,
@@ -134,7 +134,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		},
 		{
 			id: "12.332.65",
-			title: "Контейнер SK 3209",
+			title: "Контейнер sk 3209",
 			price: 140.0,
 			width: 234,
 			height: 90,
@@ -146,7 +146,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		},
 		{
 			id: "12.333.65",
-			title: "Контейнер SK 3214",
+			title: "Контейнер sk 3214",
 			price: 216.0,
 			width: 234,
 			height: 140,
@@ -159,7 +159,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		//  Глубина 400
 		{
 			id: "12.334.65",
-			title: "Контейнер SK 4109",
+			title: "Контейнер sk 4109",
 			price: 117.0,
 			width: 117,
 			height: 90,
@@ -171,7 +171,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		},
 		{
 			id: "12.335.65",
-			title: "Контейнер SK 41509",
+			title: "Контейнер sk 41509",
 			price: 143.0,
 			width: 155,
 			height: 90,
@@ -183,7 +183,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		},
 		{
 			id: "12.336.65",
-			title: "Контейнер SK 4209",
+			title: "Контейнер sk 4209",
 			price: 182.0,
 			width: 234,
 			height: 90,
@@ -195,7 +195,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		},
 		{
 			id: "12.337.65",
-			title: "Контейнер SK 4214",
+			title: "Контейнер sk 4214",
 			price: 306.0,
 			width: 234,
 			height: 140,
@@ -208,7 +208,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		//  Глубина 500
 		{
 			id: "12.338.65",
-			title: "Контейнер SK 5109",
+			title: "Контейнер sk 5109",
 			price: 132.0,
 			width: 117,
 			height: 90,
@@ -220,7 +220,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		},
 		{
 			id: "12.339.65",
-			title: "Контейнер SK 51509",
+			title: "Контейнер sk 51509",
 			price: 162.0,
 			width: 155,
 			height: 90,
@@ -232,7 +232,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		},
 		{
 			id: "12.340.65",
-			title: "Контейнер SK 5209",
+			title: "Контейнер sk 5209",
 			price: 206.0,
 			width: 234,
 			height: 90,
@@ -244,7 +244,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		},
 		{
 			id: "12.341.65",
-			title: "Контейнер SK 5214",
+			title: "Контейнер sk 5214",
 			price: 316.0,
 			width: 234,
 			height: 140,
@@ -257,7 +257,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		//  Глубина 600
 		{
 			id: "12.342.65",
-			title: "Контейнер SK 6109",
+			title: "Контейнер sk 6109",
 			price: 165.0,
 			width: 117,
 			height: 90,
@@ -269,7 +269,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		},
 		{
 			id: "12.343.65",
-			title: "Контейнер SK 61509",
+			title: "Контейнер sk 61509",
 			price: 196.0,
 			width: 155,
 			height: 90,
@@ -281,7 +281,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		},
 		{
 			id: "12.344.65",
-			title: "Контейнер SK 6209",
+			title: "Контейнер sk 6209",
 			price: 255.0,
 			width: 234,
 			height: 90,
@@ -293,7 +293,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		},
 		{
 			id: "12.345.65",
-			title: "Контейнер SK 6214",
+			title: "Контейнер sk 6214",
 			price: 397.0,
 			width: 234,
 			height: 140,

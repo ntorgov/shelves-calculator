@@ -5,7 +5,7 @@ import Color = THREE.Color;
 import BufferGeometry = THREE.BufferGeometry;
 
 let camera, scene, renderer;
-let geometry, material, mesh;
+let geometry, material;
 
 /**
  * Енумератор для серий ящиков
@@ -487,7 +487,32 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 	 */
 	function visualizationInit() {
 
-		let boxMaterial: THREE.MeshLambertMaterial;
+
+		/**
+		 * Меш внешнего куба для ящиков
+		 * @type {THREE.Mesh}
+		 */
+		let boxSupGeometryMesh: THREE.Mesh;
+
+		/**
+		 * Геометрия внешнего куба для ящиков
+		 */
+		let boxSupGeometry: THREE.BoxGeometry;
+
+		let boxPlacementPadding: number;
+		let boxPlacementMarguin: number;
+
+		/**
+		 * Ширина посадочного места для ящика
+		 * @type {number}
+		 */
+		let boxPlaceWidth: number;
+
+		/**
+		 * Материал для ящиков
+		 * @type {THREE.MeshStandardMaterial}
+		 */
+		let boxMaterial: THREE.MeshStandardMaterial;
 		let shelvesCounter: number, holdersCounter: number, boxCounter: number;
 		let selectedObject;
 		let shelveYPosition: number;
@@ -671,22 +696,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			//holder[4].rotation.x = THREE.Math.degToRad(-90);
 			holder[4].rotation.z = THREE.Math.degToRad(270);
 
-			/*
-			 let floorGeometry = new THREE.CylinderGeometry(($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation, ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation, 1 * unitFixation, 32);
-			 let floorMaterial = new THREE.MeshStandardMaterial({
-			 color: 0x333333,
-			 wireframe: false,
-			 metalness: 0.25
-			 reflectivity: 1,
-			 //transparent: 0
-			 });
-			 let floorMech = new THREE.Mesh(floorGeometry, floorMaterial);
-			 floorMech.position.x = ($scope.cupboard.width.value / 2) * unitFixation;
-			 floorMech.position.z = ($scope.cupboard.deep.value / 2) * unitFixation;
-			 floorMech.position.y = -1 * unitFixation;
-			 floorMech.receiveShadow = true;
-			 scene.add(floorMech);
-			 */
 			light.position.y = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 3;
 			light.position.x = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 3;
 			light.position.z = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 3;
@@ -732,12 +741,11 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 						boxMaterial = new THREE.MeshStandardMaterial({
 							color: 0x2222ff,
-							//roughness: 1,
 							wireframe: false,
 							metalness: 0.1,
 						});
 
-						let boxSupGeometry = new THREE.BoxGeometry($scope.selectedBox.width * unitFixation, $scope.selectedBox.height * unitFixation, $scope.selectedBox.deep * unitFixation);
+						boxSupGeometry = new THREE.BoxGeometry($scope.selectedBox.width * unitFixation, $scope.selectedBox.height * unitFixation, $scope.selectedBox.deep * unitFixation);
 						boxSupGeometryMesh = new THREE.Mesh(boxSupGeometry, boxMaterial);
 						//let boxSupBSP = new ThreeBSP(boxSupGeometry);
 						//scene.add(boxSubGeometryMesh);

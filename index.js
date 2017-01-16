@@ -1,7 +1,17 @@
 var Color = THREE.Color;
 var BufferGeometry = THREE.BufferGeometry;
 let camera, scene, renderer;
-let geometry, material, mesh;
+let geometry, material;
+var BoxSeries;
+(function (BoxSeries) {
+    BoxSeries[BoxSeries["sk"] = 0] = "sk";
+    BoxSeries[BoxSeries["ls"] = 1] = "ls";
+})(BoxSeries || (BoxSeries = {}));
+var BoxColor;
+(function (BoxColor) {
+    BoxColor[BoxColor["blue"] = 0] = "blue";
+    BoxColor[BoxColor["red"] = 1] = "red";
+})(BoxColor || (BoxColor = {}));
 let light;
 calculatorApplication.controller("calculatorController", function ($scope, $filter) {
     const unitFixation = 1 / 1000;
@@ -12,7 +22,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     const boxesArray = [
         {
             id: "12.330.65",
-            title: "Контейнер SK 3109",
+            title: "Контейнер sk 3109",
             price: 91.0,
             width: 117,
             height: 90,
@@ -20,11 +30,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 1,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/3109l3.jpg",
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-3109/",
-            color: "blue"
+            color: 0,
+            series: 0
         },
         {
             id: "12.331.65",
-            title: "Контейнер SK 31509",
+            title: "Контейнер sk 31509",
             price: 106.0,
             width: 155,
             height: 90,
@@ -32,11 +43,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 1,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/31509dh.jpg",
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-31509/",
-            color: "blue"
+            color: 0,
+            series: 0
         },
         {
             id: "12.332.65",
-            title: "Контейнер SK 3209",
+            title: "Контейнер sk 3209",
             price: 140.0,
             width: 234,
             height: 90,
@@ -44,11 +56,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 1,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/3209hj.jpg",
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-3209/",
-            color: "blue"
+            color: 0,
+            series: 0
         },
         {
             id: "12.333.65",
-            title: "Контейнер SK 3214",
+            title: "Контейнер sk 3214",
             price: 216.0,
             width: 234,
             height: 140,
@@ -56,11 +69,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 1,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/32145i.jpg",
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-3214/",
-            color: "blue"
+            color: 0,
+            series: 0
         },
         {
             id: "12.334.65",
-            title: "Контейнер SK 4109",
+            title: "Контейнер sk 4109",
             price: 117.0,
             width: 117,
             height: 90,
@@ -68,11 +82,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 1,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/4109kh.jpg",
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-4109/",
-            color: "blue"
+            color: 0,
+            series: 0
         },
         {
             id: "12.335.65",
-            title: "Контейнер SK 41509",
+            title: "Контейнер sk 41509",
             price: 143.0,
             width: 155,
             height: 90,
@@ -80,11 +95,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 1,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/41509yk.jpg",
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-41509/",
-            color: "blue"
+            color: 0,
+            series: 0
         },
         {
             id: "12.336.65",
-            title: "Контейнер SK 4209",
+            title: "Контейнер sk 4209",
             price: 182.0,
             width: 234,
             height: 90,
@@ -92,11 +108,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 1,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/42095y.jpg",
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-4209/",
-            color: "blue"
+            color: 0,
+            series: 0
         },
         {
             id: "12.337.65",
-            title: "Контейнер SK 4214",
+            title: "Контейнер sk 4214",
             price: 306.0,
             width: 234,
             height: 140,
@@ -104,11 +121,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 1,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/4214vd.jpg",
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-4214/",
-            color: "blue"
+            color: 0,
+            series: 0
         },
         {
             id: "12.338.65",
-            title: "Контейнер SK 5109",
+            title: "Контейнер sk 5109",
             price: 132.0,
             width: 117,
             height: 90,
@@ -116,11 +134,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 1,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/51092v.jpg",
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-5109/",
-            color: "blue"
+            color: 0,
+            series: 0
         },
         {
             id: "12.339.65",
-            title: "Контейнер SK 51509",
+            title: "Контейнер sk 51509",
             price: 162.0,
             width: 155,
             height: 90,
@@ -128,11 +147,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 1,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/51509mi.jpg",
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-51509/",
-            color: "blue"
+            color: 0,
+            series: 0
         },
         {
             id: "12.340.65",
-            title: "Контейнер SK 5209",
+            title: "Контейнер sk 5209",
             price: 206.0,
             width: 234,
             height: 90,
@@ -140,23 +160,25 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 1,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/5209gf.jpg",
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-5209/",
-            color: "blue"
+            color: 0,
+            series: 0
         },
         {
             id: "12.341.65",
-            title: "Контейнер SK 5214",
-            price: 316.0,
+            title: "Контейнер sk 5214",
+            price: 315.0,
             width: 234,
             height: 140,
             deep: 500,
             sort: 1,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/52144y.jpg",
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-5214/",
-            color: "blue"
+            color: 0,
+            series: 0
         },
         {
             id: "12.342.65",
-            title: "Контейнер SK 6109",
+            title: "Контейнер sk 6109",
             price: 165.0,
             width: 117,
             height: 90,
@@ -164,11 +186,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 1,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/6109bi.jpg",
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-6109/",
-            color: "blue"
+            color: 0,
+            series: 0
         },
         {
             id: "12.343.65",
-            title: "Контейнер SK 61509",
+            title: "Контейнер sk 61509",
             price: 196.0,
             width: 155,
             height: 90,
@@ -176,11 +199,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 1,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/61509ht.jpg",
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-61509/",
-            color: "blue"
+            color: 0,
+            series: 0
         },
         {
             id: "12.344.65",
-            title: "Контейнер SK 6209",
+            title: "Контейнер sk 6209",
             price: 255.0,
             width: 234,
             height: 90,
@@ -188,11 +212,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 1,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/6209k3.jpg",
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-6209/",
-            color: "blue"
+            color: 0,
+            series: 0
         },
         {
             id: "12.345.65",
-            title: "Контейнер SK 6214",
+            title: "Контейнер sk 6214",
             price: 397.0,
             width: 234,
             height: 140,
@@ -200,7 +225,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 1,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/6214at.jpg",
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-6214/",
-            color: "blue"
+            color: 0,
+            series: 0
         },
         {
             id: "12.412",
@@ -212,7 +238,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 2,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/12_412dq.jpg",
             url: "http://www.agropak.net/kontejnery-logic-store/12412/",
-            color: "blue"
+            color: 0,
+            series: 1
         },
         {
             id: "12.403.1",
@@ -224,7 +251,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 2,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-403mn.jpg",
             url: "http://www.agropak.net/kontejnery-logic-store/12_403/",
-            color: "blue"
+            color: 0,
+            series: 1
         },
         {
             id: "12.404.1",
@@ -236,7 +264,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 2,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-404wb.jpg",
             url: "http://www.agropak.net/kontejnery-logic-store/12_404/",
-            color: "blue"
+            color: 0,
+            series: 1
         },
         {
             id: "12.414",
@@ -248,7 +277,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 2,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/12_414.jpg",
             url: "http://www.agropak.net/kontejnery-logic-store/12414/",
-            color: "blue"
+            color: 0,
+            series: 1
         },
         {
             id: "12.405.1",
@@ -260,7 +290,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 2,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-4050c.jpg",
             url: "http://www.agropak.net/kontejnery-logic-store/12_405/",
-            color: "blue"
+            color: 0,
+            series: 1
         },
         {
             id: "12.406.1",
@@ -272,7 +303,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 2,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-406b.jpg",
             url: "http://www.agropak.net/kontejnery-logic-store/12_406/",
-            color: "blue"
+            color: 0,
+            series: 1
         },
         {
             id: "12.407.1",
@@ -284,7 +316,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             sort: 2,
             image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-407b.jpg",
             url: "http://www.agropak.net/kontejnery-logic-store/12_407/",
-            color: "blue"
+            color: 0,
+            series: 1
         }
     ];
     const shelvesHeights = [
@@ -356,6 +389,11 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     $scope.cameraRadius = 0;
     $scope.angle = 0;
     function visualizationInit() {
+        let boxSupGeometryMesh;
+        let boxSupGeometry;
+        let boxPlacementPadding;
+        let boxPlacementMarguin;
+        let boxPlaceWidth;
         let boxMaterial;
         let shelvesCounter, holdersCounter, boxCounter;
         let selectedObject;
@@ -473,7 +511,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                             wireframe: false,
                             metalness: 0.1,
                         });
-                        let boxSupGeometry = new THREE.BoxGeometry($scope.selectedBox.width * unitFixation, $scope.selectedBox.height * unitFixation, $scope.selectedBox.deep * unitFixation);
+                        boxSupGeometry = new THREE.BoxGeometry($scope.selectedBox.width * unitFixation, $scope.selectedBox.height * unitFixation, $scope.selectedBox.deep * unitFixation);
                         boxSupGeometryMesh = new THREE.Mesh(boxSupGeometry, boxMaterial);
                         let boxSubGeometry = new THREE.BoxGeometry(($scope.selectedBox.width - 4) * unitFixation, $scope.selectedBox.height * unitFixation, ($scope.selectedBox.deep - 4) * unitFixation);
                         boxSubGeometryMesh = new THREE.Mesh(boxSubGeometry, boxMaterial);
@@ -641,14 +679,14 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                     height: currentHeight.value * scale + "px",
                     width: 30 * scale + "px",
                     left: 0 + "px",
-                    "background-color": "blue",
+                    "background-color": 0,
                     top: $scope.drawHeight * 0.025 + "px"
                 },
                 stoyka2: {
                     height: currentHeight.value * scale + "px",
                     width: 30 * scale + "px",
                     left: currentWidth.value * scale + "px",
-                    "background-color": "blue",
+                    "background-color": 0,
                     top: $scope.drawHeight * 0.025 + "px"
                 },
                 shelves: shelveArray,
