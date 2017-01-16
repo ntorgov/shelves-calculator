@@ -1,8 +1,75 @@
-import Color = THREE.Color;
-import BufferGeometry = THREE.BufferGeometry;
 /**
  * Created by Bagdad on 13.01.2017.
  */
+import Color = THREE.Color;
+import BufferGeometry = THREE.BufferGeometry;
+
+/**
+ * Интерфейс для массива ящиков
+ */
+interface BoxObject {
+
+	/**
+	 * Идентификатор
+	 * @type {string}
+	 */
+	id: string;
+
+	/**
+	 * Название
+	 * @type {string}
+	 */
+	title: string;
+
+	/**
+	 * Цена
+	 * @type {number}
+	 */
+	price: number;
+
+	/**
+	 * Ширина
+	 * @type {number}
+	 */
+	width: number;
+
+	/**
+	 * Высота
+	 * @type {number}
+	 */
+	height: number;
+
+	/**
+	 * Глубина
+	 * @type {number}
+	 */
+	deep: number;
+
+	/**
+	 * Сортировка
+	 * @type {number}
+	 */
+	sort: number;
+
+	/**
+	 * Путь к картинке
+	 * @type {string}
+	 */
+	image: string;
+
+	/**
+	 * Ссылка на страницу в магазине
+	 * @type {string}
+	 */
+	url: string;
+
+	/**
+	 * Цвет
+	 * @type {string}
+	 */
+	color: string
+}
+
 let camera, scene, renderer;
 let geometry, material, mesh;
 
@@ -53,9 +120,9 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 	/**
 	 * Массив ящиков
-	 * @type {Object[]}
+	 * @type {BoxObject[]}
 	 */
-	const boxesArray: {id: string; title: string; price: number; width: number; height: number; deep: number; sort: number; image: string; url: string; color: string}[] = [
+	const boxesArray: BoxObject[] = [
 		{
 			id: "12.330.65",
 			title: "Контейнер SK 3109",
@@ -560,7 +627,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 			perforatedHolder = new ThreeBSP(holderGeometry);
 
-			if($scope.cupboard.height.value <=500) {
+			if ($scope.cupboard.height.value <= 500) {
 				//  Перфорация стойки
 				//  Создание цилиндра для перфорации
 				cylinderGeometry = new THREE.CylinderGeometry(holderPerforationRadius * unitFixation, holderPerforationRadius * unitFixation, 70 * unitFixation, 5);
@@ -623,22 +690,22 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			//holder[4].rotation.x = THREE.Math.degToRad(-90);
 			holder[4].rotation.z = THREE.Math.degToRad(270);
 
-/*
-			let floorGeometry = new THREE.CylinderGeometry(($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation, ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation, 1 * unitFixation, 32);
-			let floorMaterial = new THREE.MeshStandardMaterial({
-				color: 0x333333,
-				wireframe: false,
-				metalness: 0.25
-				reflectivity: 1,
-				//transparent: 0
-			});
-			let floorMech = new THREE.Mesh(floorGeometry, floorMaterial);
-			floorMech.position.x = ($scope.cupboard.width.value / 2) * unitFixation;
-			floorMech.position.z = ($scope.cupboard.deep.value / 2) * unitFixation;
-			floorMech.position.y = -1 * unitFixation;
-			floorMech.receiveShadow = true;
-			scene.add(floorMech);
-*/
+			/*
+			 let floorGeometry = new THREE.CylinderGeometry(($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation, ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation, 1 * unitFixation, 32);
+			 let floorMaterial = new THREE.MeshStandardMaterial({
+			 color: 0x333333,
+			 wireframe: false,
+			 metalness: 0.25
+			 reflectivity: 1,
+			 //transparent: 0
+			 });
+			 let floorMech = new THREE.Mesh(floorGeometry, floorMaterial);
+			 floorMech.position.x = ($scope.cupboard.width.value / 2) * unitFixation;
+			 floorMech.position.z = ($scope.cupboard.deep.value / 2) * unitFixation;
+			 floorMech.position.y = -1 * unitFixation;
+			 floorMech.receiveShadow = true;
+			 scene.add(floorMech);
+			 */
 			light.position.y = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 3;
 			light.position.x = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 3;
 			light.position.z = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 3;
