@@ -9,11 +9,26 @@ let geometry, material, mesh;
 
 /**
  * Енумератор для серий ящиков
- * @type {string}
+ * @type {number}
+ * @property {number} sk SK
+ * @property {number} ls LS
  */
-enum BoxSeries {
-	sk = "sk",
-	ls = "LS"
+const enum BoxSeries {
+
+	sk = 0,
+	ls = 1
+}
+
+/**
+ * Енумератор для цветов
+ * @type {number}
+ * @property {number} blue Синий
+ * @property {number} red Красный
+ */
+const enum BoxColor {
+
+	blue = 0,
+	red = 1
 }
 
 /**
@@ -76,7 +91,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/3109l3.jpg",
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-3109/",
-			color: "blue",
+			color: BoxColor.blue,
 			series: BoxSeries.sk
 		},
 		{
@@ -89,7 +104,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/31509dh.jpg",
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-31509/",
-			color: "blue",
+			color: BoxColor.blue,
 			series: BoxSeries.sk
 		},
 		{
@@ -102,7 +117,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/3209hj.jpg",
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-3209/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.sk
 		},
 		{
 			id: "12.333.65",
@@ -114,7 +130,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/32145i.jpg",
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-3214/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.sk
 		},
 		//  Глубина 400
 		{
@@ -127,7 +144,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/4109kh.jpg",
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-4109/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.sk
 		},
 		{
 			id: "12.335.65",
@@ -139,7 +157,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/41509yk.jpg",
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-41509/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.sk
 		},
 		{
 			id: "12.336.65",
@@ -151,7 +170,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/42095y.jpg",
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-4209/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.sk
 		},
 		{
 			id: "12.337.65",
@@ -163,7 +183,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/4214vd.jpg",
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-4214/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.sk
 		},
 		//  Глубина 500
 		{
@@ -176,7 +197,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/51092v.jpg",
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-5109/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.sk
 		},
 		{
 			id: "12.339.65",
@@ -188,7 +210,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/51509mi.jpg",
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-51509/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.sk
 		},
 		{
 			id: "12.340.65",
@@ -200,7 +223,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/5209gf.jpg",
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-5209/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.sk
 		},
 		{
 			id: "12.341.65",
@@ -212,7 +236,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/52144y.jpg",
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-5214/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.sk
 		},
 		//  Глубина 600
 		{
@@ -225,7 +250,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/6109bi.jpg",
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-6109/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.sk
 		},
 		{
 			id: "12.343.65",
@@ -237,7 +263,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/61509ht.jpg",
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-61509/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.sk
 		},
 		{
 			id: "12.344.65",
@@ -249,7 +276,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/6209k3.jpg",
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-6209/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.sk
 		},
 		{
 			id: "12.345.65",
@@ -261,7 +289,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 1,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/6214at.jpg",
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-6214/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.sk
 		},
 		//  Коробки Logic Store
 		//  Глубина 300
@@ -275,7 +304,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 2,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/12_412dq.jpg",
 			url: "http://www.agropak.net/kontejnery-logic-store/12412/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.ls
 		},
 		{
 			id: "12.403.1",
@@ -287,7 +317,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 2,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-403mn.jpg",
 			url: "http://www.agropak.net/kontejnery-logic-store/12_403/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.ls
 		},
 		{
 			id: "12.404.1",
@@ -299,7 +330,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 2,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-404wb.jpg",
 			url: "http://www.agropak.net/kontejnery-logic-store/12_404/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.ls
 		},
 		{
 			id: "12.414",
@@ -311,7 +343,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 2,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/12_414.jpg",
 			url: "http://www.agropak.net/kontejnery-logic-store/12414/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.ls
 		},
 		{
 			id: "12.405.1",
@@ -323,7 +356,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 2,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-4050c.jpg",
 			url: "http://www.agropak.net/kontejnery-logic-store/12_405/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.ls
 		},
 		{
 			id: "12.406.1",
@@ -335,7 +369,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 2,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-406b.jpg",
 			url: "http://www.agropak.net/kontejnery-logic-store/12_406/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.ls
 		},
 		{
 			id: "12.407.1",
@@ -347,7 +382,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			sort: 2,
 			image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-407b.jpg",
 			url: "http://www.agropak.net/kontejnery-logic-store/12_407/",
-			color: "blue"
+			color: BoxColor.blue,
+			series: BoxSeries.ls
 		}
 	];
 
@@ -1028,14 +1064,14 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 					height: currentHeight.value * scale + "px",
 					width: 30 * scale + "px",
 					left: 0 + "px",
-					"background-color": "blue",
+					"background-color": BoxColor.blue,
 					top: $scope.drawHeight * 0.025 + "px"
 				},
 				stoyka2: {
 					height: currentHeight.value * scale + "px",
 					width: 30 * scale + "px",
 					left: currentWidth.value * scale + "px",
-					"background-color": "blue",
+					"background-color": BoxColor.blue,
 					top: $scope.drawHeight * 0.025 + "px"
 				},
 				shelves: shelveArray,

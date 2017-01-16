@@ -74,13 +74,13 @@ interface BoxObjectInterface {
 	 * Цвет
 	 * @type {string}
 	 */
-	color: string;
+	color: BoxColor;
 
 	/**
 	 * Серия ящика
 	 * @type {string}
 	 */
-	series: string
+	series: BoxSeries; //string
 }
 
 /**
