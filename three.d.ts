@@ -3749,23 +3749,24 @@ module THREE {
 		combine: Combine;
 		reflectivity: number;
 		refractionRatio: number;
-		fog: bool;
+		fog: boolean;
 		shading: Shading;
-		wireframe: bool;
+		wireframe: boolean;
 		wireframeLinewidth: number;
 		wireframeLinecap: string;
 		wireframeLinejoin: string;
 		vertexColors: Colors;
-		skinning: bool;
-		morphTargets: bool;
+		skinning: boolean;
+		morphTargets: boolean;
+		transparent: number;
 		clone(): MeshBasicMaterial;
 	}
 
 	export interface MeshDepthMaterialParameters {
 		opacity?: number;
 		blending?: Blending;
-		depthTest?: bool;
-		wireframe?: bool;
+		depthTest?: boolean;
+		wireframe?: boolean;
 		wireframeLinewidth?: number;
 	}
 

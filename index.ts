@@ -6,21 +6,44 @@ import BufferGeometry = THREE.BufferGeometry;
 let camera, scene, renderer;
 let geometry, material, mesh;
 
+/**
+ * Объект света
+ * @name mainLightObject
+ * @type {Object}
+ * @property {Object} position Положение объекта
+ * @property {number} position.x Положение по X
+ * @property {number} position.y Положение по Y
+ * @property {number} position.z Положение по Z
+ */
+let light: THREE.PointLight;
+
 declare let calculatorApplication: any;
 
 calculatorApplication.controller("calculatorController", function ($scope, $filter) {
 
 	/**
-	 * Растояние между отверстиями в стойках, мм
+	 * Фиксация величин для THREE.js
 	 * @type {number}
+	 */
+	const unitFixation: number = 1 / 1000;
+
+	/**
+	 * Растояние между отверстиями в стойках, мм
+	 * @type {number} миллиметры
 	 */
 	const distanceBetweenHoles: number = 25;
 
 	/**
-	 * Радиус перфорационных отверстий у стоек
-	 * @type {number}
+	 * Радиус перфорационных отверстий у стоек, мм
+	 * @type {number} миллиметры
 	 */
 	const holderPerforationRadius: number = 4;
+
+	/**
+	 * Высота полки, мм
+	 * @type {number} миллиметры
+	 */
+	const shelveHeight: number = 25;
 
 	/**
 	 * Высота изображения
@@ -415,15 +438,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 	 */
 	function visualizationInit() {
 
-		//  Высота выбранного стеллажа
-		// const currentHeight = $scope.cupboard.height;
-
-		//  Ширина выбранного стеллажа
-		// const currentWidth = $scope.cupboard.width;
-
-		//  Глубина выбранного стеллажа
-		// const currentDeep = $scope.cupboard.deep;
-
+		let boxMaterial: THREE.MeshLambertMaterial;
 		let shelvesCounter: number, holdersCounter: number, boxCounter: number;
 		let selectedObject;
 		let shelveYPosition: number;
@@ -467,8 +482,10 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		 * @type {Object}
 		 * @property {number} color - Цвет
 		 * @property {boolean} wireframe - Сетка
+		 * @property {number} reflectivity - Отражение
+		 * @property {number} transparent - Прозрачность
 		 */
-		let material: {color: Color, wireframe: boolean};
+		let material: {color: Color, wireframe: boolean, reflectivity: number, transparent: number};
 
 //  Фигура для стойки
 		let holderShape;
@@ -490,25 +507,26 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		if ($scope.cupboard.width && $scope.cupboard.width.value) {
 			//console.warn(currentHeight.value);
 
-
-			//holderGeometry = new THREE.BoxGeometry(200, 200, 200);
 			material = new THREE.MeshLambertMaterial({
 				color: 0x777777,
-				wireframe: false
+				wireframe: false,
+				reflectivity: 1,
+				transparent: 0,
+				//metalness: 0.2,
 			});
 
 			holderShape = new THREE.Shape();
 			holderShape.moveTo(0, 0);
-			holderShape.lineTo(0, 30);
-			holderShape.lineTo(1, 30);
-			holderShape.lineTo(1, 1);
-			holderShape.lineTo(30, 1);
-			holderShape.lineTo(30, 0);
+			holderShape.lineTo(0, 30 * unitFixation);
+			holderShape.lineTo(1 * unitFixation, 30 * unitFixation);
+			holderShape.lineTo(1 * unitFixation, 1 * unitFixation);
+			holderShape.lineTo(30 * unitFixation, 1 * unitFixation);
+			holderShape.lineTo(30 * unitFixation, 0);
 			holderShape.lineTo(0, 0);
 
 			extrudeSettings = {
 				steps: 2,
-				amount: $scope.cupboard.height.value, //500,
+				amount: $scope.cupboard.height.value * unitFixation, //500,
 				bevelEnabled: false,
 			};
 
@@ -541,36 +559,26 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 			perforatedHolder = new ThreeBSP(holderGeometry);
 
-			//var CSG = new CSG();
-
-			//substractBSP = holderBSP1;
-
 			//  Перфорация стойки
 			//  Создание цилиндра для перфорации
-			cylinderGeometry = new THREE.CylinderGeometry(holderPerforationRadius, holderPerforationRadius, 70, 8);
+			cylinderGeometry = new THREE.CylinderGeometry(holderPerforationRadius * unitFixation, holderPerforationRadius * unitFixation, 70 * unitFixation, 5);
 
 			subtractCylinderGeometry = new THREE.Mesh(cylinderGeometry, material);
-			subtractCylinderGeometry.position.x = 16;
+			subtractCylinderGeometry.position.x = 16 * unitFixation;
 
 			for (perforationCounter = 0; perforationCounter < ($scope.cupboard.height.value / distanceBetweenHoles); perforationCounter++) {
 
-				subtractCylinderGeometry.position.z = (perforationCounter * distanceBetweenHoles) + 12.5;
-
-				//cylinderMesh.rotation.z = THREE.Math.degToRad(90);
+				subtractCylinderGeometry.position.z = ((perforationCounter * distanceBetweenHoles) + (shelveHeight / 2)) * unitFixation;
 
 				let cylinderBSP1 = new ThreeBSP(subtractCylinderGeometry);
 
-				//var substractBSP = holderBSP1.subtract(cylinderBSP);
-				//substractBSP = substractBSP.subtract(cylinderBSP);
-
 				subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(90);
-				subtractCylinderGeometry.position.y = 16;
+				subtractCylinderGeometry.position.y = 16 * unitFixation;
 
 				let cylinderBSP2 = new ThreeBSP(subtractCylinderGeometry);
 
 				perforatedHolder = perforatedHolder.subtract(cylinderBSP1.union(cylinderBSP2));
 
-				// subtractCylinderGeometry.position.x = 0;
 				subtractCylinderGeometry.position.y = 0;
 				subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(0);
 
@@ -579,71 +587,62 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			}
 			//  Конец перфорации стойки
 
-			//perforatedHolder = substractBSP; // .toMesh(material);
+			for (holdersCounter = 1; holdersCounter <= 4; holdersCounter++) {
 
-			//delete substractBSP;
-			// result.position.x = 6;
-			// result.geometry.computeVertexNormals();
-			// scene.add(result);
-			/*
-			 */
-			//cylinderMesh.rotation.x = THREE.Math.degToRad(90);
-			//a.setColor(1, 0, 0);
-			//scene.add(cylinderMesh);
+				holder[holdersCounter] = perforatedHolder.toMesh(material);
+				holder[holdersCounter].geometry.computeVertexNormals();
+				holder[holdersCounter].name = "shelveHolder" + holdersCounter;
+				holder[holdersCounter].castShadow = true;
+				holder[holdersCounter].receiveShadow = true;
+				holder[holdersCounter].rotation.x = THREE.Math.degToRad(-90);
 
-			//let perforatedObject = perforatedHolder.toMesh(material);
-			//perforatedObject.geometry.computeVertexNormals();
-
-			holder[1] = perforatedHolder.toMesh(material); //perforatedObject;
-			//holder[1].geometry.computeVertexNormals();
-			holder[1].name = "shelveHolder1";
-			holder[2] = perforatedHolder.toMesh(material); //perforatedObject;
-			//holder[2].geometry.computeVertexNormals();
-			holder[2].name = "shelveHolder2";
-			holder[3] = perforatedHolder.toMesh(material); //perforatedObject;
-			//holder[3].geometry.computeVertexNormals();
-			holder[3].name = "shelveHolder3";
-			holder[4] = perforatedHolder.toMesh(material); //perforatedObject;
-			//holder[4].geometry.computeVertexNormals();
-			holder[4].name = "shelveHolder4";
+				//scene.add(holder[holdersCounter]);
+			}
 
 			// delete perforatedObject;
 			delete perforatedHolder;
 
 			// holder[1].name = "shelveHolder1";
-			holder[1].rotation.x = THREE.Math.degToRad(-90);
+			//holder[1].rotation.x = THREE.Math.degToRad(-90);
 
 			//  Вторая стойка. Повернута на 90 и стоит на расстоянии ширины полки
-			// holder[2] = new THREE.Mesh(holderGeometry, material);
-			//  holder[2].name = "shelveHolder2";
-			holder[2].position.set($scope.cupboard.width.value + 2, 0, 0);
-			holder[2].rotation.x = THREE.Math.degToRad(-90);
+			holder[2].position.set(($scope.cupboard.width.value + 2) * unitFixation, 0, 0);
+			//holder[2].rotation.x = THREE.Math.degToRad(-90);
 			holder[2].rotation.z = THREE.Math.degToRad(90);
 
 			//  Третья стойка. Повернута на 180 и стоит на расстоянии ширины полки и на ее глубине
-			//holder3 = new THREE.Mesh(holderGeometry, material);
-			// holder[3].name = "shelveHolder3";
-			holder[3].position.set($scope.cupboard.width.value + 2, 0, ($scope.cupboard.deep.value * -1 - 2));
-			holder[3].rotation.x = THREE.Math.degToRad(-90);
+			holder[3].position.set(($scope.cupboard.width.value + 2) * unitFixation, 0, ($scope.cupboard.deep.value * -1 - 2) * unitFixation);
+			//holder[3].rotation.x = THREE.Math.degToRad(-90);
 			holder[3].rotation.z = THREE.Math.degToRad(180);
 
 			//  Четвертая стойка. Повернута на 270 и стоит на расстоянии глубины полки
-			//holder4 = new THREE.Mesh(holderGeometry, material);
-			// holder[4].name = "shelveHolder4";
-			holder[4].position.set(0, 0, ($scope.cupboard.deep.value * -1 - 2));
-			holder[4].rotation.x = THREE.Math.degToRad(-90);
+			holder[4].position.set(0, 0, ($scope.cupboard.deep.value * -1 - 2) * unitFixation);
+			//holder[4].rotation.x = THREE.Math.degToRad(-90);
 			holder[4].rotation.z = THREE.Math.degToRad(270);
 
+
+			let floorGeometry = new THREE.CylinderGeometry(($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation, ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation, 1 * unitFixation, 32);
+			let floorMaterial = new THREE.MeshLambertMaterial({
+				color: 0x444444,
+				wireframe: false,
+				reflectivity: 1,
+				transparent: 0
+			});
+			let floorMech = new THREE.Mesh(floorGeometry, floorMaterial);
+			floorMech.position.x = ($scope.cupboard.width.value / 2) * unitFixation;
+			floorMech.position.z = ($scope.cupboard.deep.value / 2) * unitFixation;
+			floorMech.position.y = -1 * unitFixation;
+			floorMech.receiveShadow = true;
+			scene.add(floorMech);
+
+			light.position.y = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 2;
+			light.position.x = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 2;
+			light.position.z = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 2;
 
 			for (holdersCounter = 1; holdersCounter <= 4; holdersCounter++) {
 
 				scene.add(holder[holdersCounter]);
-				// scene.add(holder[2]);
-				// scene.add(holder[3]);
-				// scene.add(holder[4]);
 			}
-
-
 
 			console.log("Vis. Shelves count " + $scope.shelvesCount);
 
@@ -653,39 +652,68 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 				$scope.boxCounter = 0;
 				for (shelvesCounter = 0; shelvesCounter <= $scope.shelvesCount; shelvesCounter++) {
 
-					shelveYPosition = $scope.cupboard.height.value - (shelvesCounter * $scope.shelveHeight) - 6.25;
-					shelveGeometry = new THREE.BoxGeometry($scope.cupboard.width.value, 12.5, $scope.cupboard.deep.value);
-					shelveMaterial = new THREE.MeshBasicMaterial({color: 0x666666});
-					shelveObject = new THREE.Mesh(shelveGeometry, shelveMaterial);
+					shelveYPosition = ($scope.cupboard.height.value - (shelvesCounter * $scope.shelveHeight) - (shelveHeight / 2));
+					// @todo пофисить
+					shelveGeometry = new THREE.BoxGeometry($scope.cupboard.width.value * unitFixation, shelveHeight * unitFixation, $scope.cupboard.deep.value * unitFixation);
+					// shelveMaterial = new THREE.MeshBasicMaterial({color: 0x666666});
+					shelveObject = new THREE.Mesh(shelveGeometry, material);
 					shelveObject.name = "shelve" + shelvesCounter;
-					shelveObject.position.set($scope.cupboard.width.value * 0.5 + 1, shelveYPosition, $scope.cupboard.deep.value * -0.5 - 1);
+					shelveObject.castShadow = true;
+					shelveObject.receiveShadow = true;
+					shelveObject.position.set(($scope.cupboard.width.value * 0.5 + 1) * unitFixation, shelveYPosition * unitFixation, ($scope.cupboard.deep.value * -0.5 - 1) * unitFixation);
 					scene.add(shelveObject);
 
 					//console.log($scope.selectedBox);
 
 					if (shelvesCounter > 0) {
 
-						boxPlaceWidth = ($scope.cupboard.width.value - 29 * 2) / ($scope.boxCount);
+						boxPlaceWidth = (($scope.cupboard.width.value - 29 * 2) / ($scope.boxCount));
 
 						//  Это значение - отступ от края посадочного места
-						boxPlacementPadding = (boxPlaceWidth - $scope.selectedBox.width) / 2;
-						boxPlacementMarguin = ($scope.selectedBox.width / 2) + 30;
+						boxPlacementPadding = ((boxPlaceWidth - $scope.selectedBox.width) / 2);
+						boxPlacementMarguin = (($scope.selectedBox.width / 2) + 30);
 
 						console.log("Ширина посадочного места: " + boxPlaceWidth);
+
+
+						//  Отрисовываем ящики
+
+						boxMaterial = new THREE.MeshLambertMaterial({
+							color: 0x8888ff,
+							roughness: 1,
+							wireframe: false,
+							metalness: 0.1,
+						});
+
+						let boxSupGeometry = new THREE.BoxGeometry($scope.selectedBox.width * unitFixation, $scope.selectedBox.height * unitFixation, $scope.selectedBox.deep * unitFixation);
+						boxSupGeometryMesh = new THREE.Mesh(boxSupGeometry, boxMaterial);
+						//let boxSupBSP = new ThreeBSP(boxSupGeometry);
+						//scene.add(boxSubGeometryMesh);
+						let boxSubGeometry = new THREE.BoxGeometry(($scope.selectedBox.width - 4) * unitFixation, $scope.selectedBox.height * unitFixation, ($scope.selectedBox.deep - 4) * unitFixation);
+						boxSubGeometryMesh = new THREE.Mesh(boxSubGeometry, boxMaterial);
+						boxSubGeometryMesh.position.y = 4 * unitFixation;
+						//scene.add(boxSubGeometryMesh);
+						let boxSupGeometrySubstractor = new ThreeBSP(boxSupGeometryMesh);
+						let boxSubGeometrySubstractor = new ThreeBSP(boxSubGeometryMesh);
+
+						let boxGeometry = boxSupGeometrySubstractor.subtract(boxSubGeometrySubstractor);
+
+						// scene.add(boxGeometry.toMesh(boxMaterial));
+
+						//subtractCylinderGeometry = new THREE.Mesh(boxSubGeometry, boxMaterial);
+						//subtractCylinderGeometry.position.y = 5;
 
 						for (boxCounter = 0; boxCounter < $scope.boxCount; boxCounter++) {
 
 							$scope.boxCounter++;
-							boxYPosition = shelveYPosition + 6.25 + ($scope.selectedBox.height / 2);
-							boxGeometry = new THREE.BoxGeometry($scope.selectedBox.width, $scope.selectedBox.height, $scope.selectedBox.deep);
-							boxMaterial = new THREE.MeshBasicMaterial({
-								color: 0x8888ff,
-								wireframe: true,
-								transparent: 0.8
-							});
-							boxObject = new THREE.Mesh(boxGeometry, boxMaterial);
+							boxYPosition = (shelveYPosition + (shelveHeight / 2) + ($scope.selectedBox.height / 2));
+
+							let boxObject = boxGeometry.toMesh(boxMaterial); //new THREE.Mesh(boxGeometry, boxMaterial);
+							boxObject.geometry.computeVertexNormals();
+							boxObject.castShadow = true;
+							boxObject.receiveShadow = true;
 							boxObject.name = "box" + $scope.boxCounter;
-							boxObject.position.set(boxCounter * boxPlaceWidth + boxPlacementPadding + boxPlacementMarguin, boxYPosition, ($scope.selectedBox.deep / -2) - 1);
+							boxObject.position.set((boxCounter * boxPlaceWidth + boxPlacementPadding + boxPlacementMarguin) * unitFixation, boxYPosition * unitFixation, (($scope.selectedBox.deep / -2) - 1) * unitFixation);
 							scene.add(boxObject);
 						}
 					}
@@ -698,14 +726,14 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 			//  Инициализация рендера внутри блока
 			//document.getElementById("visualization").appendChild(renderer.domElement);
-			camera.position.y = $scope.cupboard.height.value;
+			camera.position.y = $scope.cupboard.height.value * unitFixation;
 
 			//camera.position.x = $scope.cupboard.height.value + $scope.cupboard.width.value;
 			//camera.position.z = $scope.cupboard.height.value + $scope.cupboard.width.value;
-			$scope.cameraRadius = Math.sqrt(Math.pow($scope.cupboard.height.value, 2) + Math.pow($scope.cupboard.width.value, 2));
-			camera.position.x = $scope.cameraRadius * Math.cos($scope.angle) * 2;
-			camera.position.z = $scope.cameraRadius * Math.sin($scope.angle) * 2;
-			camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5), ($scope.cupboard.height.value * 0.5), ($scope.cupboard.deep.value * -0.5)));
+			$scope.cameraRadius = Math.sqrt(Math.pow($scope.cupboard.height.value, 2) + Math.pow($scope.cupboard.width.value, 2)) * unitFixation;
+			camera.position.x = ($scope.cameraRadius * Math.cos($scope.angle) * 2) * unitFixation;
+			camera.position.z = ($scope.cameraRadius * Math.sin($scope.angle) * 2) * unitFixation;
+			camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5) * unitFixation, ($scope.cupboard.height.value * 0.5) * unitFixation, ($scope.cupboard.deep.value * -0.5) * unitFixation));
 
 			//shelveObject = new THREE.Mesh(new THREE.BoxGeometry(15, 15, 15), new THREE.MeshBasicMaterial({color: 0xff3333}));
 			//shelveObject.position.set(($scope.cupboard.width.value * 0.5), ($scope.cupboard.height.value * 0.5), ($scope.cupboard.deep.value * -0.5));
@@ -743,7 +771,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			//	* Math.cos( phi * Math.PI / 360 );
 			//camera.position.y = radious * Math.sin( phi * Math.PI / 360 );
 
-			camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5), ($scope.cupboard.height.value * 0.5), ($scope.cupboard.deep.value * -0.5)));
+			camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5) * unitFixation, ($scope.cupboard.height.value * 0.5) * unitFixation, ($scope.cupboard.deep.value * -0.5) * unitFixation));
 			//camera.updateProjectionMatrix();
 			//camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5), 0, 0));
 			requestAnimationFrame(render);
@@ -756,26 +784,49 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		let width = document.getElementById("visualization").offsetWidth;
 		let height = (width / proportion);
 
-		//camera = new THREE.Camera(35, proportion, 1, 10000);
-		camera = new THREE.PerspectiveCamera(30, proportion, 1, 10000);
+		//camera = new THREE.Camera(30, proportion, 1, 10000);
+		camera = new THREE.PerspectiveCamera(35, proportion, 1, 10000);
 		camera.isPerspectiveCamera = false;
-		//camera = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, - 100, 10000 );
-		//camera.position.z = 1400;
-		//camera.position.y = 550;
-		//camera.position.x = 1400;
 
 		scene = new THREE.Scene();
 
 		scene.add(new THREE.AmbientLight(0xffffff));
 
-		var light = new THREE.PointLight(0xffffff);
-		light.castShadow = true;
-		light.position.copy(camera.position);
+		let hemiLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.02);
+		hemiLight.intensity = 3.4;
+		scene.add(hemiLight);
+
+		light = new THREE.PointLight(0xffffff, 1, 100, 2);
+		light.castShadow = false;
+		light.shadowMapWidth = 2048; // default is 512
+		light.shadowMapHeight = 2048;
+		//light.position.x = 500 * unitFixation;
+		//light.position.y = 500 * unitFixation;
+		//light.position.z = 400 * unitFixation;
+		//light.distance = 12000;
+		light.power = 150;
+		//light.intensity = 0.8;
+		// light.boundRadius = 700;
+		light.shadowDarkness = 0.5;
+		//light.shadowCameraVisible = true;
 		scene.add(light);
+
+		geometry = new THREE.SphereGeometry(100, 8, 4);
+		material = new THREE.MeshBasicMaterial({color: 0xffaa00});
+		mesh = new THREE.Mesh(geometry, material);
+		mesh.scale.set(0.05, 0.05, 0.05);
+		//light.add(mesh);
 
 		renderer = new THREE.WebGLRenderer({antialias: true});
 
 		renderer.setSize(width, (width / proportion));
+		renderer.shadowMap.enabled = true;
+		renderer.shadowMapSoft = true;
+		renderer.physicallyCorrectLights = true;
+		renderer.toneMappingExposure = Math.pow(0.71, 5.0);
+		//renderer.shadowMapWidth = 4096;
+		//renderer.shadowMapHeight = 4096;
+		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 		//  Инициализация рендера внутри блока
 		document.getElementById("visualization").appendChild(renderer.domElement);

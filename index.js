@@ -1,7 +1,13 @@
 var Color = THREE.Color;
+var BufferGeometry = THREE.BufferGeometry;
 let camera, scene, renderer;
 let geometry, material, mesh;
+let light;
 calculatorApplication.controller("calculatorController", function ($scope, $filter) {
+    const unitFixation = 1 / 1000;
+    const distanceBetweenHoles = 25;
+    const holderPerforationRadius = 4;
+    const shelveHeight = 25;
     const displayHeight = 400;
     const boxesArray = [
         {
@@ -350,31 +356,39 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     $scope.cameraRadius = 0;
     $scope.angle = 0;
     function visualizationInit() {
+        let boxMaterial;
         let shelvesCounter, holdersCounter, boxCounter;
         let selectedObject;
         let shelveYPosition;
         let shelveMaterial, shelveGeometry, shelveObject;
+        let perforatedHolder;
+        let cylinderBSP;
+        let cylinderGeometry;
+        let perforationCounter;
+        let subtractCylinderGeometry;
         let material;
         let holderShape;
         let extrudeSettings;
         let holderGeometry;
-        let holder1, holder2, holder3, holder4;
+        let holder = [];
         if ($scope.cupboard.width && $scope.cupboard.width.value) {
             material = new THREE.MeshLambertMaterial({
                 color: 0x777777,
-                wireframe: false
+                wireframe: false,
+                reflectivity: 1,
+                transparent: 0,
             });
             holderShape = new THREE.Shape();
             holderShape.moveTo(0, 0);
-            holderShape.lineTo(0, 30);
-            holderShape.lineTo(1, 30);
-            holderShape.lineTo(1, 1);
-            holderShape.lineTo(30, 1);
-            holderShape.lineTo(30, 0);
+            holderShape.lineTo(0, 30 * unitFixation);
+            holderShape.lineTo(1 * unitFixation, 30 * unitFixation);
+            holderShape.lineTo(1 * unitFixation, 1 * unitFixation);
+            holderShape.lineTo(30 * unitFixation, 1 * unitFixation);
+            holderShape.lineTo(30 * unitFixation, 0);
             holderShape.lineTo(0, 0);
             extrudeSettings = {
                 steps: 2,
-                amount: $scope.cupboard.height.value,
+                amount: $scope.cupboard.height.value * unitFixation,
                 bevelEnabled: false,
             };
             holderGeometry = new THREE.ExtrudeGeometry(holderShape, extrudeSettings);
@@ -396,67 +410,107 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                     scene.remove(selectedObject);
                 }
             }
-            holder1 = new THREE.Mesh(holderGeometry, material);
-            holder1.name = "shelveHolder1";
-            holder1.rotation.x = THREE.Math.degToRad(-90);
-            holder2 = new THREE.Mesh(holderGeometry, material);
-            holder2.name = "shelveHolder2";
-            holder2.position.set($scope.cupboard.width.value + 2, 0, 0);
-            holder2.rotation.x = THREE.Math.degToRad(-90);
-            holder2.rotation.z = THREE.Math.degToRad(90);
-            holder3 = new THREE.Mesh(holderGeometry, material);
-            holder3.name = "shelveHolder3";
-            holder3.position.set($scope.cupboard.width.value + 2, 0, ($scope.cupboard.deep.value * -1 - 2));
-            holder3.rotation.x = THREE.Math.degToRad(-90);
-            holder3.rotation.z = THREE.Math.degToRad(180);
-            holder4 = new THREE.Mesh(holderGeometry, material);
-            holder4.name = "shelveHolder4";
-            holder4.position.set(0, 0, ($scope.cupboard.deep.value * -1 - 2));
-            holder4.rotation.x = THREE.Math.degToRad(-90);
-            holder4.rotation.z = THREE.Math.degToRad(270);
-            scene.add(holder1);
-            scene.add(holder2);
-            scene.add(holder3);
-            scene.add(holder4);
+            perforatedHolder = new ThreeBSP(holderGeometry);
+            cylinderGeometry = new THREE.CylinderGeometry(holderPerforationRadius * unitFixation, holderPerforationRadius * unitFixation, 70 * unitFixation, 5);
+            subtractCylinderGeometry = new THREE.Mesh(cylinderGeometry, material);
+            subtractCylinderGeometry.position.x = 16 * unitFixation;
+            for (perforationCounter = 0; perforationCounter < ($scope.cupboard.height.value / distanceBetweenHoles); perforationCounter++) {
+                subtractCylinderGeometry.position.z = ((perforationCounter * distanceBetweenHoles) + (shelveHeight / 2)) * unitFixation;
+                let cylinderBSP1 = new ThreeBSP(subtractCylinderGeometry);
+                subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(90);
+                subtractCylinderGeometry.position.y = 16 * unitFixation;
+                let cylinderBSP2 = new ThreeBSP(subtractCylinderGeometry);
+                perforatedHolder = perforatedHolder.subtract(cylinderBSP1.union(cylinderBSP2));
+                subtractCylinderGeometry.position.y = 0;
+                subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(0);
+                delete cylinderBSP1;
+                delete cylinderBSP2;
+            }
+            for (holdersCounter = 1; holdersCounter <= 4; holdersCounter++) {
+                holder[holdersCounter] = perforatedHolder.toMesh(material);
+                holder[holdersCounter].geometry.computeVertexNormals();
+                holder[holdersCounter].name = "shelveHolder" + holdersCounter;
+                holder[holdersCounter].castShadow = true;
+                holder[holdersCounter].receiveShadow = true;
+                holder[holdersCounter].rotation.x = THREE.Math.degToRad(-90);
+            }
+            delete perforatedHolder;
+            holder[2].position.set(($scope.cupboard.width.value + 2) * unitFixation, 0, 0);
+            holder[2].rotation.z = THREE.Math.degToRad(90);
+            holder[3].position.set(($scope.cupboard.width.value + 2) * unitFixation, 0, ($scope.cupboard.deep.value * -1 - 2) * unitFixation);
+            holder[3].rotation.z = THREE.Math.degToRad(180);
+            holder[4].position.set(0, 0, ($scope.cupboard.deep.value * -1 - 2) * unitFixation);
+            holder[4].rotation.z = THREE.Math.degToRad(270);
+            let floorGeometry = new THREE.CylinderGeometry(($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation, ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation, 1 * unitFixation, 32);
+            let floorMaterial = new THREE.MeshLambertMaterial({
+                color: 0x444444,
+                wireframe: false,
+                reflectivity: 1,
+                transparent: 0
+            });
+            let floorMech = new THREE.Mesh(floorGeometry, floorMaterial);
+            floorMech.position.x = ($scope.cupboard.width.value / 2) * unitFixation;
+            floorMech.position.z = ($scope.cupboard.deep.value / 2) * unitFixation;
+            floorMech.position.y = -1 * unitFixation;
+            floorMech.receiveShadow = true;
+            scene.add(floorMech);
+            light.position.y = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 2;
+            light.position.x = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 2;
+            light.position.z = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 2;
+            for (holdersCounter = 1; holdersCounter <= 4; holdersCounter++) {
+                scene.add(holder[holdersCounter]);
+            }
             console.log("Vis. Shelves count " + $scope.shelvesCount);
             $scope.shelvesCountOld = $scope.shelvesCount;
             if ($scope.shelvesCount) {
                 $scope.boxCounter = 0;
                 for (shelvesCounter = 0; shelvesCounter <= $scope.shelvesCount; shelvesCounter++) {
-                    shelveYPosition = $scope.cupboard.height.value - (shelvesCounter * $scope.shelveHeight) - 6.25;
-                    shelveGeometry = new THREE.BoxGeometry($scope.cupboard.width.value, 12.5, $scope.cupboard.deep.value);
-                    shelveMaterial = new THREE.MeshBasicMaterial({ color: 0x666666 });
-                    shelveObject = new THREE.Mesh(shelveGeometry, shelveMaterial);
+                    shelveYPosition = ($scope.cupboard.height.value - (shelvesCounter * $scope.shelveHeight) - (shelveHeight / 2));
+                    shelveGeometry = new THREE.BoxGeometry($scope.cupboard.width.value * unitFixation, shelveHeight * unitFixation, $scope.cupboard.deep.value * unitFixation);
+                    shelveObject = new THREE.Mesh(shelveGeometry, material);
                     shelveObject.name = "shelve" + shelvesCounter;
-                    shelveObject.position.set($scope.cupboard.width.value * 0.5 + 1, shelveYPosition, $scope.cupboard.deep.value * -0.5 - 1);
+                    shelveObject.castShadow = true;
+                    shelveObject.receiveShadow = true;
+                    shelveObject.position.set(($scope.cupboard.width.value * 0.5 + 1) * unitFixation, shelveYPosition * unitFixation, ($scope.cupboard.deep.value * -0.5 - 1) * unitFixation);
                     scene.add(shelveObject);
                     if (shelvesCounter > 0) {
-                        boxPlaceWidth = ($scope.cupboard.width.value - 29 * 2) / ($scope.boxCount);
-                        boxPlacementPadding = (boxPlaceWidth - $scope.selectedBox.width) / 2;
-                        boxPlacementMarguin = ($scope.selectedBox.width / 2) + 30;
+                        boxPlaceWidth = (($scope.cupboard.width.value - 29 * 2) / ($scope.boxCount));
+                        boxPlacementPadding = ((boxPlaceWidth - $scope.selectedBox.width) / 2);
+                        boxPlacementMarguin = (($scope.selectedBox.width / 2) + 30);
                         console.log("Ширина посадочного места: " + boxPlaceWidth);
+                        boxMaterial = new THREE.MeshLambertMaterial({
+                            color: 0x8888ff,
+                            roughness: 1,
+                            wireframe: false,
+                            metalness: 0.1,
+                        });
+                        let boxSupGeometry = new THREE.BoxGeometry($scope.selectedBox.width * unitFixation, $scope.selectedBox.height * unitFixation, $scope.selectedBox.deep * unitFixation);
+                        boxSupGeometryMesh = new THREE.Mesh(boxSupGeometry, boxMaterial);
+                        let boxSubGeometry = new THREE.BoxGeometry(($scope.selectedBox.width - 4) * unitFixation, $scope.selectedBox.height * unitFixation, ($scope.selectedBox.deep - 4) * unitFixation);
+                        boxSubGeometryMesh = new THREE.Mesh(boxSubGeometry, boxMaterial);
+                        boxSubGeometryMesh.position.y = 4 * unitFixation;
+                        let boxSupGeometrySubstractor = new ThreeBSP(boxSupGeometryMesh);
+                        let boxSubGeometrySubstractor = new ThreeBSP(boxSubGeometryMesh);
+                        let boxGeometry = boxSupGeometrySubstractor.subtract(boxSubGeometrySubstractor);
                         for (boxCounter = 0; boxCounter < $scope.boxCount; boxCounter++) {
                             $scope.boxCounter++;
-                            boxYPosition = shelveYPosition + 6.25 + ($scope.selectedBox.height / 2);
-                            boxGeometry = new THREE.BoxGeometry($scope.selectedBox.width, $scope.selectedBox.height, $scope.selectedBox.deep);
-                            boxMaterial = new THREE.MeshBasicMaterial({
-                                color: 0x8888ff,
-                                wireframe: true,
-                                transparent: 0.8
-                            });
-                            boxObject = new THREE.Mesh(boxGeometry, boxMaterial);
+                            boxYPosition = (shelveYPosition + (shelveHeight / 2) + ($scope.selectedBox.height / 2));
+                            let boxObject = boxGeometry.toMesh(boxMaterial);
+                            boxObject.geometry.computeVertexNormals();
+                            boxObject.castShadow = true;
+                            boxObject.receiveShadow = true;
                             boxObject.name = "box" + $scope.boxCounter;
-                            boxObject.position.set(boxCounter * boxPlaceWidth + boxPlacementPadding + boxPlacementMarguin, boxYPosition, ($scope.selectedBox.deep / -2) - 1);
+                            boxObject.position.set((boxCounter * boxPlaceWidth + boxPlacementPadding + boxPlacementMarguin) * unitFixation, boxYPosition * unitFixation, (($scope.selectedBox.deep / -2) - 1) * unitFixation);
                             scene.add(boxObject);
                         }
                     }
                 }
             }
-            camera.position.y = $scope.cupboard.height.value;
-            $scope.cameraRadius = Math.sqrt(Math.pow($scope.cupboard.height.value, 2) + Math.pow($scope.cupboard.width.value, 2));
-            camera.position.x = $scope.cameraRadius * Math.cos($scope.angle) * 2;
-            camera.position.z = $scope.cameraRadius * Math.sin($scope.angle) * 2;
-            camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5), ($scope.cupboard.height.value * 0.5), ($scope.cupboard.deep.value * -0.5)));
+            camera.position.y = $scope.cupboard.height.value * unitFixation;
+            $scope.cameraRadius = Math.sqrt(Math.pow($scope.cupboard.height.value, 2) + Math.pow($scope.cupboard.width.value, 2)) * unitFixation;
+            camera.position.x = ($scope.cameraRadius * Math.cos($scope.angle) * 2) * unitFixation;
+            camera.position.z = ($scope.cameraRadius * Math.sin($scope.angle) * 2) * unitFixation;
+            camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5) * unitFixation, ($scope.cupboard.height.value * 0.5) * unitFixation, ($scope.cupboard.deep.value * -0.5) * unitFixation));
         }
     }
     function render() {
@@ -471,7 +525,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             camera.position.z = radius * Math.sin($scope.angle);
             $scope.angle += 0.002;
             calcRad = Math.sqrt(Math.pow(camera.position.x, 2) + Math.pow(camera.position.z, 2));
-            camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5), ($scope.cupboard.height.value * 0.5), ($scope.cupboard.deep.value * -0.5)));
+            camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5) * unitFixation, ($scope.cupboard.height.value * 0.5) * unitFixation, ($scope.cupboard.deep.value * -0.5) * unitFixation));
             requestAnimationFrame(render);
         }
     }
@@ -479,16 +533,31 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         const proportion = 4 / 3;
         let width = document.getElementById("visualization").offsetWidth;
         let height = (width / proportion);
-        camera = new THREE.PerspectiveCamera(30, proportion, 1, 10000);
+        camera = new THREE.PerspectiveCamera(35, proportion, 1, 10000);
         camera.isPerspectiveCamera = false;
         scene = new THREE.Scene();
         scene.add(new THREE.AmbientLight(0xffffff));
-        var light = new THREE.PointLight(0xffffff);
-        light.castShadow = true;
-        light.position.copy(camera.position);
+        let hemiLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.02);
+        hemiLight.intensity = 3.4;
+        scene.add(hemiLight);
+        light = new THREE.PointLight(0xffffff, 1, 100, 2);
+        light.castShadow = false;
+        light.shadowMapWidth = 2048;
+        light.shadowMapHeight = 2048;
+        light.power = 150;
+        light.shadowDarkness = 0.5;
         scene.add(light);
+        geometry = new THREE.SphereGeometry(100, 8, 4);
+        material = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
+        mesh = new THREE.Mesh(geometry, material);
+        mesh.scale.set(0.05, 0.05, 0.05);
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(width, (width / proportion));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMapSoft = true;
+        renderer.physicallyCorrectLights = true;
+        renderer.toneMappingExposure = Math.pow(0.71, 5.0);
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         document.getElementById("visualization").appendChild(renderer.domElement);
     }
     $scope.init = function () {
@@ -528,10 +597,10 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             }
             shelveHeight = 0;
             if (shelveCount > 2) {
-                shelveHeight = Math.floor((currentHeight.value / shelveCount) / 25) * 25;
+                shelveHeight = Math.floor((currentHeight.value / shelveCount) / distanceBetweenHoles) * distanceBetweenHoles;
             }
             else {
-                shelveHeight = Math.floor(($scope.selectedBox.height + 30 + 35) / 25) * 25;
+                shelveHeight = Math.floor(($scope.selectedBox.height + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
             }
             if (shelveHeight < 145) {
                 shelveHeight = 145;
