@@ -3209,6 +3209,14 @@ module THREE {
 		 * Default — 0.0.
 		 */
 		distance: number;
+
+		castShadow: boolean;
+
+		shadowMapWidth: number;
+
+		shadowMapHeight:number;
+
+		power: number;
 	}
 
 	/**
