@@ -667,7 +667,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			if ($scope.cupboard.height.value <= 500) {
 				//  Перфорация стойки
 				//  Создание цилиндра для перфорации
-				cylinderGeometry = new THREE.CylinderGeometry(holderPerforationRadius * unitFixation, holderPerforationRadius * unitFixation, 70 * unitFixation, 5);
+				cylinderGeometry = new THREE.CylinderGeometry(holderPerforationRadius * unitFixation, holderPerforationRadius * unitFixation, 70 * unitFixation, 4);
 
 				subtractCylinderGeometry = new THREE.Mesh(cylinderGeometry, material);
 				subtractCylinderGeometry.position.x = 16 * unitFixation;
@@ -779,6 +779,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 				if ($scope.selectedBox.series === BoxSeries.sk) {
 					console.log("Box SK");
+					let additionalCut = new THREE.BoxGeometry($scope.selectedBox.width * 0.70 * unitFixation, $scope.selectedBox.height * 0.66 * unitFixation, $scope.selectedBox.deep * 0.30 * unitFixation);
+					let additionalCutMesh = new THREE.Mesh(additionalCut, boxMaterial);
+					additionalCutMesh.position.z = ($scope.selectedBox.deep / 2) * unitFixation;
+					additionalCutMesh.position.y = (($scope.selectedBox.height / 2) - ($scope.selectedBox.height * 0.66) / 2) * unitFixation;
+					let additionalCutSubstractor = new ThreeBSP(additionalCutMesh);
+					boxGeometry = boxGeometry.subtract(additionalCutSubstractor);
 				} else {
 					console.log("Box LS");
 				}
@@ -825,12 +831,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 				// }
 			}
 
-
-			// renderer = new THREE.WebGLRenderer({antialias: true});
-			// renderer.setSize(window.innerWidth, window.innerHeight);
-
 			//  Инициализация рендера внутри блока
-			// document.getElementById("visualization").appendChild(renderer.domElement);
 			camera.position.y = $scope.cupboard.height.value * unitFixation;
 
 			// camera.position.x = $scope.cupboard.height.value + $scope.cupboard.width.value;
