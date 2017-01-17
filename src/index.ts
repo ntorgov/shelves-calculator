@@ -497,6 +497,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 	 */
 	$scope.isCalculating = false;
 
+	/**
+	 * Флаг отрендерина ли сцена
+	 * @type {boolean}
+	 */
+	$scope.isRendered = false;
+
 	$scope.oldHeight = 0;
 	$scope.oldWidth = 0;
 	$scope.oldDeep = 0;
@@ -507,6 +513,9 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 	function visualizationInit() {
 
 
+		var additionalCutSubstractor: any;
+		var additionalCutMesh: THREE.Mesh;
+		var additionalCut: THREE.BoxGeometry;
 		var boxObject: any;
 		var boxYPosition: number;
 		var boxGeometry: any;
@@ -758,7 +767,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 				// Вычисление геометрии ящика
 				boxMaterial = new THREE.MeshStandardMaterial({
-					color: 0x2222ff,
+					color: 0x1111ff,
 					wireframe: false,
 					metalness: 0.1,
 				});
@@ -779,14 +788,21 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 				if ($scope.selectedBox.series === BoxSeries.sk) {
 					console.log("Box SK");
-					let additionalCut = new THREE.BoxGeometry($scope.selectedBox.width * 0.70 * unitFixation, $scope.selectedBox.height * 0.66 * unitFixation, $scope.selectedBox.deep * 0.30 * unitFixation);
-					let additionalCutMesh = new THREE.Mesh(additionalCut, boxMaterial);
+					additionalCut = new THREE.BoxGeometry($scope.selectedBox.width * 0.70 * unitFixation, $scope.selectedBox.height * 0.66 * unitFixation, $scope.selectedBox.deep * 0.30 * unitFixation);
+					additionalCutMesh = new THREE.Mesh(additionalCut, boxMaterial);
 					additionalCutMesh.position.z = ($scope.selectedBox.deep / 2) * unitFixation;
 					additionalCutMesh.position.y = (($scope.selectedBox.height / 2) - ($scope.selectedBox.height * 0.66) / 2) * unitFixation;
-					let additionalCutSubstractor = new ThreeBSP(additionalCutMesh);
+					additionalCutSubstractor = new ThreeBSP(additionalCutMesh);
 					boxGeometry = boxGeometry.subtract(additionalCutSubstractor);
 				} else {
 					console.log("Box LS");
+					additionalCut = new THREE.BoxGeometry($scope.selectedBox.width * unitFixation, $scope.selectedBox.height * 0.66 * unitFixation, $scope.selectedBox.deep * 0.66 * unitFixation);
+					additionalCutMesh = new THREE.Mesh(additionalCut, boxMaterial);
+					additionalCutMesh.position.z = ($scope.selectedBox.deep / 2) * unitFixation;
+					additionalCutMesh.position.y = (($scope.selectedBox.height / 2) - ($scope.selectedBox.height * 0.3) / 2) * unitFixation;
+					additionalCutMesh.rotation.x = THREE.Math.degToRad(45);
+					additionalCutSubstractor = new ThreeBSP(additionalCutMesh);
+					boxGeometry = boxGeometry.subtract(additionalCutSubstractor);
 				}
 				//  /геометрия ящика
 
@@ -861,6 +877,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		 */
 		const radius: number = $scope.cameraRadius * 2;
 
+		let centerScene;
+
 		if ($scope.cupboard.width && $scope.cupboard.width.value) {
 
 			renderer.render(scene, camera);
@@ -870,9 +888,13 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 			$scope.angle += 0.002;
 
-			camera.lookAt(new THREE.Vector3(($scope.cupboard.width.value * 0.5) * unitFixation, ($scope.cupboard.height.value * 0.5) * unitFixation, ($scope.cupboard.deep.value * -0.5) * unitFixation));
+			centerScene = new THREE.Vector3(($scope.cupboard.width.value * 0.5) * unitFixation, ($scope.cupboard.height.value * 0.5) * unitFixation, ($scope.cupboard.deep.value * -0.5) * unitFixation);
+
+			camera.lookAt(centerScene);
 
 			requestAnimationFrame(render);
+
+			$scope.isRendered = true;
 		}
 	}
 
@@ -914,7 +936,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		scene.add(new THREE.AmbientLight(0xffffff));
 
 		hemiLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.02);
-		hemiLight.intensity = 00;
+		hemiLight.intensity = 3.4;
 		scene.add(hemiLight);
 
 		light = new THREE.PointLight(0xffffff, 1, 100/*, 2*/);
@@ -1112,9 +1134,20 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			// console.log(shelveArray);
 
 			if ($scope.isVisualizating === false) {
+
 				visualizationInit();
+
+				if ($scope.isRendered === false) {
+
+					render();
+				}
 			}
-			render();
+
+			//if ($scope.isRendered === false) {
+
+				//render();
+			//	$scope.isRendered = true;
+			//}
 
 			// this.Visualization();
 
