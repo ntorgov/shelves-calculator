@@ -1,4 +1,5 @@
 declare let ThreeBSP: any;
+declare let MeshStandardMaterial: any;
 /**
  * Интерфейс для массива ящиков
  * @name BoxObjectInterface
