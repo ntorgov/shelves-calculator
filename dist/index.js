@@ -11,6 +11,7 @@ var BoxColor;
 (function (BoxColor) {
     BoxColor[BoxColor["blue"] = 0] = "blue";
     BoxColor[BoxColor["red"] = 1] = "red";
+    BoxColor[BoxColor["yellow"] = 2] = "yellow";
 })(BoxColor || (BoxColor = {}));
 let light;
 calculatorApplication.controller("calculatorController", function ($scope, $filter) {
@@ -738,3 +739,4 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         this.Calculation();
     };
 });
+//# sourceMappingURL=index.js.map

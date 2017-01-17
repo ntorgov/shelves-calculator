@@ -1,3 +1,4 @@
+declare let ThreeBSP: any;
 /**
  * Интерфейс для массива ящиков
  * @name BoxObjectInterface

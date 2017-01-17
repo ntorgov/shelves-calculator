@@ -1,9 +1,8 @@
 ///<reference path="../typings/three.d.ts"/>
-///<reference path="../typings/calculator.d.ts"/>
+///<reference path="index.d.ts"/>
 /**
  * Created by Bagdad on 13.01.2017.
  */
-declare let ThreeBSP: any;
 import Color = THREE.Color;
 import BufferGeometry = THREE.BufferGeometry;
 
@@ -31,7 +30,8 @@ const enum BoxSeries {
 const enum BoxColor {
 
 	blue = 0,
-	red = 1
+	red = 1,
+	yellow = 2
 }
 
 /**
