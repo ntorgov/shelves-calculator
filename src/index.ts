@@ -881,10 +881,10 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 		if ($scope.cupboard.width && $scope.cupboard.width.value) {
 
-			renderer.render(scene, camera);
+			renderer.render(scene, camera); //camera
 
-			camera.position.x = radius * Math.cos($scope.angle);
-			camera.position.z = radius * Math.sin($scope.angle);
+			camera.position.x = radius * Math.cos($scope.angle)+ ($scope.cupboard.width.value * 0.5) * unitFixation;
+			camera.position.z = radius * Math.sin($scope.angle)+ ($scope.cupboard.deep.value * -0.5) * unitFixation;
 
 			$scope.angle += 0.002;
 
@@ -908,7 +908,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		 * Пропорция блока с рендером
 		 * @type {number}
 		 */
-		const proportion: number = 4 / 3;
+		const proportion: number = 4 / 3.8;
 
 		/**
 		 * Ширина блока
@@ -928,10 +928,10 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		 */
 		let hemiLight: THREE.HemisphereLight;
 
+		scene = new THREE.Scene();
+
 		camera = new THREE.PerspectiveCamera(40, proportion, 1, 5000);
 		camera.isPerspectiveCamera = false;
-
-		scene = new THREE.Scene();
 
 		scene.add(new THREE.AmbientLight(0xffffff));
 
@@ -983,6 +983,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 	 */
 	$scope.Calculation = function () {
 
+		var boxArray: Array;
 		/**
 		 * Количество полок у стеллажа
 		 * @type {number}
@@ -1097,7 +1098,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 					shelveArray.push(shelve);
 				}
 
-				var boxArray = [];
+				boxArray = [];
 
 				//  Тут мы рисуем ящики на полках
 				//  И у нас реальная проблема с визуализацией
@@ -1142,14 +1143,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 					render();
 				}
 			}
-
-			//if ($scope.isRendered === false) {
-
-				//render();
-			//	$scope.isRendered = true;
-			//}
-
-			// this.Visualization();
 
 			// ***********************************************************************************************
 			if (angular.isObject(currentDeep)) {
