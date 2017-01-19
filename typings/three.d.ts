@@ -3842,6 +3842,57 @@ module THREE {
 		clone(): MeshLambertMaterial;
 	}
 
+	export interface MeshStandardMaterialParameters {
+		color?: number;
+		ambient?: number;
+		emissive?: number;
+		opacity?: number;
+		map?: Texture;
+		lightMap?: Texture;
+		specularMap?: Texture;
+		envMap?: Texture;
+		combine?: Combine;
+		reflectivity?: number;
+		refractionRatio?: number;
+		shading?: Shading;
+		blending?: Blending;
+		depthTest?: boolean;
+		wireframe?: boolean;
+		wireframeLinewidth?: number;
+		vertexColors?: Colors;
+		skinning?: boolean;
+		morphTargets?: boolean;
+		morphNormals?: boolean;
+		fog?: boolean;
+	}
+
+	export class MeshStandardMaterial extends Material {
+		constructor(parameters?: MeshStandardMaterialParameters);
+		color: Color;
+		ambient: Color;
+		emissive: Color;
+		wrapAround: boolean;
+		wrapRGB: Vector3;
+		map: Texture;
+		lightMap: Texture;
+		specularMap: Texture;
+		envMap: Texture;
+		combine: Combine;
+		reflectivity: number;
+		refractionRatio: number;
+		fog: boolean;
+		shading: Shading;
+		wireframe: boolean;
+		wireframeLinewidth: number;
+		wireframeLinecap: string;
+		wireframeLinejoin: string;
+		vertexColors: Colors;
+		skinning: boolean;
+		morphTargets: boolean;
+		morphNormals: boolean;
+		clone(): MeshStandardMaterial;
+	}
+
 	export interface MeshNormalMaterialParameters {
 		opacity?: number;
 		shading?: Shading;
@@ -4050,6 +4101,7 @@ module THREE {
 		constructor(geometry?: Geometry, material?: MeshDepthMaterial);
 		constructor(geometry?: Geometry, material?: MeshFaceMaterial);
 		constructor(geometry?: Geometry, material?: MeshLambertMaterial);
+		constructor(geometry?: Geometry, material?: MeshStandardMaterial);
 		constructor(geometry?: Geometry, material?: MeshNormalMaterial);
 		constructor(geometry?: Geometry, material?: MeshPhongMaterial);
 		constructor(geometry?: Geometry, material?: ShaderMaterial);
@@ -4058,6 +4110,7 @@ module THREE {
 		constructor(geometry?: BufferGeometry , material?: MeshDepthMaterial);
 		constructor(geometry?: BufferGeometry , material?: MeshFaceMaterial);
 		constructor(geometry?: BufferGeometry , material?: MeshLambertMaterial);
+		constructor(geometry?: BufferGeometry , material?: MeshStandardMaterial);
 		constructor(geometry?: BufferGeometry , material?: MeshNormalMaterial);
 		constructor(geometry?: BufferGeometry , material?: MeshPhongMaterial);
 		constructor(geometry?: BufferGeometry , material?: ShaderMaterial);

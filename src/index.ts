@@ -512,17 +512,18 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 	 */
 	function visualizationInit() {
 
-
-		var additionalCutSubstractor: any;
-		var additionalCutMesh: THREE.Mesh;
-		var additionalCut: THREE.BoxGeometry;
-		var boxObject: any;
-		var boxYPosition: number;
-		var boxGeometry: any;
-		var boxSubGeometrySubstractor: any;
-		var boxSupGeometrySubstractor: any;
-		var boxSubGeometryMesh: THREE.Mesh;
-		var boxSubGeometry: THREE.BoxGeometry;
+		let secondCylinderBSP: any;
+		let firstCylinderBSP: any;
+		let additionalCutSubtractor: any;
+		let additionalCutMesh: THREE.Mesh;
+		let additionalCut: THREE.BoxGeometry;
+		let boxObject: any;
+		let boxYPosition: number;
+		let boxGeometry: any;
+		let boxSubGeometrySubstractor: any;
+		let boxSupGeometrySubstractor: any;
+		let boxSubGeometryMesh: THREE.Mesh;
+		let boxSubGeometry: THREE.BoxGeometry;
 		/**
 		 * Меш внешнего куба для ящиков
 		 * @type {THREE.Mesh}
@@ -552,7 +553,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		let shelvesCounter: number, holdersCounter: number, boxCounter: number;
 		let selectedObject;
 		let shelveYPosition: number;
-		let shelveMaterial, shelveGeometry, shelveObject;
+		let shelveGeometry, shelveObject;
 
 		let perforatedHolder;
 
@@ -685,20 +686,20 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 					subtractCylinderGeometry.position.z = ((perforationCounter * distanceBetweenHoles) + (shelveHeight / 2)) * unitFixation;
 
-					let cylinderBSP1 = new ThreeBSP(subtractCylinderGeometry);
+					firstCylinderBSP = new ThreeBSP(subtractCylinderGeometry);
 
 					subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(90);
 					subtractCylinderGeometry.position.y = 16 * unitFixation;
 
-					let cylinderBSP2 = new ThreeBSP(subtractCylinderGeometry);
+					secondCylinderBSP = new ThreeBSP(subtractCylinderGeometry);
 
-					perforatedHolder = perforatedHolder.subtract(cylinderBSP1.union(cylinderBSP2));
+					perforatedHolder = perforatedHolder.subtract(firstCylinderBSP.union(secondCylinderBSP));
 
 					subtractCylinderGeometry.position.y = 0;
 					subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(0);
 
-					delete cylinderBSP1;
-					delete cylinderBSP2;
+					delete firstCylinderBSP;
+					delete secondCylinderBSP;
 				}
 				//  Конец перфорации стойки
 			}
@@ -711,8 +712,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 				holder[holdersCounter].castShadow = true;
 				holder[holdersCounter].receiveShadow = true;
 				holder[holdersCounter].rotation.x = THREE.Math.degToRad(-90);
-
-				// scene.add(holder[holdersCounter]);
 			}
 
 			// delete perforatedObject;
@@ -723,17 +722,14 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 			//  Вторая стойка. Повернута на 90 и стоит на расстоянии ширины полки
 			holder[2].position.set(($scope.cupboard.width.value + 2) * unitFixation, 0, 0);
-			// holder[2].rotation.x = THREE.Math.degToRad(-90);
 			holder[2].rotation.z = THREE.Math.degToRad(90);
 
 			//  Третья стойка. Повернута на 180 и стоит на расстоянии ширины полки и на ее глубине
 			holder[3].position.set(($scope.cupboard.width.value + 2) * unitFixation, 0, ($scope.cupboard.deep.value * -1 - 2) * unitFixation);
-			// holder[3].rotation.x = THREE.Math.degToRad(-90);
 			holder[3].rotation.z = THREE.Math.degToRad(180);
 
 			//  Четвертая стойка. Повернута на 270 и стоит на расстоянии глубины полки
 			holder[4].position.set(0, 0, ($scope.cupboard.deep.value * -1 - 2) * unitFixation);
-			// holder[4].rotation.x = THREE.Math.degToRad(-90);
 			holder[4].rotation.z = THREE.Math.degToRad(270);
 
 			light.position.y = ($scope.cupboard.width.value + $scope.cupboard.deep.value + $scope.cupboard.height.value) * unitFixation * 3;
@@ -792,8 +788,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 					additionalCutMesh = new THREE.Mesh(additionalCut, boxMaterial);
 					additionalCutMesh.position.z = ($scope.selectedBox.deep / 2) * unitFixation;
 					additionalCutMesh.position.y = (($scope.selectedBox.height / 2) - ($scope.selectedBox.height * 0.66) / 2) * unitFixation;
-					additionalCutSubstractor = new ThreeBSP(additionalCutMesh);
-					boxGeometry = boxGeometry.subtract(additionalCutSubstractor);
+					additionalCutSubtractor = new ThreeBSP(additionalCutMesh);
+					boxGeometry = boxGeometry.subtract(additionalCutSubtractor);
 				} else {
 					console.log("Box LS");
 					additionalCut = new THREE.BoxGeometry($scope.selectedBox.width * unitFixation, $scope.selectedBox.height * 0.66 * unitFixation, $scope.selectedBox.deep * 0.66 * unitFixation);
@@ -801,8 +797,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 					additionalCutMesh.position.z = ($scope.selectedBox.deep / 2) * unitFixation;
 					additionalCutMesh.position.y = (($scope.selectedBox.height / 2) - ($scope.selectedBox.height * 0.3) / 2) * unitFixation;
 					additionalCutMesh.rotation.x = THREE.Math.degToRad(45);
-					additionalCutSubstractor = new ThreeBSP(additionalCutMesh);
-					boxGeometry = boxGeometry.subtract(additionalCutSubstractor);
+					additionalCutSubtractor = new ThreeBSP(additionalCutMesh);
+					boxGeometry = boxGeometry.subtract(additionalCutSubtractor);
 				}
 				//  /геометрия ящика
 
@@ -817,8 +813,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 					shelveObject.receiveShadow = true;
 					shelveObject.position.set(($scope.cupboard.width.value * 0.5 + 1) * unitFixation, shelveYPosition * unitFixation, ($scope.cupboard.deep.value * -0.5 - 1) * unitFixation);
 					scene.add(shelveObject);
-
-					// console.log($scope.selectedBox);
 
 					//  Отрисовываем ящики
 					if (shelvesCounter > 0) {
@@ -881,10 +875,10 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 		if ($scope.cupboard.width && $scope.cupboard.width.value) {
 
-			renderer.render(scene, camera); //camera
+			renderer.render(scene, camera);
 
-			camera.position.x = radius * Math.cos($scope.angle)+ ($scope.cupboard.width.value * 0.5) * unitFixation;
-			camera.position.z = radius * Math.sin($scope.angle)+ ($scope.cupboard.deep.value * -0.5) * unitFixation;
+			camera.position.x = radius * Math.cos($scope.angle) + ($scope.cupboard.width.value * 0.5) * unitFixation;
+			camera.position.z = radius * Math.sin($scope.angle) + ($scope.cupboard.deep.value * -0.5) * unitFixation;
 
 			$scope.angle += 0.002;
 
@@ -1184,7 +1178,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 				filterResult = $filter("filter")($scope.boxes, {
 					deep: currentDeep.value
 				}, function (actual, expected) {
-					if ((actual == expected - 50) || (actual == expected)) {
+					if ((actual === expected - 50) || (actual === expected)) {
 						return true;
 					}
 					return false;
@@ -1200,50 +1194,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 //  ************************************************************************************************************
 
 	};
-
-
-	/*
-	 $scope.Visualization = function () {
-	 let gl; // глобальная переменная для контекста WebGL
-
-	 //function start() {
-	 const canvas = document.getElementById("visualization");
-
-	 gl = this.initWebGL(canvas);      // инициализация контекста GL
-
-	 // продолжать только если WebGL доступен и работает
-
-	 if (gl) {
-	 gl.clearColor(0.7, 0.7, 0.7, 1.0);                      // установить в качестве цвета очистки буфера цвета черный, полная непрозрачность
-	 gl.enable(gl.DEPTH_TEST);                               // включает использование буфера глубины
-	 gl.depthFunc(gl.LEQUAL);                                // определяет работу буфера глубины: более ближние объекты перекрывают дальние
-	 gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);      // очистить буфер цвета и буфер глубины.
-	 }
-	 //}
-	 };
-
-	 $scope.initWebGL = function (canvas) {
-
-	 // @todo перенести в скоп
-	 gl = null;
-
-	 try {
-	 // Попытаться получить стандартный контекст. Если не получится, попробовать получить экспериментальный.
-	 gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-	 }
-	 catch (e) {
-	 }
-
-	 // Если мы не получили контекст GL, завершить работу
-	 if (!gl) {
-	 alert("Unable to initialize WebGL. Your browser may not support it.");
-	 gl = null;
-	 }
-
-	 return gl;
-	 };
-	 */
-
 
 	/**
 	 * Обработчик клика по ящику
