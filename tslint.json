@@ -34,6 +34,10 @@
             true,
             "ban-keywords"
         ],
+	    "func-names": [
+		    "error",
+		    "never"
+	    ],
         "whitespace": [
             true,
             "check-branch",

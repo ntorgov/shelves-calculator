@@ -35,6 +35,10 @@
 		],
 		"no-case-declarations": [
 			1
+		],
+		"func-names": [
+			"error",
+			"never"
 		]
 	}
 }

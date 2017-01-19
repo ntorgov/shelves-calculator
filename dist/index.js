@@ -396,26 +396,29 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     $scope.oldWidth = 0;
     $scope.oldDeep = 0;
     function visualizationInit() {
-        var additionalCutSubstractor;
-        var additionalCutMesh;
-        var additionalCut;
-        var boxObject;
-        var boxYPosition;
-        var boxGeometry;
-        var boxSubGeometrySubstractor;
-        var boxSupGeometrySubstractor;
-        var boxSubGeometryMesh;
-        var boxSubGeometry;
+        let secondCylinderBSP;
+        let firstCylinderBSP;
+        let additionalCutSubtractor;
+        let additionalCutMesh;
+        let additionalCut;
+        let boxObject;
+        let boxYPosition;
+        let boxGeometry;
+        let boxSubGeometrySubstractor;
+        let boxSupGeometrySubstractor;
+        let boxSubGeometryMesh;
+        let boxSubGeometry;
         let boxSupGeometryMesh;
         let boxSupGeometry;
         let boxPlacementPadding;
         let boxPlacementMarguin;
         let boxPlaceWidth;
         let boxMaterial;
+        let glassMaterial;
         let shelvesCounter, holdersCounter, boxCounter;
         let selectedObject;
         let shelveYPosition;
-        let shelveMaterial, shelveGeometry, shelveObject;
+        let shelveGeometry, shelveObject;
         let perforatedHolder;
         let cylinderBSP;
         let cylinderGeometry;
@@ -431,9 +434,9 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             material = new THREE.MeshStandardMaterial({
                 color: 0x777777,
                 wireframe: false,
-                reflectivity: 1,
-                transparent: 0,
-                metalness: 0.25,
+                reflectivity: true,
+                transparent: false,
+                metalness: false
             });
             holderShape = new THREE.Shape();
             holderShape.moveTo(0, 0);
@@ -474,15 +477,15 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                 subtractCylinderGeometry.position.x = 16 * unitFixation;
                 for (perforationCounter = 0; perforationCounter < ($scope.cupboard.height.value / distanceBetweenHoles); perforationCounter++) {
                     subtractCylinderGeometry.position.z = ((perforationCounter * distanceBetweenHoles) + (shelveHeight / 2)) * unitFixation;
-                    let cylinderBSP1 = new ThreeBSP(subtractCylinderGeometry);
+                    firstCylinderBSP = new ThreeBSP(subtractCylinderGeometry);
                     subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(90);
                     subtractCylinderGeometry.position.y = 16 * unitFixation;
-                    let cylinderBSP2 = new ThreeBSP(subtractCylinderGeometry);
-                    perforatedHolder = perforatedHolder.subtract(cylinderBSP1.union(cylinderBSP2));
+                    secondCylinderBSP = new ThreeBSP(subtractCylinderGeometry);
+                    perforatedHolder = perforatedHolder.subtract(firstCylinderBSP.union(secondCylinderBSP));
                     subtractCylinderGeometry.position.y = 0;
                     subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(0);
-                    delete cylinderBSP1;
-                    delete cylinderBSP2;
+                    delete firstCylinderBSP;
+                    delete secondCylinderBSP;
                 }
             }
             for (holdersCounter = 1; holdersCounter <= 4; holdersCounter++) {
@@ -518,7 +521,14 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                 boxMaterial = new THREE.MeshStandardMaterial({
                     color: 0x1111ff,
                     wireframe: false,
-                    metalness: 0.1,
+                    transparent: false,
+                    opacity: 1
+                });
+                glassMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x9999ff,
+                    wireframe: false,
+                    transparent: true,
+                    opacity: 0.3
                 });
                 boxSupGeometry = new THREE.BoxGeometry($scope.selectedBox.width * unitFixation, $scope.selectedBox.height * unitFixation, $scope.selectedBox.deep * unitFixation);
                 boxSupGeometryMesh = new THREE.Mesh(boxSupGeometry, boxMaterial);
@@ -528,14 +538,21 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                 boxSupGeometrySubstractor = new ThreeBSP(boxSupGeometryMesh);
                 boxSubGeometrySubstractor = new ThreeBSP(boxSubGeometryMesh);
                 boxGeometry = boxSupGeometrySubstractor.subtract(boxSubGeometrySubstractor);
+                let boxGeometryGroup = new THREE.Group();
                 if ($scope.selectedBox.series === 0) {
                     console.log("Box SK");
                     additionalCut = new THREE.BoxGeometry($scope.selectedBox.width * 0.70 * unitFixation, $scope.selectedBox.height * 0.66 * unitFixation, $scope.selectedBox.deep * 0.30 * unitFixation);
                     additionalCutMesh = new THREE.Mesh(additionalCut, boxMaterial);
                     additionalCutMesh.position.z = ($scope.selectedBox.deep / 2) * unitFixation;
                     additionalCutMesh.position.y = (($scope.selectedBox.height / 2) - ($scope.selectedBox.height * 0.66) / 2) * unitFixation;
-                    additionalCutSubstractor = new ThreeBSP(additionalCutMesh);
-                    boxGeometry = boxGeometry.subtract(additionalCutSubstractor);
+                    additionalCutSubtractor = new ThreeBSP(additionalCutMesh);
+                    boxGeometry = boxGeometry.subtract(additionalCutSubtractor);
+                    let glassPanel = new THREE.BoxGeometry($scope.selectedBox.width * 0.70 * unitFixation, $scope.selectedBox.height * 0.66 * unitFixation, unitFixation);
+                    let glassPanelMech = new THREE.Mesh(glassPanel, glassMaterial);
+                    glassPanelMech.position.z = ($scope.selectedBox.deep / 2) * unitFixation;
+                    glassPanelMech.position.y = (($scope.selectedBox.height / 2) - ($scope.selectedBox.height * 0.66) / 2) * unitFixation;
+                    boxGeometryGroup.add(boxGeometry.toMesh(boxMaterial));
+                    boxGeometryGroup.add(glassPanelMech);
                 }
                 else {
                     console.log("Box LS");
@@ -544,8 +561,9 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                     additionalCutMesh.position.z = ($scope.selectedBox.deep / 2) * unitFixation;
                     additionalCutMesh.position.y = (($scope.selectedBox.height / 2) - ($scope.selectedBox.height * 0.3) / 2) * unitFixation;
                     additionalCutMesh.rotation.x = THREE.Math.degToRad(45);
-                    additionalCutSubstractor = new ThreeBSP(additionalCutMesh);
-                    boxGeometry = boxGeometry.subtract(additionalCutSubstractor);
+                    additionalCutSubtractor = new ThreeBSP(additionalCutMesh);
+                    boxGeometry = boxGeometry.subtract(additionalCutSubtractor);
+                    boxGeometryGroup.add(boxGeometry.toMesh(boxMaterial));
                 }
                 for (shelvesCounter = 0; shelvesCounter <= $scope.shelvesCount; shelvesCounter++) {
                     shelveYPosition = ($scope.cupboard.height.value - (shelvesCounter * $scope.shelveHeight) - (shelveHeight / 2));
@@ -556,17 +574,15 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                     shelveObject.position.set(($scope.cupboard.width.value * 0.5 + 1) * unitFixation, shelveYPosition * unitFixation, ($scope.cupboard.deep.value * -0.5 - 1) * unitFixation);
                     scene.add(shelveObject);
                     if (shelvesCounter > 0) {
+                        let localBoxGeometry = [];
                         for (boxCounter = 0; boxCounter < $scope.boxCount; boxCounter++) {
-                            let localBoxGeometry = boxGeometry;
+                            localBoxGeometry[boxCounter] = boxGeometryGroup.clone();
                             $scope.boxCounter++;
                             boxYPosition = (shelveYPosition + (shelveHeight / 2) + ($scope.selectedBox.height / 2));
-                            boxObject = localBoxGeometry.toMesh(boxMaterial);
-                            boxObject.geometry.computeVertexNormals();
-                            boxObject.castShadow = true;
-                            boxObject.receiveShadow = true;
-                            boxObject.name = "box" + $scope.boxCounter;
-                            boxObject.position.set((boxCounter * boxPlaceWidth + boxPlacementPadding + boxPlacementMarguin) * unitFixation, boxYPosition * unitFixation, (($scope.selectedBox.deep / -2) - 1) * unitFixation);
-                            scene.add(boxObject);
+                            localBoxGeometry[boxCounter].name = "box" + $scope.boxCounter;
+                            localBoxGeometry[boxCounter].position.set((boxCounter * boxPlaceWidth + boxPlacementPadding + boxPlacementMarguin) * unitFixation, boxYPosition * unitFixation, (($scope.selectedBox.deep / -2) - 1) * unitFixation);
+                            console.log(localBoxGeometry[boxCounter].position);
+                            scene.add(localBoxGeometry[boxCounter]);
                         }
                     }
                 }
@@ -685,37 +701,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                 console.log("Предполагаемое количество ящиков: " + boxCount);
                 currentQuantity = shelveCount;
                 shelveArray = [];
-                for (n = 0; n < currentQuantity; n++) {
-                    shelve = {
-                        height: 30 * scale + "px",
-                        width: (currentWidth.value * scale) + (30 * scale) + "px",
-                        left: 0,
-                        top: ($scope.drawHeight * 0.025) + (n * shelveHeight * scale) + "px"
-                    };
-                    shelveArray.push(shelve);
-                }
-                boxArray = [];
-                for (shelve = 1; shelve < currentQuantity; shelve++) {
-                    for (box = 0; box < boxCount; box++) {
-                        placementWidth = (currentWidth.value - 60) / boxCount * scale;
-                        offset = Math.abs((placementWidth - (($scope.selectedBox.width * 100 / 117) * scale)) / 1);
-                        console.log(placementWidth + " " + " " + (($scope.selectedBox.width * 100 / 117) * scale) + " " + offset);
-                        newBox = {
-                            style: {
-                                top: (((shelve * shelveHeight) - ($scope.selectedBox.height - 15)) * scale) + "px",
-                                left: (30 * scale) + offset + (placementWidth * box) + "px",
-                                width: (($scope.selectedBox.width * 100 / 117) * scale) + "px",
-                                height: (($scope.selectedBox.height * 100 / 90) * scale) + "px"
-                            },
-                            path: {
-                                xscale: (($scope.selectedBox.width * 100 / 117) / 117) * scale,
-                                yscale: (($scope.selectedBox.height * 100 / 90) / 90) * scale
-                            },
-                            width: $scope.selectedBox.width
-                        };
-                        boxArray.push(newBox);
-                    }
-                }
             }
             if ($scope.isVisualizating === false) {
                 visualizationInit();
@@ -724,35 +709,14 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                 }
             }
             if (angular.isObject(currentDeep)) {
-                priceHeight = currentHeight.price;
-                priceShelve = currentDeep.price;
-                $scope.drawing = {
-                    stoyka1: {
-                        height: currentHeight.value * scale + "px",
-                        width: 30 * scale + "px",
-                        left: 0 + "px",
-                        "background-color": 0,
-                        top: $scope.drawHeight * 0.025 + "px"
-                    },
-                    stoyka2: {
-                        height: currentHeight.value * scale + "px",
-                        width: 30 * scale + "px",
-                        left: currentWidth.value * scale + "px",
-                        "background-color": 0,
-                        top: $scope.drawHeight * 0.025 + "px"
-                    },
-                    shelves: shelveArray,
-                    boxes: boxArray
-                };
-                console.log(currentDeep.value);
-                var thisDeep = currentDeep.value;
                 filterResult = $filter("filter")($scope.boxes, {
                     deep: currentDeep.value
                 }, function (actual, expected) {
-                    if ((actual == expected - 50) || (actual == expected)) {
-                        return true;
+                    let result = false;
+                    if ((actual === expected - 50) || (actual === expected)) {
+                        result = true;
                     }
-                    return false;
+                    return result;
                 });
                 $scope.boxResult = $filter("orderBy")(filterResult, ["-deep", "+sort"]);
                 console.log($scope.boxResult);
@@ -760,34 +724,33 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             $scope.isCalculating = false;
         }
     };
-    $scope.BoxClick = function (item) {
+    $scope.BoxClick = function boxClicker(item) {
         $scope.selectedBox = item;
         $scope.boxPrice = $scope.boxCount * $scope.shelvesCount * item.price;
         $scope.totalPrice += $scope.boxPrice;
         this.Calculation();
     };
-    $scope.ChangeDeep = function () {
+    $scope.ChangeDeep = function deepChanger() {
         if ($scope.cupboard.deep !== $scope.oldDeep) {
             this.Calculation();
         }
     };
-    $scope.ChangeWidth = function () {
+    $scope.ChangeWidth = function weightChanger() {
         $scope.deeps = $scope.cupboard.width.deeps;
         $scope.cupboard.deep = $scope.deeps[0];
         if ($scope.cupboard.width !== $scope.oldWeight) {
             this.Calculation();
         }
     };
-    $scope.ChangeHeight = function () {
+    $scope.ChangeHeight = function heightChanger() {
         let n;
-        let shelvesArray;
+        let shelvesArray = [];
         let shelves = [];
-        angular.forEach($scope.heights, function (value, key) {
+        angular.forEach($scope.heights, function (value) {
             if (value.value === $scope.cupboard.height) {
                 this.push(value.shelves);
             }
         }, shelves);
-        shelvesArray = [];
         for (n = $scope.cupboard.height.shelves.min; n <= $scope.cupboard.height.shelves.max; n++) {
             shelvesArray.push({ value: n, title: n });
         }
