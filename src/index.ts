@@ -1,4 +1,5 @@
 ///<reference path="../typings/three.d.ts"/>
+///<reference path="../typings/angular.d.ts"/>
 ///<reference path="index.d.ts"/>
 /**
  * Created by Bagdad on 13.01.2017.
@@ -1079,49 +1080,51 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 				shelveArray = [];
 
-				/********************
+				/* *******************
 				 * ******************
+				 * /
+				 for (n = 0; n < currentQuantity; n++) {
+				 shelve = {
+				 height: 30 * scale + "px",
+				 width: (currentWidth.value * scale) + (30 * scale) + "px",
+				 left: 0,
+				 top: ($scope.drawHeight * 0.025) + (n * shelveHeight * scale) + "px"
+				 };
+				 shelveArray.push(shelve);
+				 }
+
+				 boxArray = [];
 				 */
-				for (n = 0; n < currentQuantity; n++) {
-					shelve = {
-						height: 30 * scale + "px",
-						width: (currentWidth.value * scale) + (30 * scale) + "px",
-						left: 0,
-						top: ($scope.drawHeight * 0.025) + (n * shelveHeight * scale) + "px"
-					};
-					shelveArray.push(shelve);
-				}
-
-				boxArray = [];
-
 				//  Тут мы рисуем ящики на полках
 				//  И у нас реальная проблема с визуализацией
-				for (shelve = 1; shelve < currentQuantity; shelve++) {
+				/*
+				 for (shelve = 1; shelve < currentQuantity; shelve++) {
 
-					for (box = 0; box < boxCount; box++) {
+				 for (box = 0; box < boxCount; box++) {
 
-						placementWidth = (currentWidth.value - 60) / boxCount * scale;
-						offset = Math.abs((placementWidth - (($scope.selectedBox.width * 100 / 117) * scale )) / 1);
-						console.log(placementWidth + " " + " " + (($scope.selectedBox.width * 100 / 117) * scale ) + " " + offset);
-						newBox = {
-							style: {
-								top: (((shelve * shelveHeight) - ($scope.selectedBox.height - 15)) * scale) + "px",
-								left: (30 * scale) + offset + (placementWidth * box) + "px",
-								width: (($scope.selectedBox.width * 100 / 117) * scale ) + "px",
-								height: (($scope.selectedBox.height * 100 / 90) * scale ) + "px"//,
-								// border: "1px solid"
-							},
-							path: {
-								xscale: (($scope.selectedBox.width * 100 / 117) / 117 ) * scale,
-								yscale: (($scope.selectedBox.height * 100 / 90) / 90) * scale
-							},
-							width: $scope.selectedBox.width
-						};
+				 placementWidth = (currentWidth.value - 60) / boxCount * scale;
+				 offset = Math.abs((placementWidth - (($scope.selectedBox.width * 100 / 117) * scale )));
+				 console.log(placementWidth + " " + " " + (($scope.selectedBox.width * 100 / 117) * scale ) + " " + offset);
+				 newBox = {
+				 style: {
+				 top: (((shelve * shelveHeight) - ($scope.selectedBox.height - 15)) * scale) + "px",
+				 left: (30 * scale) + offset + (placementWidth * box) + "px",
+				 width: (($scope.selectedBox.width * 100 / 117) * scale ) + "px",
+				 height: (($scope.selectedBox.height * 100 / 90) * scale ) + "px"
+				 // border: "1px solid"
+				 },
+				 path: {
+				 xscale: (($scope.selectedBox.width * 100 / 117) / 117 ) * scale,
+				 yscale: (($scope.selectedBox.height * 100 / 90) / 90) * scale
+				 },
+				 width: $scope.selectedBox.width
+				 };
 
-						boxArray.push(newBox);
-					}
-				}
-				/**************************
+				 boxArray.push(newBox);
+				 }
+				 }
+				 */
+				/* *************************
 				 *
 				 */
 			}
@@ -1141,31 +1144,32 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			// ***********************************************************************************************
 			if (angular.isObject(currentDeep)) {
 
-				priceHeight = currentHeight.price;
-				priceShelve = currentDeep.price;
+				/*
+				 priceHeight = currentHeight.price;
+				 priceShelve = currentDeep.price;
 
-				$scope.drawing = {
-					stoyka1: {
-						height: currentHeight.value * scale + "px",
-						width: 30 * scale + "px",
-						left: 0 + "px",
-						"background-color": BoxColor.blue,
-						top: $scope.drawHeight * 0.025 + "px"
-					},
-					stoyka2: {
-						height: currentHeight.value * scale + "px",
-						width: 30 * scale + "px",
-						left: currentWidth.value * scale + "px",
-						"background-color": BoxColor.blue,
-						top: $scope.drawHeight * 0.025 + "px"
-					},
-					shelves: shelveArray,
-					boxes: boxArray
-				};
+				 $scope.drawing = {
+				 stoyka1: {
+				 height: currentHeight.value * scale + "px",
+				 width: 30 * scale + "px",
+				 left: 0 + "px",
+				 "background-color": BoxColor.blue,
+				 top: $scope.drawHeight * 0.025 + "px"
+				 },
+				 stoyka2: {
+				 height: currentHeight.value * scale + "px",
+				 width: 30 * scale + "px",
+				 left: currentWidth.value * scale + "px",
+				 "background-color": BoxColor.blue,
+				 top: $scope.drawHeight * 0.025 + "px"
+				 },
+				 shelves: shelveArray,
+				 boxes: boxArray
+				 };
 
-				console.log(currentDeep.value);
-				var thisDeep = currentDeep.value;
-
+				 console.log(currentDeep.value);
+				 var thisDeep = currentDeep.value;
+				 */
 				//  Берем только контейнеры, которые подходят по высоте
 				/*
 				 filterResult = $filter("filter")($scope.boxes, {
@@ -1174,15 +1178,26 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 				 return actual <= expected;
 				 });
 				 */
+
 				//  Берем контейнеры, которые подходят по глубине
 				filterResult = $filter("filter")($scope.boxes, {
 					deep: currentDeep.value
 				}, function (actual, expected) {
+
+					/**
+					 * Результат выполнения функции
+					 * @type {boolean}
+					 */
+					let result: boolean = false;
+
 					if ((actual === expected - 50) || (actual === expected)) {
-						return true;
+
+						result = true;
 					}
-					return false;
+
+					return result;
 				});
+
 				$scope.boxResult = $filter("orderBy")(filterResult, ["-deep", "+sort"]);
 				console.log($scope.boxResult);
 
@@ -1197,9 +1212,9 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 	/**
 	 * Обработчик клика по ящику
-	 * @param {Object<BoxObjectInterface>} item Объект коробки
+	 * @param {BoxObjectInterface} item Объект коробки
 	 */
-	$scope.BoxClick = function (item: BoxObjectInterface) {
+	$scope.BoxClick = function (item: BoxObjectInterface): void {
 
 		$scope.selectedBox = item;
 		$scope.boxPrice = $scope.boxCount * $scope.shelvesCount * item.price;
