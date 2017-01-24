@@ -1,0 +1,14 @@
+#drawings, #visualization {
+	padding: 2%;
+	display: inline-block;
+	width: 100%;
+	position: relative;
+}
+
+.box-item {
+	cursor: pointer !important;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+	display: none !important;
+}
