@@ -713,6 +713,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     $scope.ChangeDeep = function deepChanger() {
         if ($scope.cupboard.deep !== $scope.oldDeep) {
             $scope.selectedBox = undefined;
+            $scope.shelvesCount = undefined;
             this.Calculation();
         }
     };

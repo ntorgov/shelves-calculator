@@ -1123,6 +1123,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		if ($scope.cupboard.deep !== $scope.oldDeep) {
 
 			$scope.selectedBox = undefined;
+			$scope.shelvesCount = undefined;
 
 			this.Calculation();
 		}
