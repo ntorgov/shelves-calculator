@@ -22,7 +22,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     const displayHeight = 400;
     const boxesArray = [
         {
-
             id: "12.330.65",
             title: "Контейнер sk 3109",
             price: 91.0,
@@ -36,7 +35,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             series: 0
         },
         {
-
             id: "12.331.65",
             title: "Контейнер sk 31509",
             price: 106.0,
@@ -48,9 +46,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             url: "http://www.agropak.net/hgfhgf/kontejner-sk-31509/",
             color: 0,
             series: 0
-        },
-        {
-
+        }, {
             id: "12.332.65",
             title: "Контейнер sk 3209",
             price: 140.0,
@@ -64,7 +60,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             series: 0
         },
         {
-
             id: "12.333.65",
             title: "Контейнер sk 3214",
             price: 216.0,
@@ -78,7 +73,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             series: 0
         },
         {
-
             id: "12.334.65",
             title: "Контейнер sk 4109",
             price: 117.0,
@@ -401,6 +395,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     $scope.oldWidth = 0;
     $scope.oldDeep = 0;
     function visualizationInit() {
+        let boxGeometryGroup;
+        let localBoxGeometry;
         let secondCylinderBSP;
         let firstCylinderBSP;
         let additionalCutSubtractor;
@@ -425,7 +421,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         let shelveYPosition;
         let shelveGeometry, shelveObject;
         let perforatedHolder;
-        let cylinderBSP;
         let cylinderGeometry;
         let perforationCounter;
         let subtractCylinderGeometry;
@@ -439,9 +434,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             material = new THREE.MeshStandardMaterial({
                 color: 0x777777,
                 wireframe: false,
-                reflectivity: true,
-                transparent: false,
-                metalness: false
+                reflectivity: 0
             });
             holderShape = new THREE.Shape();
             holderShape.moveTo(0, 0);
@@ -514,7 +507,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             for (holdersCounter = 1; holdersCounter <= 4; holdersCounter++) {
                 scene.add(holder[holdersCounter]);
             }
-            console.log("Vis. Shelves count " + $scope.shelvesCount);
             $scope.shelvesCountOld = $scope.shelvesCount;
             if ($scope.shelvesCount) {
                 $scope.boxCounter = 0;
@@ -543,7 +535,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                 boxSupGeometrySubstractor = new ThreeBSP(boxSupGeometryMesh);
                 boxSubGeometrySubstractor = new ThreeBSP(boxSubGeometryMesh);
                 boxGeometry = boxSupGeometrySubstractor.subtract(boxSubGeometrySubstractor);
-                let boxGeometryGroup = new THREE.Group();
+                boxGeometryGroup = new THREE.Group();
                 if ($scope.selectedBox.series === 0) {
                     console.log("Box SK");
                     additionalCut = new THREE.BoxGeometry($scope.selectedBox.width * 0.70 * unitFixation, $scope.selectedBox.height * 0.66 * unitFixation, $scope.selectedBox.deep * 0.30 * unitFixation);
@@ -579,14 +571,13 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                     shelveObject.position.set(($scope.cupboard.width.value * 0.5 + 1) * unitFixation, shelveYPosition * unitFixation, ($scope.cupboard.deep.value * -0.5 - 1) * unitFixation);
                     scene.add(shelveObject);
                     if (shelvesCounter > 0) {
-                        let localBoxGeometry = [];
+                        localBoxGeometry = [];
                         for (boxCounter = 0; boxCounter < $scope.boxCount; boxCounter++) {
                             localBoxGeometry[boxCounter] = boxGeometryGroup.clone();
                             $scope.boxCounter++;
                             boxYPosition = (shelveYPosition + (shelveHeight / 2) + ($scope.selectedBox.height / 2));
                             localBoxGeometry[boxCounter].name = "box" + $scope.boxCounter;
                             localBoxGeometry[boxCounter].position.set((boxCounter * boxPlaceWidth + boxPlacementPadding + boxPlacementMarguin) * unitFixation, boxYPosition * unitFixation, (($scope.selectedBox.deep / -2) - 1) * unitFixation);
-                            console.log(localBoxGeometry[boxCounter].position);
                             scene.add(localBoxGeometry[boxCounter]);
                         }
                     }
@@ -617,7 +608,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     function init() {
         const proportion = 4 / 3.8;
         const width = document.getElementById("visualization").offsetWidth;
-        const height = (width / proportion);
         let hemiLight;
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(40, proportion, 1, 5000);
@@ -650,20 +640,10 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     };
     $scope.init();
     $scope.Calculation = function () {
-        var boxArray;
         let shelveCount;
-        let priceShelve;
-        let priceHeight;
         let filterResult;
         let shelveHeight;
         let boxCount;
-        let shelveArray;
-        let n;
-        let shelve;
-        let box;
-        let placementWidth;
-        let offset;
-        let newBox;
         const currentHeight = $scope.cupboard.height;
         const currentWidth = $scope.cupboard.width;
         const currentDeep = $scope.cupboard.deep;
@@ -697,10 +677,10 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                 $scope.shelvesCount = shelveCount;
                 $scope.shelveHeight = shelveHeight;
                 $scope.boxCount = boxCount;
-                console.log("Предполагаемое количество полок: " + shelveCount);
-                console.log("Предполагаемая высота конструкции: " + shelveCount * shelveHeight);
+                console.info("Предполагаемое количество полок: " + shelveCount);
+                console.info("Предполагаемая высота конструкции: " + shelveCount * shelveHeight);
                 console.info("Предполагаемое высота полок: " + shelveHeight);
-                console.log("Предполагаемое количество ящиков: " + boxCount);
+                console.info("Предполагаемое количество ящиков: " + boxCount);
             }
             if ($scope.isVisualizating === false) {
                 visualizationInit();

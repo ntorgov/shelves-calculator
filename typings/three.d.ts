@@ -3827,8 +3827,9 @@ module THREE {
 		specularMap: Texture;
 		envMap: Texture;
 		combine: Combine;
-		reflectivity: number;
+		reflectivity?: number;
 		refractionRatio: number;
+		transparent?: boolean;
 		fog: boolean;
 		shading: Shading;
 		wireframe: boolean;
@@ -3854,6 +3855,7 @@ module THREE {
 		combine?: Combine;
 		reflectivity?: number;
 		refractionRatio?: number;
+		transparent? :boolean;
 		shading?: Shading;
 		blending?: Blending;
 		depthTest?: boolean;
@@ -3878,7 +3880,7 @@ module THREE {
 		specularMap: Texture;
 		envMap: Texture;
 		combine: Combine;
-		reflectivity: number;
+		reflectivity?: number;
 		refractionRatio: number;
 		fog: boolean;
 		shading: Shading;
