@@ -22,6 +22,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     const displayHeight = 400;
     const boxesArray = [
         {
+
             id: "12.330.65",
             title: "Контейнер sk 3109",
             price: 91.0,
@@ -35,6 +36,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             series: 0
         },
         {
+
             id: "12.331.65",
             title: "Контейнер sk 31509",
             price: 106.0,
@@ -48,6 +50,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             series: 0
         },
         {
+
             id: "12.332.65",
             title: "Контейнер sk 3209",
             price: 140.0,
@@ -61,6 +64,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             series: 0
         },
         {
+
             id: "12.333.65",
             title: "Контейнер sk 3214",
             price: 216.0,
@@ -74,6 +78,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             series: 0
         },
         {
+
             id: "12.334.65",
             title: "Контейнер sk 4109",
             price: 117.0,
@@ -484,8 +489,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                     perforatedHolder = perforatedHolder.subtract(firstCylinderBSP.union(secondCylinderBSP));
                     subtractCylinderGeometry.position.y = 0;
                     subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(0);
-                    delete firstCylinderBSP;
-                    delete secondCylinderBSP;
+                    firstCylinderBSP = undefined;
+                    secondCylinderBSP = undefined;
                 }
             }
             for (holdersCounter = 1; holdersCounter <= 4; holdersCounter++) {
@@ -496,7 +501,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                 holder[holdersCounter].receiveShadow = true;
                 holder[holdersCounter].rotation.x = THREE.Math.degToRad(-90);
             }
-            delete perforatedHolder;
+            perforatedHolder = undefined;
             holder[2].position.set(($scope.cupboard.width.value + 2) * unitFixation, 0, 0);
             holder[2].rotation.z = THREE.Math.degToRad(90);
             holder[3].position.set(($scope.cupboard.width.value + 2) * unitFixation, 0, ($scope.cupboard.deep.value * -1 - 2) * unitFixation);
@@ -662,9 +667,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         const currentHeight = $scope.cupboard.height;
         const currentWidth = $scope.cupboard.width;
         const currentDeep = $scope.cupboard.deep;
-        let currentQuantity = 0;
-        const drawingAreaHeight = $scope.drawHeight - $scope.drawHeight * 0.05;
-        const scale = drawingAreaHeight / currentHeight.value;
         if ($scope.isCalculating === false) {
             $scope.oldHeight = currentHeight;
             $scope.oldWidth = currentWidth;
@@ -699,8 +701,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                 console.log("Предполагаемая высота конструкции: " + shelveCount * shelveHeight);
                 console.info("Предполагаемое высота полок: " + shelveHeight);
                 console.log("Предполагаемое количество ящиков: " + boxCount);
-                currentQuantity = shelveCount;
-                shelveArray = [];
             }
             if ($scope.isVisualizating === false) {
                 visualizationInit();
@@ -732,6 +732,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     };
     $scope.ChangeDeep = function deepChanger() {
         if ($scope.cupboard.deep !== $scope.oldDeep) {
+            $scope.selectedBox = undefined;
             this.Calculation();
         }
     };

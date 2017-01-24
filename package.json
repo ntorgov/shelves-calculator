@@ -1,7 +1,10 @@
 {
-  "name": "Shelves Calculator",
+  "name": "Shelves-Calculator",
   "version": "0.0.4",
   "devDependencies": {
-    "@types/node": "^7.0.0"
+    "@types/node": "^7.0.0",
+    "babel-plugin-minify-constant-folding": "0.0.3",
+    "babel-plugin-minify-mangle-names": "0.0.6",
+    "babel-preset-babili": "0.0.10"
   }
 }

@@ -707,8 +707,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 					subtractCylinderGeometry.position.y = 0;
 					subtractCylinderGeometry.rotation.z = THREE.Math.degToRad(0);
 
-					delete firstCylinderBSP;
-					delete secondCylinderBSP;
+					firstCylinderBSP = undefined;
+					secondCylinderBSP = undefined;
 				}
 				//  Конец перфорации стойки
 			}
@@ -723,11 +723,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 				holder[holdersCounter].rotation.x = THREE.Math.degToRad(-90);
 			}
 
-			// delete perforatedObject;
-			delete perforatedHolder;
-
-			// holder[1].name = "shelveHolder1";
-			// holder[1].rotation.x = THREE.Math.degToRad(-90);
+			perforatedHolder = undefined;
 
 			//  Вторая стойка. Повернута на 90 и стоит на расстоянии ширины полки
 			holder[2].position.set(($scope.cupboard.width.value + 2) * unitFixation, 0, 0);
@@ -895,7 +891,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			// shelveObject.position.set(($scope.cupboard.width.value * 0.5), ($scope.cupboard.height.value * 0.5), ($scope.cupboard.deep.value * -0.5));
 			// scene.add(shelveObject);
 
-
 		}
 		$scope.isVisualizating = false;
 	}
@@ -1059,14 +1054,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		 */
 		const currentDeep = $scope.cupboard.deep;
 
-		let currentQuantity = 0;
-
-		//  Высота рисунка это высота области, минус 5%
-		const drawingAreaHeight = $scope.drawHeight - $scope.drawHeight * 0.05;
-
-		//  Масштаб
-		const scale = drawingAreaHeight / currentHeight.value;
-
 		if ($scope.isCalculating === false) {
 
 			$scope.oldHeight = currentHeight;
@@ -1075,7 +1062,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 			$scope.isCalculating = true;
 
-			// scale = 1;
 			// console.log("Текущий масштаб: " + scale);
 			if (angular.isObject($scope.selectedBox)) {
 				// console.log("Выбран ящик:");
@@ -1114,61 +1100,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 				console.info("Предполагаемое высота полок: " + shelveHeight);
 				console.log("Предполагаемое количество ящиков: " + boxCount);
 
-				currentQuantity = shelveCount;
-
-
-				shelveArray = [];
-
-				/* *******************
-				 * ******************
-				 * /
-				 for (n = 0; n < currentQuantity; n++) {
-				 shelve = {
-				 height: 30 * scale + "px",
-				 width: (currentWidth.value * scale) + (30 * scale) + "px",
-				 left: 0,
-				 top: ($scope.drawHeight * 0.025) + (n * shelveHeight * scale) + "px"
-				 };
-				 shelveArray.push(shelve);
-				 }
-
-				 boxArray = [];
-				 */
-				//  Тут мы рисуем ящики на полках
-				//  И у нас реальная проблема с визуализацией
-				/*
-				 for (shelve = 1; shelve < currentQuantity; shelve++) {
-
-				 for (box = 0; box < boxCount; box++) {
-
-				 placementWidth = (currentWidth.value - 60) / boxCount * scale;
-				 offset = Math.abs((placementWidth - (($scope.selectedBox.width * 100 / 117) * scale )));
-				 console.log(placementWidth + " " + " " + (($scope.selectedBox.width * 100 / 117) * scale ) + " " + offset);
-				 newBox = {
-				 style: {
-				 top: (((shelve * shelveHeight) - ($scope.selectedBox.height - 15)) * scale) + "px",
-				 left: (30 * scale) + offset + (placementWidth * box) + "px",
-				 width: (($scope.selectedBox.width * 100 / 117) * scale ) + "px",
-				 height: (($scope.selectedBox.height * 100 / 90) * scale ) + "px"
-				 // border: "1px solid"
-				 },
-				 path: {
-				 xscale: (($scope.selectedBox.width * 100 / 117) / 117 ) * scale,
-				 yscale: (($scope.selectedBox.height * 100 / 90) / 90) * scale
-				 },
-				 width: $scope.selectedBox.width
-				 };
-
-				 boxArray.push(newBox);
-				 }
-				 }
-				 */
-				/* *************************
-				 *
-				 */
 			}
-
-			// console.log(shelveArray);
 
 			if ($scope.isVisualizating === false) {
 
@@ -1182,41 +1114,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 			// ***********************************************************************************************
 			if (angular.isObject(currentDeep)) {
-
-				/*
-				 priceHeight = currentHeight.price;
-				 priceShelve = currentDeep.price;
-
-				 $scope.drawing = {
-				 stoyka1: {
-				 height: currentHeight.value * scale + "px",
-				 width: 30 * scale + "px",
-				 left: 0 + "px",
-				 "background-color": BoxColor.blue,
-				 top: $scope.drawHeight * 0.025 + "px"
-				 },
-				 stoyka2: {
-				 height: currentHeight.value * scale + "px",
-				 width: 30 * scale + "px",
-				 left: currentWidth.value * scale + "px",
-				 "background-color": BoxColor.blue,
-				 top: $scope.drawHeight * 0.025 + "px"
-				 },
-				 shelves: shelveArray,
-				 boxes: boxArray
-				 };
-
-				 console.log(currentDeep.value);
-				 var thisDeep = currentDeep.value;
-				 */
-				//  Берем только контейнеры, которые подходят по высоте
-				/*
-				 filterResult = $filter("filter")($scope.boxes, {
-				 height: boxHeightLimit
-				 }, function (actual, expected) {
-				 return actual <= expected;
-				 });
-				 */
 
 				//  Берем контейнеры, которые подходят по глубине
 				filterResult = $filter("filter")($scope.boxes, {
@@ -1274,6 +1171,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 	$scope.ChangeDeep = function deepChanger(): void {
 
 		if ($scope.cupboard.deep !== $scope.oldDeep) {
+
+			$scope.selectedBox = undefined;
 
 			this.Calculation();
 		}

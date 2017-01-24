@@ -1,3 +1,19 @@
 {
-	"presets": ["es2015"]
+	"presets": [
+		"es2015"
+	],
+	"comments": false,
+	"plugins": ["minify-constant-folding", "minify-mangle-names"],
+	"env": {
+		"production": {
+			"presets": [
+				"babili"
+			]
+		}
+	},
+	"ignore": [
+		"src/*",
+		"typings/*",
+		"node_modules/*"
+	]
 }
