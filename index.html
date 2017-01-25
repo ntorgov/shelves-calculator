@@ -66,7 +66,7 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<p>Под условие подходят ящики:</p>
-						<div ng-repeat="box in boxResult" class="col-xs-3 box-item" ng-class="box.selected:selected" ng-click="BoxClick(box)">
+						<div ng-repeat="box in boxResult" class="col-xs-3 box-item" ng-class="(box.id==selectedBox.id)?'selected':'unselected'" ng-click="BoxClick(box)">
 							<h5>{{box.title}}</h5>
 							<img src="{{box.image}}" class="img-responsive">
 							<span>{{box.deep}}x{{box.width}}x{{box.height}}</span>

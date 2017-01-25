@@ -12,3 +12,9 @@
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
 	display: none !important;
 }
+div.selected {
+	border: 1px solid #0000ff;
+}
+div.unselected {
+	border: 1px solid transparent;
+}
