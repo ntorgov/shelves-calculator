@@ -762,8 +762,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 				boxMaterial = new THREE.MeshStandardMaterial({
 					color: 0x1111ff,
 					wireframe: false,
-					transparent: false,
-					opacity: 1
+					transparent: true,
+					opacity: 0.5
 				});
 
 				glassMaterial = new THREE.MeshStandardMaterial({
@@ -886,7 +886,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			camera.position.x = radius * Math.cos($scope.angle) + ($scope.cupboard.width.value * 0.5) * unitFixation;
 			camera.position.z = radius * Math.sin($scope.angle) + ($scope.cupboard.deep.value * -0.5) * unitFixation;
 
-			$scope.angle += 0.002;
+			$scope.angle += 0.005;
 
 			centerScene = new THREE.Vector3(($scope.cupboard.width.value * 0.5) * unitFixation, ($scope.cupboard.height.value * 0.5) * unitFixation, ($scope.cupboard.deep.value * -0.5) * unitFixation);
 
