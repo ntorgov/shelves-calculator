@@ -519,7 +519,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                     color: 0x1111ff,
                     wireframe: false,
                     transparent: true,
-                    opacity: 0.5
+                    opacity: 0.7
                 });
                 glassMaterial = new THREE.MeshStandardMaterial({
                     color: 0x9999ff,
