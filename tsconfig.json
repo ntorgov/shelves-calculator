@@ -7,7 +7,8 @@
 		"preserveConstEnums": true,
 		"locale": "ru-ru",
 		"outDir": "dist",
-		"charset": "utf8"
+		"charset": "utf8",
+		"types":["./typings/index.d.ts"]
 	},
 	"exclude": [
 		"node_modules",

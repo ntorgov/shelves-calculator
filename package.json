@@ -1,10 +1,25 @@
 {
-  "name": "Shelves-Calculator",
-  "version": "0.0.9",
-  "devDependencies": {
-    "@types/node": "^7.0.0",
-    "babel-plugin-minify-constant-folding": "0.0.3",
-    "babel-plugin-minify-mangle-names": "0.0.6",
-    "babel-preset-babili": "0.0.10"
-  }
+	"name": "Shelves-Calculator",
+	"version": "0.0.9",
+	"author": {
+		"name": "ntorgov",
+		"email": "ntorgov@gmail.com",
+		"url": "https://github.com/ntorgov"
+	},
+	"bugs": {
+		"url": "https://github.com/ntorgov/shelves-calculator/issues"
+	},
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ntorgov/shelves-calculator.git"
+	},
+	"license": "MIT",
+	"description": "README.md",
+	"devDependencies": {
+		"@types/node": "^7.0.0",
+		"babel-plugin-minify-constant-folding": "0.0.3",
+		"babel-plugin-minify-mangle-names": "0.0.6",
+		"babel-preset-babili": "0.0.10"
+	}
 }
