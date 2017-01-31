@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<!--suppress MagicNumberJS -->
+<html lang="ru" ng-app="calculatorApplication">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<!-- link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" -->
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.css">
+	<script src="dist/threeCSG.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/threejs/r83/three.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.js"></script>
+	<link rel="stylesheet" href="index.css">
+</head>
+<body>
+<script>
+	calculatorApplication = angular.module('calculatorApplication', ['ngMaterial']);
+</script>
+<div layout="row" ng-controller="calculatorController">
+	<div flex="40">
+		<div layout="row">
+			<div flex="20">
+				<md-input-container>
+					<label>Высота</label>
+					<md-select ng-model="cupboard.height" placeholder="Высота"
+					           ng-init="cupboard.height = heights[0]; ChangeHeight();"
+					           ng-change="ChangeHeight()"
+					           name="cupboardHeight"
+					           id="cupboardHeight">
+						<md-option ng-value="height" ng-repeat="height in heights">{{ height.title }} мм</md-option>
+					</md-select>
+				</md-input-container>
+			</div>
+			<div flex="20">
+				<md-input-container>
+					<label>Ширина</label>
+					<md-select ng-model="cupboard.width" placeholder="Ширина"
+					           ng-init="cupboard.width = widths[0]; ChangeWidth();"
+					           ng-change="ChangeWidth()"
+					           name="cupboardWidth"
+					           id="cupboardWidth">
+						<md-option ng-value="width" ng-repeat="width in widths">{{ width.title }} мм</md-option>
+					</md-select>
+				</md-input-container>
+			</div>
+			<div flex="20">
+				<md-input-container>
+					<label>Глубина</label>
+				<md-select ng-model="cupboard.deep" placeholder="Глубина"
+				           ng-init="cupboard.deep = deeps[0]; ChangeDeep();"
+				           ng-change="ChangeDeep()"
+				           name="cupboardDeep"
+				           id="cupboardDeep">
+					<md-option ng-value="deep" ng-repeat="deep in deeps">{{ deep.title }} мм</md-option>
+				</md-select>
+			</md-input-container>
+			</div>
+			<div flex="40">
+				<md-slider-container>
+					<!--span>Полки</span -->
+					<!--label>Глубина</label -->
+					<md-slider md-range flex min="0" max="{{cupboard.height.shelves.max}}" ng-model="cupboard.shelves" aria-label="Глубина" id="red-slider">
+					</md-slider>
+					<md-input-container>
+						<input flex type="number" ng-model="cupboard.shelves" aria-label="Глубина" aria-controls="red-slider">
+					</md-input-container>
+				</md-slider-container>
+			</div>
+		</div>
+	</div>
+	<div flex="60" id="visualization">
+		<!-- div ></div -->
+	</div>
+</div>
+<div class="container" >
+	<div class="row">
+		<div class="col-xs-5" ng-cloak>
+			<!--div class="container-fluid" -->
+			<div class="row">
+				<div class="">
+					<div class="col-xs-3">
+						<div class="form-group">
+							<label for="cupboardHeight" class="control-label">Высота</label>
+							<div class="">
+								<!-- select ng-model="cupboard.height"
+								        ng-init="cupboard.height = heights[0]; ChangeHeight();"
+								        ng-change="ChangeHeight()"
+								        name="cupboardHeight"
+								        id="cupboardHeight"
+								        class="form-control"
+								        ng-options="height.title + ' мм' for height in heights track by height.value">
+								</select -->
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="form-group">
+							<label for="cupboardWidth" class="control-label">Ширина</label>
+							<!-- div class="">
+								<select ng-model="cupboard.width"
+								        ng-init="cupboard.width = widths[0]; ChangeWidth();"
+								        ng-change="ChangeWidth()"
+								        name="cupboardWidth"
+								        id="cupboardWidth"
+								        class="form-control"
+								        ng-options="width.title + ' мм' for width in widths track by width.value">
+								</select>
+							</div -->
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="form-group">
+							<label for="cupboardDeep" class="control-label">Глубина</label>
+							<!--div class="">
+								<select ng-model="cupboard.deep"
+								        name="cupboardDeep"
+								        ng-init="cupboard.deep = deeps[0]; deepChanger();"
+								        ng-change="ChangeDeep()"
+								        id="cupboardDeep"
+								        class="form-control"
+								        ng-options="deep.title + ' мм' for deep in deeps track by deep.value">
+								</select>
+							</div -->
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="form-group">
+							<label for="cupboardDeep" class="control-label">Полок</label>
+							<!-- div class="">
+								<select ng-model="cupboard.deep"
+								        name="cupboardShelves"
+								        ng-init="cupboard.shelves = (shelvesCount + 1)"
+								        ng-change="ChangeShelves()"
+								        id="cupboardShelves"
+								        class="form-control"
+								        ng-options="quantity for quantity in shelvesList">
+								</select>
+							</div -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="row">
+				<div class="col-xs-12">
+					<p>Под условие подходят ящики:</p>
+					<div ng-repeat="box in boxResult" class="col-xs-3 box-item"
+					     ng-class="(box.id==selectedBox.id)?'selected':'unselected'" ng-click="BoxClick(box)">
+						<h5>{{box.title}}</h5>
+						<img src="{{box.image}}" class="img-responsive">
+						<span>{{box.deep}}x{{box.width}}x{{box.height}}</span>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="row">
+				<div class="col-xs-12">
+					<table class="table hover">
+						<thead>
+						<tr>
+							<th>Наименование</th>
+							<th>Количество</th>
+							<th>Цена, руб</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<td>Стойки</td>
+							<td>4</td>
+							<td>{{cupboard.height.price*4}}</td>
+						</tr>
+						<tr>
+							<td>Полки</td>
+							<td>{{shelvesCount+1}}</td>
+							<td>{{(shelvesCount+1) * cupboard.deep.price}}</td>
+						</tr>
+						<tr>
+							<td>Ящики</td>
+							<td>{{boxCount * shelvesCount}}</td>
+							<td>{{boxCount * shelvesCount * selectedBox.price}}</td>
+						</tr>
+						</tbody>
+						<tfoot>
+						<tr>
+							<td colspan="2">Итого</td>
+							<td>{{(cupboard.height.price*4) + ((shelvesCount+1) * cupboard.deep.price) + (boxCount *
+								shelvesCount *
+								selectedBox.price)}}
+							</td>
+						</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+			<!-- /div -->
+
+		</div>
+		<div class="col-xs-7">
+
+		</div>
+	</div>
+</div>
+
+<script src="dist/index.js"></script>
+
+</body>
+</html>

@@ -67,13 +67,13 @@
 							<div class="form-group">
 								<label for="cupboardDeep" class="control-label">Полок</label>
 								<div class="">
-									<select ng-model="cupboard.height.shelves"
+									<select ng-model="cupboard.shelves"
 									        name="cupboardShelves"
-									        ng-init="/*cupboard.deep = deeps[0]; deepChanger();*/"
-									        ng-change="/*ChangeDeep()*/"
-									        id="cupboardDeep"
+									        ng-init="cupboard.shelves = (shelvesCount + 1)"
+									        ng-change="ChangeShelves()"
+									        id="cupboardShelves"
 									        class="form-control"
-									        ng-options="deep.title + ' мм' for deep in deeps track by deep.value">
+									        ng-options="quantity for quantity in shelvesList">
 									</select>
 								</div>
 							</div></div>

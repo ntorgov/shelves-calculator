@@ -322,14 +322,62 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     ];
     const shelvesHeights = [
         { value: 500, title: 500, selected: true, price: 115.0, shelves: { min: 3, max: 5 } },
-        { value: 1000, title: 1000, selected: false, price: 188.0, shelves: { min: 3, max: 11 } },
-        { value: 1200, title: 1200, selected: false, price: 220.0, shelves: { min: 3, max: 13 } },
-        { value: 1500, title: 1500, selected: false, price: 268.0, shelves: { min: 3, max: 13 } },
-        { value: 1800, title: 1800, selected: false, price: 308.0, shelves: { min: 3, max: 13 } },
-        { value: 2000, title: 2000, selected: false, price: 336.0, shelves: { min: 3, max: 13 } },
-        { value: 2200, title: 2200, selected: false, price: 370.0, shelves: { min: 3, max: 13 } },
-        { value: 2300, title: 2300, selected: false, price: 390.0, shelves: { min: 3, max: 13 } },
-        { value: 2500, title: 2500, selected: false, price: 420.0, shelves: { min: 3, max: 13 } }
+        {
+            value: 1000,
+            title: 1000,
+            selected: false,
+            price: 188.0,
+            shelves: { min: 3, max: 11 }
+        },
+        {
+            value: 1200,
+            title: 1200,
+            selected: false,
+            price: 220.0,
+            shelves: { min: 3, max: 13 }
+        },
+        {
+            value: 1500,
+            title: 1500,
+            selected: false,
+            price: 268.0,
+            shelves: { min: 3, max: 13 }
+        },
+        {
+            value: 1800,
+            title: 1800,
+            selected: false,
+            price: 308.0,
+            shelves: { min: 3, max: 13 }
+        },
+        {
+            value: 2000,
+            title: 2000,
+            selected: false,
+            price: 336.0,
+            shelves: { min: 3, max: 13 }
+        },
+        {
+            value: 2200,
+            title: 2200,
+            selected: false,
+            price: 370.0,
+            shelves: { min: 3, max: 13 }
+        },
+        {
+            value: 2300,
+            title: 2300,
+            selected: false,
+            price: 390.0,
+            shelves: { min: 3, max: 13 }
+        },
+        {
+            value: 2500,
+            title: 2500,
+            selected: false,
+            price: 420.0,
+            shelves: { min: 3, max: 13 }
+        }
     ];
     const selvesWidths = [
         {
@@ -394,6 +442,15 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     $scope.oldHeight = 0;
     $scope.oldWidth = 0;
     $scope.oldDeep = 0;
+    $scope.shelvesList = () => {
+        let heightData = $scope.cupboard.height.shelves.shelves;
+        let result = [];
+        for (n = 0; n < heightData.max; n++) {
+            result.push(n);
+        }
+        console.log(result);
+        return result;
+    };
     function visualizationInit() {
         let boxGeometryGroup;
         let localBoxGeometry;
@@ -572,7 +629,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                     shelveObject.receiveShadow = true;
                     shelveObject.position.set(($scope.cupboard.width.value * 0.5 + 1) * unitFixation, shelveYPosition * unitFixation, ($scope.cupboard.deep.value * -0.5 - 1) * unitFixation);
                     scene.add(shelveObject);
-                    console.log(shelveObject.position);
                     if ($scope.boxCount) {
                         if (shelvesCounter > 0) {
                             localBoxGeometry = [];
@@ -611,8 +667,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         }
     }
     function init() {
-        const proportion = 4 / 3.8;
-        const width = document.getElementById("visualization").offsetWidth;
+        const proportion = 3 / 4;
+        const visualizationWidth = document.getElementById("visualization").offsetWidth * 0.6;
         let hemiLight;
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(40, proportion, 1, 5000);
@@ -623,12 +679,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         scene.add(hemiLight);
         light = new THREE.PointLight(0xffffff, 1, 100);
         light.castShadow = false;
-        light.shadowMapWidth = 2048;
-        light.shadowMapHeight = 2048;
+        light.shadowMapWidth = 1024;
+        light.shadowMapHeight = 1024;
         light.power = 180;
         scene.add(light);
         renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(width, (width / proportion));
+        renderer.setSize(visualizationWidth, (visualizationWidth / proportion));
         renderer.shadowMap.enabled = true;
         renderer.toneMappingExposure = Math.pow(1.15, 5.0);
         renderer.toneMapping = THREE.ReinhardToneMapping;
@@ -657,7 +713,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             $scope.oldWidth = currentWidth;
             $scope.oldDeep = currentDeep;
             $scope.isCalculating = true;
-            console.log($scope.selectedBox);
             if ($scope.selectedBox) {
                 shelveCount = Math.floor(currentHeight.value / ($scope.selectedBox.height + 30 + 35));
                 if ((shelveCount + 1) < currentHeight.shelves.min) {
@@ -689,10 +744,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                 console.info("Предполагаемое количество ящиков: " + boxCount);
             }
             else {
-                console.info($scope.cupboard.height);
-                $scope.shelvesCount = $scope.cupboard.height.shelves.min;
                 shelveHeight = 0;
-                shelveCount = $scope.cupboard.height.shelves.min;
+                shelveCount = $scope.shelvesCount;
                 if ($scope.shelvesCount > 2) {
                     shelveHeight = Math.floor(((currentHeight.value / ($scope.shelvesCount - 0)) + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
                 }
@@ -704,7 +757,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                 }
                 $scope.shelvesCount = shelveCount;
                 $scope.shelveHeight = shelveHeight;
-                console.warn($scope.shelveHeight);
             }
             if ($scope.isVisualizating === false) {
                 visualizationInit();
@@ -723,7 +775,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                     return result;
                 });
                 $scope.boxResult = $filter("orderBy")(filterResult, ["-deep", "+sort"]);
-                console.log($scope.boxResult);
             }
             $scope.isCalculating = false;
         }
@@ -732,6 +783,10 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         $scope.selectedBox = item;
         $scope.boxPrice = $scope.boxCount * $scope.shelvesCount * item.price;
         $scope.totalPrice += $scope.boxPrice;
+        this.Calculation();
+    };
+    $scope.ChangeShelves = function ChangeShelves() {
+        $scope.shelvesCount = $scope.cupboard.shelves;
         this.Calculation();
     };
     $scope.ChangeDeep = function deepChanger() {
@@ -750,13 +805,15 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     };
     $scope.ChangeHeight = function heightChanger() {
         let n;
-        let shelvesArray = [];
+        let shelvesArray;
         let shelves = [];
-        angular.forEach($scope.heights, function (value) {
+        console.log($scope.cupboard.height);
+        angular.forEach($scope.heights, function (value, key) {
             if (value.value === $scope.cupboard.height) {
                 this.push(value.shelves);
             }
         }, shelves);
+        shelvesArray = [];
         for (n = $scope.cupboard.height.shelves.min; n <= $scope.cupboard.height.shelves.max; n++) {
             shelvesArray.push({ value: n, title: n });
         }
