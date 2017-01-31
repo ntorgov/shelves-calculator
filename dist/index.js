@@ -668,7 +668,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     }
     function init() {
         const proportion = 3 / 4;
-        const visualizationWidth = document.getElementById("visualization").offsetWidth * 0.6;
+        const visualizationWidth = document.getElementById("visualization").offsetWidth * 0.5;
         let hemiLight;
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(40, proportion, 1, 5000);

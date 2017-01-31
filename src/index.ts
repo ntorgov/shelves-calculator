@@ -960,7 +960,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		 * Ширина блока
 		 * @type {number}
 		 */
-		const visualizationWidth: number = document.getElementById("visualization").offsetWidth * 0.6;
+		const visualizationWidth: number = document.getElementById("visualization").offsetWidth * 0.5;
 
 		// console.log(visualizationWidth);
 		// console.log(document.getElementById("visualization").offsetWidth);
