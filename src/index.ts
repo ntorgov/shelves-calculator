@@ -97,8 +97,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-3109/",
 			color: BoxColor.blue,
 			series: BoxSeries.sk
-		},
-		{
+		}, {
 			id: "12.331.65",
 			title: "Контейнер sk 31509",
 			price: 106.0,
@@ -122,8 +121,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			url: "http://www.agropak.net/hgfhgf/kontejner-sk-3209/",
 			color: BoxColor.blue,
 			series: BoxSeries.sk
-		},
-		{
+		}, {
 			id: "12.333.65",
 			title: "Контейнер sk 3214",
 			price: 216.0,
@@ -393,7 +391,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 	/**
 	 * Высоты шкафов
 	 * @name shelvesHeights
-	 * @type {Object[]}
+	 * @type {ShelveHeightInterface[]}
 	 */
 	const shelvesHeights: ShelveHeightInterface[] = [
 		{value: 500, title: 500, selected: true, price: 115.0, shelves: {min: 3, max: 5}},
@@ -460,13 +458,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 	 * @name selvesWidths
 	 * @version 1.0
 	 * @author Bagdad
-	 * @type {Object[]}
-	 * @property {number} value Значение ширины
-	 * @property {number} title Название
-	 * @property {Object[]} deeps Массив глубин
-	 * @property {number} deeps.value Значение глубины
-	 * @property {number} deeps.title Название глубины
-	 * @property {number} deeps.price Стоимость
+	 * @type {ShelveWidthInterface[]}
 	 */
 	const selvesWidths: ShelveWidthInterface[] = [
 		{
@@ -555,16 +547,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 	$scope.oldWidth = 0;
 	$scope.oldDeep = 0;
 
-	$scope.shelvesList = () => {
-		let heightData = $scope.cupboard.height.shelves.shelves;
-		let result = [];
-		for (n = 0; n < heightData.max; n++) {
-			result.push(n);
-		}
-		console.log(result);
-		return result;
-	};
-
 	/**
 	 * Инициализация визуализации
 	 */
@@ -646,7 +628,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		 * Материал объекта (серый)
 		 * @type {Object}
 		 */
-		let material: {color: Color, wireframe: boolean, reflectivity: number, transparent: number};
+		let material: THREE.MeshStandardMaterial;
 
 //  Фигура для стойки
 		let holderShape;
@@ -672,7 +654,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 			material = new THREE.MeshStandardMaterial({
 				color: 0x777777,
-				wireframe: false,
+				wireframe: false
 			});
 
 			holderShape = new THREE.Shape();
@@ -863,7 +845,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 				console.log($scope.shelvesCount);
 
-				for (shelvesCounter = 0; shelvesCounter <= $scope.shelvesCount; shelvesCounter++) {
+				for (shelvesCounter = 0; shelvesCounter < $scope.shelvesCount; shelvesCounter++) {
 
 					shelveYPosition = ($scope.cupboard.height.value - (shelvesCounter * $scope.shelveHeight) - (shelveHeight / 2));
 
@@ -1023,7 +1005,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 	/**
 	 * Функция вычисления всякой фигни
 	 */
-	$scope.Calculation = function () {
+	$scope.Calculation = function Calculation() {
 
 		// var boxArray: Array;
 		/**
@@ -1032,7 +1014,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		 */
 		let shelveCount: number;
 		let filterResult: number;
-		let shelveHeight: number;
+
+		/**
+		 * Растояние между полками
+		 * @type {number}
+		 */
+		let heightBetweenShelves: number = 0;
 
 		/**
 		 * Количество коробок на полке
@@ -1066,7 +1053,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 			$scope.isCalculating = true;
 
-			// console.log($scope.selectedBox);
+			// Вычисляем количество полок
+			// Если выбран ящик
 			if ($scope.selectedBox) {
 
 				shelveCount = Math.floor(currentHeight.value / ($scope.selectedBox.height + 30 + 35));
@@ -1078,53 +1066,64 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 				}
 
 				//  Вычисляем растояние между полками
-				shelveHeight = 0;
+				// heightBetweenShelves = 0;
 				if (shelveCount > 2) {
-					shelveHeight = Math.floor((currentHeight.value / shelveCount) / distanceBetweenHoles) * distanceBetweenHoles;
+					heightBetweenShelves = Math.floor((currentHeight.value / shelveCount) / distanceBetweenHoles) * distanceBetweenHoles;
 				} else {
 					// shelveHeight = Math.ceil((currentHeight.value / (shelveCount - 1)) / 25) * 25;
-					shelveHeight = Math.floor(($scope.selectedBox.height + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
+					heightBetweenShelves = Math.floor(($scope.selectedBox.height + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
 				}
-				if (shelveHeight < 145) {
-					shelveHeight = 145;
+				if (heightBetweenShelves < 145) {
+					heightBetweenShelves = 145;
 				}
-				if ((shelveCount * shelveHeight) >= currentHeight.value) {
+				if ((shelveCount * heightBetweenShelves) >= currentHeight.value) {
 					shelveCount--;
 				}
 
 				boxCount = Math.floor((currentWidth.value - 60) / $scope.selectedBox.width);
 
 				$scope.shelvesCount = shelveCount;
-				$scope.shelveHeight = shelveHeight;
+				// $scope.shelveHeight = heightBetweenShelves;
 				$scope.boxCount = boxCount;
 
-				console.info("Предполагаемое количество полок: " + shelveCount);
-				console.info("Предполагаемая высота конструкции: " + shelveCount * shelveHeight);
-				console.info("Предполагаемое высота полок: " + shelveHeight);
-				console.info("Предполагаемое количество ящиков: " + boxCount);
+				// console.info("Предполагаемое количество полок: " + shelveCount);
+				// console.info("Предполагаемая высота конструкции: " + shelveCount * heightBetweenShelves);
+				// console.info("Предполагаемое высота полок: " + heightBetweenShelves);
+				// console.info("Предполагаемое количество ящиков: " + boxCount);
 
+				$scope.cupboard.shelves = $scope.shelvesCount + 1;
+
+				// Если ящик не выбран
 			} else {
 
 				// console.info($scope.cupboard.height);
-				//S$scope.shelvesCount = $scope.cupboard.height.shelves.min;
-				shelveHeight = 0;
+				// S$scope.shelvesCount = $scope.cupboard.height.shelves.min;
+				// heightBetweenShelves = 0;
 				shelveCount = $scope.shelvesCount;
-				if ($scope.shelvesCount > 2) {
-					// shelveHeight = Math.floor((currentHeight.value / ($scope.shelvesCount - 1)) / distanceBetweenHoles) * distanceBetweenHoles;
-					// }// else {
-					// shelveHeight = Math.ceil((currentHeight.value / (shelveCount - 1)) / 25) * 25;
-					shelveHeight = Math.floor(((currentHeight.value / ($scope.shelvesCount - 0)) + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
+				// if (shelveCount > 2) {
+				// shelveHeight = Math.floor((currentHeight.value / ($scope.shelvesCount - 1)) / distanceBetweenHoles) * distanceBetweenHoles;
+				// }// else {
+				// shelveHeight = Math.ceil((currentHeight.value / (shelveCount - 1)) / 25) * 25;
+				heightBetweenShelves = Math.floor(((currentHeight.value / (shelveCount)) + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
+				console.info(heightBetweenShelves);
+
+				if ((heightBetweenShelves * shelveCount) >= currentHeight.value) {
+					heightBetweenShelves = heightBetweenShelves - 25;
 				}
-				if (shelveHeight < 145) {
-					shelveHeight = 145;
-				}
-				if ((shelveCount * shelveHeight) >= currentHeight.value) {
-					shelveCount--;
-				}
-				$scope.shelvesCount = shelveCount;
-				$scope.shelveHeight = shelveHeight;
+				console.info(heightBetweenShelves);
+				// }
+				// if (shelveHeight < 145) {
+				// shelveHeight = 145;
+				// }
+				// if ((shelveCount * shelveHeight) >= currentHeight.value) {
+				// 	shelveCount--;
+				// }
+				// $scope.shelvesCount = shelveCount;
+				// $scope.shelveHeight = heightBetweenShelves;
 				// console.warn($scope.shelveHeight);
 			}
+
+			$scope.shelveHeight = heightBetweenShelves;
 
 			if ($scope.isVisualizating === false) {
 
@@ -1137,7 +1136,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 			}
 
 			// ***********************************************************************************************
-			if (angular.isObject(currentDeep)) {
+			if (typeof(currentDeep) === "object") {
 
 				//  Берем контейнеры, которые подходят по глубине
 				filterResult = $filter("filter")($scope.boxes, {
@@ -1185,7 +1184,9 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 	};
 
 	$scope.ChangeShelves = function ChangeShelves() {
+		console.log($scope.cupboard.shelves);
 		$scope.shelvesCount = $scope.cupboard.shelves;
+		$scope.selectedBox = undefined;
 		this.Calculation();
 	};
 
@@ -1220,32 +1221,32 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 	 */
 	$scope.ChangeHeight = function heightChanger(): void {
 
-			let n;
-			let shelvesArray;
-			let shelves = [];
+		// let n;
+		// let shelvesArray;
+		// let shelves = [];
+//
+		// console.log($scope.cupboard.height);
+		// angular.forEach($scope.heights, function (value, key) {
+		//
+		// 	if (value.value === $scope.cupboard.height) {
+		//
+		// 		this.push(value.shelves);
+		// 	}
+		//
+		// }, shelves);
+		//
+		// shelvesArray = [];
+//
+		// for (n = $scope.cupboard.height.shelves.min; n <= $scope.cupboard.height.shelves.max; n++) {
+		//
+		// 	shelvesArray.push({value: n, title: n});
+		// }
+//
+		// $scope.shelves = shelvesArray;
+		// $scope.cupboard.shelve = $scope.shelves[0];
 
-			console.log($scope.cupboard.height);
-			angular.forEach($scope.heights, function (value, key) {
-
-				if (value.value === $scope.cupboard.height) {
-
-					this.push(value.shelves);
-				}
-
-			}, shelves);
-
-			shelvesArray = [];
-
-			for (n = $scope.cupboard.height.shelves.min; n <= $scope.cupboard.height.shelves.max; n++) {
-
-				shelvesArray.push({value: n, title: n});
-			}
-
-			$scope.shelves = shelvesArray;
-			$scope.cupboard.shelve = $scope.shelves[0];
-
-			if ($scope.cupboard.height !== $scope.oldHeight) {
-				this.Calculation();
-			}
-		};
+		if ($scope.cupboard.height !== $scope.oldHeight) {
+			this.Calculation();
+		}
+	};
 });
