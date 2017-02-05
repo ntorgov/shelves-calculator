@@ -556,7 +556,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             if ($scope.shelvesCount) {
                 $scope.boxCounter = 0;
                 shelveGeometry = new THREE.BoxGeometry($scope.cupboard.width.value * unitFixation, shelveHeight * unitFixation, $scope.cupboard.deep.value * unitFixation);
-                if ($scope.boxCount) {
+                if ($scope.boxCount && $scope.selectedBox) {
                     boxPlaceWidth = (($scope.cupboard.width.value - 29 * 2) / ($scope.boxCount));
                     boxPlacementPadding = ((boxPlaceWidth - $scope.selectedBox.width) / 2);
                     boxPlacementMarguin = (($scope.selectedBox.width / 2) + 30);
@@ -618,7 +618,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                     shelveObject.receiveShadow = true;
                     shelveObject.position.set(($scope.cupboard.width.value * 0.5 + 1) * unitFixation, shelveYPosition * unitFixation, ($scope.cupboard.deep.value * -0.5 - 1) * unitFixation);
                     scene.add(shelveObject);
-                    if ($scope.boxCount) {
+                    if ($scope.boxCount && $scope.selectedBox) {
                         if (shelvesCounter > 0) {
                             localBoxGeometry = [];
                             for (boxCounter = 0; boxCounter < $scope.boxCount; boxCounter++) {
@@ -703,15 +703,15 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             $scope.oldDeep = currentDeep;
             $scope.isCalculating = true;
             if ($scope.selectedBox) {
-                shelveCount = Math.floor(currentHeight.value / ($scope.selectedBox.height + 30 + 35));
-                if ((shelveCount + 1) < currentHeight.shelves.min) {
+                shelveCount = Math.floor(currentHeight.value / ($scope.selectedBox.height + 30 + 35)) + 1;
+                if ((shelveCount) < currentHeight.shelves.min) {
                     shelveCount = currentHeight.shelves.min;
                 }
-                if ((shelveCount + 1) > currentHeight.shelves.max) {
+                if ((shelveCount) > currentHeight.shelves.max) {
                     shelveCount = currentHeight.shelves.max;
                 }
                 if (shelveCount > 2) {
-                    heightBetweenShelves = Math.floor((currentHeight.value / shelveCount) / distanceBetweenHoles) * distanceBetweenHoles;
+                    heightBetweenShelves = Math.floor((currentHeight.value / (shelveCount + 1)) / distanceBetweenHoles) * distanceBetweenHoles;
                 }
                 else {
                     heightBetweenShelves = Math.floor(($scope.selectedBox.height + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
@@ -720,19 +720,23 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                     heightBetweenShelves = 145;
                 }
                 if ((shelveCount * heightBetweenShelves) >= currentHeight.value) {
-                    shelveCount--;
+                    while (((shelveCount - 1) * heightBetweenShelves) >= currentHeight.value) {
+                        console.info("Полок: " + shelveCount + "; высота: " + heightBetweenShelves);
+                        shelveCount--;
+                        console.info("Полок: " + shelveCount + "; высота: " + heightBetweenShelves);
+                    }
                 }
                 boxCount = Math.floor((currentWidth.value - 60) / $scope.selectedBox.width);
                 $scope.shelvesCount = shelveCount;
                 $scope.boxCount = boxCount;
-                $scope.cupboard.shelves = $scope.shelvesCount + 1;
+                $scope.cupboard.shelves = $scope.shelvesCount;
             }
             else {
-                shelveCount = $scope.shelvesCount;
-                heightBetweenShelves = Math.floor(((currentHeight.value / (shelveCount)) + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
-                console.info(heightBetweenShelves);
-                if ((heightBetweenShelves * shelveCount) >= currentHeight.value) {
-                    heightBetweenShelves = heightBetweenShelves - 25;
+                shelveCount = $scope.shelvesCount - 1;
+                heightBetweenShelves = Math.floor(((currentHeight.value / shelveCount) + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
+                while ((heightBetweenShelves * shelveCount) >= currentHeight.value) {
+                    console.info("Полок: " + shelveCount + "; высота: " + heightBetweenShelves);
+                    heightBetweenShelves -= distanceBetweenHoles;
                 }
                 console.info(heightBetweenShelves);
             }
