@@ -710,12 +710,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                 if ((shelveCount) > currentHeight.shelves.max) {
                     shelveCount = currentHeight.shelves.max;
                 }
-                if (shelveCount > 2) {
-                    heightBetweenShelves = Math.floor((currentHeight.value / (shelveCount + 1)) / distanceBetweenHoles) * distanceBetweenHoles;
-                }
-                else {
-                    heightBetweenShelves = Math.floor(($scope.selectedBox.height + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
-                }
+                heightBetweenShelves = Math.floor(($scope.selectedBox.height + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
                 if (heightBetweenShelves < 145) {
                     heightBetweenShelves = 145;
                 }

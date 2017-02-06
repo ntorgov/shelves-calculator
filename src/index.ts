@@ -1058,12 +1058,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 				}
 
 				//  Вычисляем растояние между полками
-				if (shelveCount > 2) {
-					heightBetweenShelves = Math.floor((currentHeight.value / (shelveCount + 1)) / distanceBetweenHoles) * distanceBetweenHoles;
-				} else {
+				// if (shelveCount > 2) {
+				// 	heightBetweenShelves = Math.floor((currentHeight.value / (shelveCount)) / distanceBetweenHoles) * distanceBetweenHoles;
+				// } else {
 					// shelveHeight = Math.ceil((currentHeight.value / (shelveCount - 1)) / 25) * 25;
 					heightBetweenShelves = Math.floor(($scope.selectedBox.height + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
-				}
+				// }
 				if (heightBetweenShelves < 145) {
 					heightBetweenShelves = 145;
 				}

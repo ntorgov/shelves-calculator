@@ -88,7 +88,7 @@
 					<md-content class="md-padding" layout-xs="column" layout="column">
 
 						<md-grid-list flex
-						              md-cols="1" md-cols-sm="2" md-cols-md="3" md-cols-gt-md="6"
+						              md-cols="1" md-cols-sm="2" md-cols-md="3" md-cols-gt-md="8"
 						              md-row-height-gt-md="1:1" md-row-height="4:3"
 						              md-gutter="8px" md-gutter-gt-sm="4px">
 
@@ -134,11 +134,11 @@
 						<md-divider ></md-divider>
 						<md-list-item ng-click="null"><span flex="40">Стойка</span><span flex="20">4</span><span flex="20">{{cupboard.height.price}}</span><span flex="20">{{cupboard.height.price*4}}</span></md-list-item>
 						<md-divider ></md-divider>
-						<md-list-item ng-click="null"><span flex="40">Полка</span><span flex="20">{{shelvesCount+1}}</span><span flex="20">{{cupboard.deep.price}}</span><span flex="20">{{(shelvesCount+1) * cupboard.deep.price}}</span></md-list-item>
+						<md-list-item ng-click="null"><span flex="40">Полка</span><span flex="20">{{shelvesCount}}</span><span flex="20">{{cupboard.deep.price}}</span><span flex="20">{{(shelvesCount) * cupboard.deep.price}}</span></md-list-item>
 						<md-divider ></md-divider>
 						<md-list-item ng-click="null"><span flex="40">Ящик</span><span flex="20">{{boxCount * shelvesCount}}</span><span flex="20">{{selectedBox.price}}</span><span flex="20">{{boxCount * shelvesCount * selectedBox.price}}</span></md-list-item>
 						<md-divider ></md-divider>
-						<md-list-item ng-click="null"><span flex="80">Итого</span><span flex="20">{{(cupboard.height.price*4) + ((shelvesCount+1) * cupboard.deep.price) + (boxCount *
+						<md-list-item ng-click="null"><span flex="80">Итого</span><span flex="20">{{(cupboard.height.price*4) + ((shelvesCount) * cupboard.deep.price) + (boxCount *
 							shelvesCount *
 							selectedBox.price)}}</span></md-list-item>
 					</md-list>
