@@ -18,3 +18,7 @@ div.selected {
 div.unselected {
 	border: 1px solid transparent;
 }
+
+.red {
+	color: #c31924;
+}

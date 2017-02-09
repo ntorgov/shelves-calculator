@@ -100,18 +100,9 @@
 								         ng-class="(box.id==selectedBox.id)?'selected':'unselected'"
 								         ng-click="BoxClick(box)">
 									<img ng-src="{{box.image}}" class="md-card-image" alt="Washed Out">
-									<!-- md-card-title>
-														<md-card-title-text>
-															<span class="md-headline">Action buttons</span>
-														</md-card-title-text>
-													</md-card-title -->
 									<md-card-content>
 										<p>{{box.deep}}x{{box.width}}x{{box.height}}</p>
 									</md-card-content>
-									<!-- md-card-actions layout="row" layout-align="end center">
-														<md-button>Action 1</md-button>
-														<md-button>Action 2</md-button>
-													</md-card-actions -->
 								</md-card>
 							</md-grid-tile>
 						</md-grid-list>
@@ -130,17 +121,27 @@
 				</md-card-title>
 				<md-card-content>
 					<md-list class="md-dense">
-						<md-list-item><span flex="40">Наименование</span><span flex="20">кол-во</span><span flex="20">цена за ед.</span><span flex="20">сумма, руб</span></md-list-item>
-						<md-divider ></md-divider>
-						<md-list-item ng-click="null"><span flex="40">Стойка</span><span flex="20">4</span><span flex="20">{{cupboard.height.price}}</span><span flex="20">{{cupboard.height.price*4}}</span></md-list-item>
-						<md-divider ></md-divider>
-						<md-list-item ng-click="null"><span flex="40">Полка</span><span flex="20">{{shelvesCount}}</span><span flex="20">{{cupboard.deep.price}}</span><span flex="20">{{(shelvesCount) * cupboard.deep.price}}</span></md-list-item>
-						<md-divider ></md-divider>
-						<md-list-item ng-click="null"><span flex="40">Ящик</span><span flex="20">{{boxCount * shelvesCount}}</span><span flex="20">{{selectedBox.price}}</span><span flex="20">{{boxCount * shelvesCount * selectedBox.price}}</span></md-list-item>
-						<md-divider ></md-divider>
-						<md-list-item ng-click="null"><span flex="80">Итого</span><span flex="20">{{(cupboard.height.price*4) + ((shelvesCount) * cupboard.deep.price) + (boxCount *
+						<md-list-item><span flex="40">Наименование</span><span flex="20"><span class="red">К</span>ол-во</span><span
+							flex="20"><span class="red">Ц</span>ена за ед.</span><span flex="20"><span
+							class="red">С</span>умма, руб</span></md-list-item>
+						<md-divider></md-divider>
+						<md-list-item ng-click="null"><span flex="40">Стойка <span class="red">в комплекте</span></span><span
+							flex="20">4</span><span flex="20">{{cupboard.height.price}}</span><span flex="20">{{cupboard.height.price*4}}</span>
+						</md-list-item>
+						<md-divider></md-divider>
+						<md-list-item ng-click="null"><span flex="40">Полка <span class="red">{{cupboard.width.value}}x{{cupboard.deep.value}}</span></span><span
+							flex="20">{{shelvesCount}}</span><span flex="20">{{cupboard.deep.price}}</span><span
+							flex="20">{{(shelvesCount) * cupboard.deep.price}}</span></md-list-item>
+						<md-divider></md-divider>
+						<md-list-item ng-click="null" ng-if="selectedBox"><span flex="40">Ящик <span class="red">{{selectedBox.id}}</span></span><span
+							flex="20">{{boxCount * shelvesCount}}</span><span
+							flex="20">{{selectedBox.price}}</span><span flex="20">{{boxCount * shelvesCount * selectedBox.price}}</span>
+						</md-list-item>
+						<md-divider></md-divider>
+						<md-list-item ng-click="null"><span flex="80">Итого <span
+							class="red">к оплате</span></span><span flex="20" class="red"><strong>{{(cupboard.height.price*4) + ((shelvesCount) * cupboard.deep.price) + ((boxCount *
 							shelvesCount *
-							selectedBox.price)}}</span></md-list-item>
+							selectedBox.price)||0)}} руб</strong></span></md-list-item>
 					</md-list>
 				</md-card-content>
 			</md-card>
