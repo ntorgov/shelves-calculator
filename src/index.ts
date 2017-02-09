@@ -1225,6 +1225,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 
 		$http.post("service.php", {
 			data: data,
+			user: $scope.userContact,
 			test: "ok"
 		}, {headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(function () {
 			console.info(data);

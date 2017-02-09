@@ -150,8 +150,15 @@
 	<div flex="50" layout-margin>
 		<div id="visualization"></div>
 		<div ng-cloak>
-			<md-button class="md-raised md-primary" ng-disabled="buttonLock" ng-click="SendOrder();">Отправить менеджеру</md-button>
-			<md-button class="md-raised md-warn" ng-disabled="true">Поделиться</md-button>
+			<md-input-container>
+				<label>Ваш телефон или email</label>
+				<input ng-model="userContact">
+			</md-input-container>
+			<md-input-container>
+				<md-button class="md-raised md-primary" ng-disabled="buttonLock || !userContact" ng-click="SendOrder();">
+					Отправить менеджеру
+				</md-button>
+			</md-input-container>
 		</div>
 	</div>
 </div>
