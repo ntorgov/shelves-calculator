@@ -79,11 +79,11 @@
 		</div>
 		<div layout="row" layout-margin>
 			<md-card flex>
-				<md-card-title>
+				<!-- md-card-title>
 					<md-card-title-text>
 						<span class="md-headline">Под условие подходят ящики</span>
 					</md-card-title-text>
-				</md-card-title>
+				</md-card-title -->
 				<md-card-content>
 					<md-content class="md-padding" layout-xs="column" layout="column">
 
@@ -116,7 +116,7 @@
 			<md-card flex>
 				<md-card-title>
 					<md-card-title-text>
-						<span class="md-headline">Спецификация</span>
+						<span class="md-headline">Спецификация стеллажа</span>
 					</md-card-title-text>
 				</md-card-title>
 				<md-card-content>
@@ -125,19 +125,20 @@
 							flex="20">Цена за ед.</span><span flex="20">Сумма, руб</span></md-list-item>
 						<md-divider></md-divider>
 						<md-list-item ng-click="null"><span flex="40">Стойка в комплекте</span><span
-							flex="20">4</span><span flex="20">{{cupboard.height.price}}</span><span flex="20">{{cupboard.height.price*4}}</span>
+							flex="20">4 шт</span><span flex="20">{{cupboard.height.price}} руб</span><span flex="20">{{cupboard.height.price*4}} руб</span>
 						</md-list-item>
 						<md-divider></md-divider>
 						<md-list-item ng-click="null"><span flex="40">Полка {{cupboard.width.value}}x{{cupboard.deep.value}}</span><span
-							flex="20">{{shelvesCount}}</span><span flex="20">{{cupboard.deep.price}}</span><span
-							flex="20">{{(shelvesCount) * cupboard.deep.price}}</span></md-list-item>
+							flex="20">{{shelvesCount}} шт</span><span flex="20">{{cupboard.deep.price}} руб</span><span
+							flex="20">{{(shelvesCount) * cupboard.deep.price}} руб</span></md-list-item>
 						<md-divider></md-divider>
-						<md-list-item ng-click="null" ng-if="selectedBox"><span flex="40">Ящик арт. {{selectedBox.id}}</span><span
-							flex="20">{{boxCount * shelvesCount}}</span><span
-							flex="20">{{selectedBox.price}}</span><span flex="20">{{boxCount * shelvesCount * selectedBox.price}}</span>
+						<md-list-item ng-click="null" ng-if="selectedBox"><span
+							flex="40">Ящик арт. {{selectedBox.id}}</span><span
+							flex="20">{{boxCount * shelvesCount}} шт</span><span
+							flex="20">{{selectedBox.price}} руб</span><span flex="20">{{boxCount * shelvesCount * selectedBox.price}} руб</span>
 						</md-list-item>
 						<md-divider></md-divider>
-						<md-list-item ng-click="null"><span flex="80">Итого к оплате</span><span flex="20"><strong>{{(cupboard.height.price*4) + ((shelvesCount) * cupboard.deep.price) + ((boxCount *
+						<md-list-item ng-click="null" class="md-headline"><span flex="80" class="spec-total">Итого к оплате</span><span flex="20"><strong>{{(cupboard.height.price*4) + ((shelvesCount) * cupboard.deep.price) + ((boxCount *
 							shelvesCount *
 							selectedBox.price)||0)}} руб</strong></span></md-list-item>
 					</md-list>
@@ -153,7 +154,8 @@
 				<input ng-model="userContact">
 			</md-input-container>
 			<md-input-container>
-				<md-button class="md-raised md-primary" ng-disabled="buttonLock || !userContact" ng-click="SendOrder();">
+				<md-button class="md-raised md-primary moved-button" ng-disabled="buttonLock || !userContact"
+				           ng-click="SendOrder();">
 					Отправить менеджеру
 				</md-button>
 			</md-input-container>
