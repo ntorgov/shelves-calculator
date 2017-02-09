@@ -48,7 +48,7 @@ let light: THREE.PointLight;
 
 declare let calculatorApplication: any;
 
-calculatorApplication.controller("calculatorController", function ($scope, $filter) {
+calculatorApplication.controller("calculatorController", function ($scope, $filter, $http) {
 
 	/**
 	 * Фиксация величин для THREE.js
@@ -524,6 +524,12 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 	$scope.boxCounter = 0;
 	$scope.cameraRadius = 0;
 	$scope.angle = 0;
+
+	/**
+	 * Флаг, доступна ли кнопка
+	 * @type {boolean}
+	 */
+	$scope.buttonLock = false;
 
 	/**
 	 * Флаг визуализации
@@ -1061,8 +1067,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 				// if (shelveCount > 2) {
 				// 	heightBetweenShelves = Math.floor((currentHeight.value / (shelveCount)) / distanceBetweenHoles) * distanceBetweenHoles;
 				// } else {
-					// shelveHeight = Math.ceil((currentHeight.value / (shelveCount - 1)) / 25) * 25;
-					heightBetweenShelves = Math.floor(($scope.selectedBox.height + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
+				// shelveHeight = Math.ceil((currentHeight.value / (shelveCount - 1)) / 25) * 25;
+				heightBetweenShelves = Math.floor(($scope.selectedBox.height + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
 				// }
 				if (heightBetweenShelves < 145) {
 					heightBetweenShelves = 145;
@@ -1094,11 +1100,11 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 				heightBetweenShelves = Math.floor(((currentHeight.value / shelveCount) + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
 
 				while ((heightBetweenShelves * shelveCount) >= currentHeight.value) {
-					console.info("Полок: " + shelveCount + "; высота: " + heightBetweenShelves);
+					// console.info("Полок: " + shelveCount + "; высота: " + heightBetweenShelves);
 					heightBetweenShelves -= distanceBetweenHoles;
 				}
 
-				console.info(heightBetweenShelves);
+				// console.info(heightBetweenShelves);
 
 			}
 
@@ -1200,5 +1206,33 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
 		if ($scope.cupboard.height !== $scope.oldHeight) {
 			this.Calculation();
 		}
+	};
+
+	$scope.SendOrder = function sendOrder(): void {
+
+		let data = {
+			height: $scope.cupboard.height.value,
+			width: $scope.cupboard.width.value,
+			deep: $scope.cupboard.deep.value,
+			box: $scope.selectedBox,
+			boxQty: $scope.boxCount,
+			shelveQty: $scope.shelvesCount
+		};
+
+		$scope.buttonLock = true;
+
+		console.info(data);
+
+		$http.post("service.php", {
+			data: data,
+			test: "ok"
+		}, {headers: {"Content-Type": "application/x-www-form-urlencoded"}}).then(function () {
+			console.info(data);
+		}, function () {
+			console.error("Error");
+		});
+
+		$scope.buttonLock = false;
+		// alert(1);
 	};
 });

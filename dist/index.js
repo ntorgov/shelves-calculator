@@ -14,7 +14,7 @@ var BoxColor;
     BoxColor[BoxColor["yellow"] = 2] = "yellow";
 })(BoxColor || (BoxColor = {}));
 let light;
-calculatorApplication.controller("calculatorController", function ($scope, $filter) {
+calculatorApplication.controller("calculatorController", function ($scope, $filter, $http) {
     const unitFixation = 1 / 1000;
     const distanceBetweenHoles = 25;
     const holderPerforationRadius = 4;
@@ -434,6 +434,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     $scope.boxCounter = 0;
     $scope.cameraRadius = 0;
     $scope.angle = 0;
+    $scope.buttonLock = false;
     $scope.isVisualizating = false;
     $scope.isCalculating = false;
     $scope.isRendered = false;
@@ -730,10 +731,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                 shelveCount = $scope.shelvesCount - 1;
                 heightBetweenShelves = Math.floor(((currentHeight.value / shelveCount) + 30 + 35) / distanceBetweenHoles) * distanceBetweenHoles;
                 while ((heightBetweenShelves * shelveCount) >= currentHeight.value) {
-                    console.info("Полок: " + shelveCount + "; высота: " + heightBetweenShelves);
                     heightBetweenShelves -= distanceBetweenHoles;
                 }
-                console.info(heightBetweenShelves);
             }
             $scope.shelveHeight = heightBetweenShelves;
             if ($scope.isVisualizating === false) {
@@ -786,6 +785,27 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         if ($scope.cupboard.height !== $scope.oldHeight) {
             this.Calculation();
         }
+    };
+    $scope.SendOrder = function sendOrder() {
+        let data = {
+            height: $scope.cupboard.height.value,
+            width: $scope.cupboard.width.value,
+            deep: $scope.cupboard.deep.value,
+            box: $scope.selectedBox,
+            boxQty: $scope.boxCount,
+            shelveQty: $scope.shelvesCount
+        };
+        $scope.buttonLock = true;
+        console.info(data);
+        $http.post("service.php", {
+            data: data,
+            test: "ok"
+        }, { headers: { "Content-Type": "application/x-www-form-urlencoded" } }).then(function () {
+            console.info(data);
+        }, function () {
+            console.error("Error");
+        });
+        $scope.buttonLock = false;
     };
 });
 //# sourceMappingURL=index.js.map
