@@ -1,8 +1,8 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
-		"target": "ES6",
-		"sourceMap": true,
+		"target": "ES5",
+		"sourceMap": false,
 		"removeComments": true,
 		"preserveConstEnums": true,
 		"locale": "ru-ru",

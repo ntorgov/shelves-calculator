@@ -1,7 +1,7 @@
 var Color = THREE.Color;
 var BufferGeometry = THREE.BufferGeometry;
-let camera, scene, renderer;
-let geometry, material;
+var camera, scene, renderer;
+var geometry, material;
 var BoxSeries;
 (function (BoxSeries) {
     BoxSeries[BoxSeries["sk"] = 0] = "sk";
@@ -13,14 +13,14 @@ var BoxColor;
     BoxColor[BoxColor["red"] = 1] = "red";
     BoxColor[BoxColor["yellow"] = 2] = "yellow";
 })(BoxColor || (BoxColor = {}));
-let light;
+var light;
 calculatorApplication.controller("calculatorController", function ($scope, $filter, $http) {
-    const unitFixation = 1 / 1000;
-    const distanceBetweenHoles = 25;
-    const holderPerforationRadius = 4;
-    const shelveHeight = 25;
-    const displayHeight = 400;
-    const boxesArray = [
+    var unitFixation = 1 / 1000;
+    var distanceBetweenHoles = 25;
+    var holderPerforationRadius = 4;
+    var shelveHeight = 25;
+    var displayHeight = 400;
+    var boxesArray = [
         {
             id: "SK 3109",
             title: "Контейнер sk 3109",
@@ -318,7 +318,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             series: 1
         }
     ];
-    const shelvesHeights = [
+    var shelvesHeights = [
         { value: 500, title: 500, selected: true, price: 115.0, shelves: { min: 3, max: 5 } },
         {
             value: 1000,
@@ -377,7 +377,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
             shelves: { min: 3, max: 13 }
         }
     ];
-    const selvesWidths = [
+    var selvesWidths = [
         {
             value: 700,
             title: 700,
@@ -442,40 +442,40 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     $scope.oldWidth = 0;
     $scope.oldDeep = 0;
     function visualizationInit() {
-        let boxGeometryGroup;
-        let localBoxGeometry;
-        let secondCylinderBSP;
-        let firstCylinderBSP;
-        let additionalCutSubtractor;
-        let additionalCutMesh;
-        let additionalCut;
-        let boxObject;
-        let boxYPosition;
-        let boxGeometry;
-        let boxSubGeometrySubstractor;
-        let boxSupGeometrySubstractor;
-        let boxSubGeometryMesh;
-        let boxSubGeometry;
-        let boxSupGeometryMesh;
-        let boxSupGeometry;
-        let boxPlacementPadding;
-        let boxPlacementMarguin;
-        let boxPlaceWidth;
-        let boxMaterial;
-        let glassMaterial;
-        let shelvesCounter, holdersCounter, boxCounter;
-        let selectedObject;
-        let shelveYPosition;
-        let shelveGeometry, shelveObject;
-        let perforatedHolder;
-        let cylinderGeometry;
-        let perforationCounter;
-        let subtractCylinderGeometry;
-        let material;
-        let holderShape;
-        let extrudeSettings;
-        let holderGeometry;
-        let holder = [];
+        var boxGeometryGroup;
+        var localBoxGeometry;
+        var secondCylinderBSP;
+        var firstCylinderBSP;
+        var additionalCutSubtractor;
+        var additionalCutMesh;
+        var additionalCut;
+        var boxObject;
+        var boxYPosition;
+        var boxGeometry;
+        var boxSubGeometrySubstractor;
+        var boxSupGeometrySubstractor;
+        var boxSubGeometryMesh;
+        var boxSubGeometry;
+        var boxSupGeometryMesh;
+        var boxSupGeometry;
+        var boxPlacementPadding;
+        var boxPlacementMarguin;
+        var boxPlaceWidth;
+        var boxMaterial;
+        var glassMaterial;
+        var shelvesCounter, holdersCounter, boxCounter;
+        var selectedObject;
+        var shelveYPosition;
+        var shelveGeometry, shelveObject;
+        var perforatedHolder;
+        var cylinderGeometry;
+        var perforationCounter;
+        var subtractCylinderGeometry;
+        var material;
+        var holderShape;
+        var extrudeSettings;
+        var holderGeometry;
+        var holder = [];
         $scope.isVisualizating = true;
         if ($scope.cupboard.width && $scope.cupboard.width.value) {
             material = new THREE.MeshStandardMaterial({
@@ -591,8 +591,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                         additionalCutMesh.position.y = (($scope.selectedBox.height / 2) - ($scope.selectedBox.height * 0.66) / 2) * unitFixation;
                         additionalCutSubtractor = new ThreeBSP(additionalCutMesh);
                         boxGeometry = boxGeometry.subtract(additionalCutSubtractor);
-                        let glassPanel = new THREE.BoxGeometry($scope.selectedBox.width * 0.70 * unitFixation, $scope.selectedBox.height * 0.66 * unitFixation, unitFixation);
-                        let glassPanelMech = new THREE.Mesh(glassPanel, glassMaterial);
+                        var glassPanel = new THREE.BoxGeometry($scope.selectedBox.width * 0.70 * unitFixation, $scope.selectedBox.height * 0.66 * unitFixation, unitFixation);
+                        var glassPanelMech = new THREE.Mesh(glassPanel, glassMaterial);
                         glassPanelMech.position.z = ($scope.selectedBox.deep / 2) * unitFixation;
                         glassPanelMech.position.y = (($scope.selectedBox.height / 2) - ($scope.selectedBox.height * 0.66) / 2) * unitFixation;
                         boxGeometryGroup.add(boxGeometry.toMesh(boxMaterial));
@@ -643,8 +643,8 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         $scope.isVisualizating = false;
     }
     function render() {
-        const radius = $scope.cameraRadius * 2;
-        let centerScene;
+        var radius = $scope.cameraRadius * 2;
+        var centerScene;
         if ($scope.cupboard.width && $scope.cupboard.width.value) {
             renderer.render(scene, camera);
             camera.position.x = radius * Math.cos($scope.angle) + ($scope.cupboard.width.value * 0.5) * unitFixation;
@@ -657,9 +657,9 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         }
     }
     function init() {
-        const proportion = 3 / 4;
-        const visualizationWidth = document.getElementById("visualization").offsetWidth * 0.5;
-        let hemiLight;
+        var proportion = 3 / 4;
+        var visualizationWidth = document.getElementById("visualization").offsetWidth * 0.5;
+        var hemiLight;
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(40, proportion, 1, 5000);
         camera.isPerspectiveCamera = false;
@@ -684,20 +684,20 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         document.getElementById("visualization").appendChild(renderer.domElement);
     }
     $scope.init = function () {
-        let visualizationObject = document.getElementById("visualization");
+        var visualizationObject = document.getElementById("visualization");
         if (visualizationObject) {
             init();
         }
     };
     $scope.init();
     $scope.Calculation = function Calculation() {
-        let shelveCount;
-        let filterResult;
-        let heightBetweenShelves = 0;
-        let boxCount;
-        const currentHeight = $scope.cupboard.height;
-        const currentWidth = $scope.cupboard.width;
-        const currentDeep = $scope.cupboard.deep;
+        var shelveCount;
+        var filterResult;
+        var heightBetweenShelves = 0;
+        var boxCount;
+        var currentHeight = $scope.cupboard.height;
+        var currentWidth = $scope.cupboard.width;
+        var currentDeep = $scope.cupboard.deep;
         if ($scope.isCalculating === false) {
             $scope.oldHeight = currentHeight;
             $scope.oldWidth = currentWidth;
@@ -745,7 +745,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                 filterResult = $filter("filter")($scope.boxes, {
                     deep: currentDeep.value
                 }, function (actual, expected) {
-                    let result = false;
+                    var result = false;
                     if ((actual === expected - 50) || (actual === expected)) {
                         result = true;
                     }
@@ -787,7 +787,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         }
     };
     $scope.SendOrder = function sendOrder() {
-        let data = {
+        var data = {
             height: $scope.cupboard.height.value,
             width: $scope.cupboard.width.value,
             deep: $scope.cupboard.deep.value,
@@ -809,4 +809,3 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         $scope.buttonLock = false;
     };
 });
-//# sourceMappingURL=index.js.map
