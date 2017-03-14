@@ -20,304 +20,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     var holderPerforationRadius = 4;
     var shelveHeight = 25;
     var displayHeight = 400;
-    var boxesArray = [
-        {
-            id: "SK 3109",
-            title: "Контейнер sk 3109",
-            price: 91.0,
-            width: 117,
-            height: 90,
-            deep: 300,
-            sort: 1,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/3109l3.jpg",
-            url: "http://www.agropak.net/hgfhgf/kontejner-sk-3109/",
-            color: 0,
-            series: 0
-        }, {
-            id: "SK 31509",
-            title: "Контейнер sk 31509",
-            price: 106.0,
-            width: 155,
-            height: 90,
-            deep: 300,
-            sort: 1,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/31509dh.jpg",
-            url: "http://www.agropak.net/hgfhgf/kontejner-sk-31509/",
-            color: 0,
-            series: 0
-        }, {
-            id: "SK 3209",
-            title: "Контейнер sk 3209",
-            price: 140.0,
-            width: 234,
-            height: 90,
-            deep: 300,
-            sort: 1,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/3209hj.jpg",
-            url: "http://www.agropak.net/hgfhgf/kontejner-sk-3209/",
-            color: 0,
-            series: 0
-        }, {
-            id: "SK 3214",
-            title: "Контейнер sk 3214",
-            price: 216.0,
-            width: 234,
-            height: 140,
-            deep: 300,
-            sort: 1,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/32145i.jpg",
-            url: "http://www.agropak.net/hgfhgf/kontejner-sk-3214/",
-            color: 0,
-            series: 0
-        },
-        {
-            id: "SK 4109",
-            title: "Контейнер sk 4109",
-            price: 117.0,
-            width: 117,
-            height: 90,
-            deep: 400,
-            sort: 1,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/4109kh.jpg",
-            url: "http://www.agropak.net/hgfhgf/kontejner-sk-4109/",
-            color: 0,
-            series: 0
-        },
-        {
-            id: "SK 41509",
-            title: "Контейнер sk 41509",
-            price: 143.0,
-            width: 155,
-            height: 90,
-            deep: 400,
-            sort: 1,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/41509yk.jpg",
-            url: "http://www.agropak.net/hgfhgf/kontejner-sk-41509/",
-            color: 0,
-            series: 0
-        },
-        {
-            id: "SK 4209",
-            title: "Контейнер sk 4209",
-            price: 182.0,
-            width: 234,
-            height: 90,
-            deep: 400,
-            sort: 1,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/42095y.jpg",
-            url: "http://www.agropak.net/hgfhgf/kontejner-sk-4209/",
-            color: 0,
-            series: 0
-        },
-        {
-            id: "SK 4214",
-            title: "Контейнер sk 4214",
-            price: 306.0,
-            width: 234,
-            height: 140,
-            deep: 400,
-            sort: 1,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/4214vd.jpg",
-            url: "http://www.agropak.net/hgfhgf/kontejner-sk-4214/",
-            color: 0,
-            series: 0
-        },
-        {
-            id: "SK 5109",
-            title: "Контейнер sk 5109",
-            price: 132.0,
-            width: 117,
-            height: 90,
-            deep: 500,
-            sort: 1,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/51092v.jpg",
-            url: "http://www.agropak.net/hgfhgf/kontejner-sk-5109/",
-            color: 0,
-            series: 0
-        },
-        {
-            id: "SK 51509",
-            title: "Контейнер sk 51509",
-            price: 162.0,
-            width: 155,
-            height: 90,
-            deep: 500,
-            sort: 1,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/51509mi.jpg",
-            url: "http://www.agropak.net/hgfhgf/kontejner-sk-51509/",
-            color: 0,
-            series: 0
-        },
-        {
-            id: "SK 5209",
-            title: "Контейнер sk 5209",
-            price: 206.0,
-            width: 234,
-            height: 90,
-            deep: 500,
-            sort: 1,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/5209gf.jpg",
-            url: "http://www.agropak.net/hgfhgf/kontejner-sk-5209/",
-            color: 0,
-            series: 0
-        },
-        {
-            id: "SK 5214",
-            title: "Контейнер sk 5214",
-            price: 315.0,
-            width: 234,
-            height: 140,
-            deep: 500,
-            sort: 1,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/52144y.jpg",
-            url: "http://www.agropak.net/hgfhgf/kontejner-sk-5214/",
-            color: 0,
-            series: 0
-        },
-        {
-            id: "SK 6109",
-            title: "Контейнер sk 6109",
-            price: 165.0,
-            width: 117,
-            height: 90,
-            deep: 600,
-            sort: 1,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/6109bi.jpg",
-            url: "http://www.agropak.net/hgfhgf/kontejner-sk-6109/",
-            color: 0,
-            series: 0
-        },
-        {
-            id: "SK 61509",
-            title: "Контейнер sk 61509",
-            price: 196.0,
-            width: 155,
-            height: 90,
-            deep: 600,
-            sort: 1,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/61509ht.jpg",
-            url: "http://www.agropak.net/hgfhgf/kontejner-sk-61509/",
-            color: 0,
-            series: 0
-        },
-        {
-            id: "SK 6209",
-            title: "Контейнер sk 6209",
-            price: 255.0,
-            width: 234,
-            height: 90,
-            deep: 600,
-            sort: 1,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/6209k3.jpg",
-            url: "http://www.agropak.net/hgfhgf/kontejner-sk-6209/",
-            color: 0,
-            series: 0
-        },
-        {
-            id: "SK 6214",
-            title: "Контейнер sk 6214",
-            price: 397.0,
-            width: 234,
-            height: 140,
-            deep: 600,
-            sort: 1,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/6214at.jpg",
-            url: "http://www.agropak.net/hgfhgf/kontejner-sk-6214/",
-            color: 0,
-            series: 0
-        },
-        {
-            id: "12.412",
-            title: "Контейнер 12.412",
-            price: 110.0,
-            width: 225,
-            height: 150,
-            deep: 300,
-            sort: 2,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/12_412dq.jpg",
-            url: "http://www.agropak.net/kontejnery-logic-store/12412/",
-            color: 0,
-            series: 1
-        },
-        {
-            id: "12.403.1",
-            title: "Контейнер 12.403.1",
-            price: 125.0,
-            width: 225,
-            height: 150,
-            deep: 350,
-            sort: 2,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-403mn.jpg",
-            url: "http://www.agropak.net/kontejnery-logic-store/12_403/",
-            color: 0,
-            series: 1
-        },
-        {
-            id: "12.404.1",
-            title: "Контейнер 12.404.1",
-            price: 147.0,
-            width: 225,
-            height: 200,
-            deep: 350,
-            sort: 2,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-404wb.jpg",
-            url: "http://www.agropak.net/kontejnery-logic-store/12_404/",
-            color: 0,
-            series: 1
-        },
-        {
-            id: "12.414",
-            title: "Контейнер 12.414",
-            price: 151.0,
-            width: 225,
-            height: 150,
-            deep: 400,
-            sort: 2,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/12_414.jpg",
-            url: "http://www.agropak.net/kontejnery-logic-store/12414/",
-            color: 0,
-            series: 1
-        },
-        {
-            id: "12.405.1",
-            title: "Контейнер 12.405.1",
-            price: 180.0,
-            width: 225,
-            height: 150,
-            deep: 500,
-            sort: 2,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-4050c.jpg",
-            url: "http://www.agropak.net/kontejnery-logic-store/12_405/",
-            color: 0,
-            series: 1
-        },
-        {
-            id: "12.406.1",
-            title: "Контейнер 12.406.1",
-            price: 270.0,
-            width: 300,
-            height: 200,
-            deep: 500,
-            sort: 2,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-406b.jpg",
-            url: "http://www.agropak.net/kontejnery-logic-store/12_406/",
-            color: 0,
-            series: 1
-        },
-        {
-            id: "12.407.1",
-            title: "Контейнер 12.407.1",
-            price: 305.0,
-            width: 300,
-            height: 250,
-            deep: 500,
-            sort: 2,
-            image: "http://www.agropak.net/published/publicdata/AGROPAK/attachments/SC/products_pictures/n12-407b.jpg",
-            url: "http://www.agropak.net/kontejnery-logic-store/12_407/",
-            color: 0,
-            series: 1
-        }
-    ];
+    var boxesArray;
     var shelvesHeights = [
         { value: 500, title: 500, selected: true, price: 115.0, shelves: { min: 3, max: 5 } },
         {
@@ -441,6 +144,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     $scope.oldHeight = 0;
     $scope.oldWidth = 0;
     $scope.oldDeep = 0;
+    $scope.isReady = false;
     function visualizationInit() {
         var boxGeometryGroup;
         var localBoxGeometry;
@@ -686,7 +390,15 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     $scope.init = function () {
         var visualizationObject = document.getElementById("visualization");
         if (visualizationObject) {
-            init();
+            $http.get("http://www.agropak.net/local/ajax/products.php", {}).then(function (data) {
+                boxesArray = data.data;
+                $scope.boxes = boxesArray;
+                $scope.isReady = true;
+                init();
+                $scope.ChangeHeight();
+            }, function () {
+                console.log("Data error");
+            });
         }
     };
     $scope.init();
@@ -698,7 +410,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         var currentHeight = $scope.cupboard.height;
         var currentWidth = $scope.cupboard.width;
         var currentDeep = $scope.cupboard.deep;
-        if ($scope.isCalculating === false) {
+        if ($scope.isCalculating === false && $scope.isReady === true) {
             $scope.oldHeight = currentHeight;
             $scope.oldWidth = currentWidth;
             $scope.oldDeep = currentDeep;
@@ -752,6 +464,7 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
                     return result;
                 });
                 $scope.boxResult = $filter("orderBy")(filterResult, ["-deep", "+sort"]);
+                console.log($scope.boxes);
             }
             $scope.isCalculating = false;
         }
@@ -763,7 +476,6 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
         this.Calculation();
     };
     $scope.ChangeShelves = function ChangeShelves() {
-        console.log($scope.cupboard.shelves);
         $scope.shelvesCount = $scope.cupboard.shelves;
         $scope.selectedBox = undefined;
         this.Calculation();
@@ -783,7 +495,9 @@ calculatorApplication.controller("calculatorController", function ($scope, $filt
     };
     $scope.ChangeHeight = function heightChanger() {
         if ($scope.cupboard.height !== $scope.oldHeight) {
-            this.Calculation();
+            if ($scope.isReady === true) {
+                this.Calculation();
+            }
         }
     };
     $scope.SendOrder = function sendOrder() {
