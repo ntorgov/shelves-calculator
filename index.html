@@ -20,9 +20,9 @@
 <script>
 	calculatorApplication = angular.module('calculatorApplication', ['ngMaterial']);
 </script>
-<div layout="row" ng-controller="calculatorController">
-	<div flex="50" ng-cloak layout="column">
-		<div layout="row" layout-margin>
+<div layout-xs="column" layout-sm="column" layout-md="row" layout-lg="row" layout-xl="row" ng-controller="calculatorController">
+	<div flex ng-cloak layout="column">
+		<div layout-xs="column" layout-sm="column" layout-md="row" layout-margin>
 			<div flex="20">
 				<md-input-container>
 					<label>Высота</label>
@@ -146,7 +146,7 @@
 			</md-card>
 		</div>
 	</div>
-	<div flex="50" layout-margin>
+	<div layout-margin>
 		<div id="visualization"></div>
 		<div ng-cloak>
 			<md-input-container>
